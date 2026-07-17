@@ -1,6 +1,6 @@
 ---
 name: renova-aura-router
-description: Route Renova Aura product and engineering work to the minimum safe set of reusable skills. Use at the start of repository work, feature planning, audits, fixes, releases, incidents, or prompt-library changes. Inspect project evidence first and never replace project-specific AGENTS.md rules.
+description: Route Renova Aura product and engineering work to the minimum safe set of reusable skills. Use at the start of repository work, feature planning, audits, fixes, releases, incidents, document/PDF artifact work, or prompt-library changes. Inspect project evidence first and never replace project-specific AGENTS.md rules.
 ---
 
 # Renova Aura Router
@@ -47,6 +47,7 @@ Choose the dominant task type:
 - testing, CI, release or deploy;
 - observability, incident or rollback;
 - prompt or skill library maintenance;
+- PDF form creation, repair, compatibility or auditable delivery;
 - documentation and handoff.
 
 ## Routing table
@@ -62,6 +63,7 @@ Choose the dominant task type:
 | Tests, CI, PR, release, deploy | `renova-aura-quality-release` | security, observability |
 | Logs, metrics, alerts, outage, recovery | `renova-aura-observability-incident` | quality-release, security |
 | Create or improve prompts/skills | `renova-aura-prompt-source-designer` | project-handoff |
+| Create, repair, validate or package fillable PDFs | `renova-aura-pdf-forms-router` | security-data for sensitive documents; quality-release when code/scripts change |
 | Update status and continuity docs | `renova-aura-project-handoff` | relevant domain skill |
 
 ## Mandatory transversal triggers
