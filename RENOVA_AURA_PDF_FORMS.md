@@ -9,6 +9,7 @@ Suíte pública e reutilizável para criar, reparar, validar e entregar formulá
 | `renova-aura-pdf-forms-router` | Classifica a tarefa e seleciona o menor conjunto seguro |
 | `renova-aura-fillable-pdf-architect` | Cria ou reconstrói AcroForm, campos, fontes, aparências e versão impressa |
 | `renova-aura-pdf-compatibility-auditor` | Testa estrutura, salvamento, reabertura, impressão e compatibilidade por visualizador |
+| `renova-aura-pdf-viewer-validation-runbook` | Executa testes manuais em visualizadores e aparelhos e separa defeito do PDF de falha do aplicativo ou ambiente |
 | `renova-aura-pdf-delivery-guardian` | Empacota versão interativa, impressão, teste sintético, manifesto, relatório e hashes |
 
 ## Ordem recomendada
@@ -16,21 +17,24 @@ Suíte pública e reutilizável para criar, reparar, validar e entregar formulá
 1. roteador;
 2. arquiteto, quando houver criação ou reparo;
 3. auditor de compatibilidade;
-4. guardião de entrega.
+4. roteiro de validação em visualizador e aparelho, quando o teste manual for necessário;
+5. guardião de entrega.
 
 ## Regra central
 
 Nunca declarar compatibilidade universal. Informar exatamente o que foi testado e usar `NOT VERIFIED` para visualizadores ou aparelhos sem evidência.
 
+Uma falha do aplicativo, do sistema operacional ou do fluxo de salvamento não prova automaticamente que o PDF está defeituoso. O agente deve classificar a falha antes de alterar o arquivo.
+
 ## Instalação global no Codex
 
-Copiar as quatro pastas de skills para:
+Copiar as cinco pastas de skills para:
 
 `%USERPROFILE%\.agents\skills`
 
 ## Instalação por projeto
 
-Copiar as quatro pastas para:
+Copiar as cinco pastas para:
 
 `PASTA_DO_PROJETO\.agents\skills`
 
