@@ -10,6 +10,7 @@ $SkillNames = @(
     "renova-aura-pdf-forms-router",
     "renova-aura-fillable-pdf-architect",
     "renova-aura-pdf-compatibility-auditor",
+    "renova-aura-pdf-viewer-validation-runbook",
     "renova-aura-pdf-delivery-guardian"
 )
 
