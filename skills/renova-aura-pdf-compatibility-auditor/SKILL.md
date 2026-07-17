@@ -7,7 +7,7 @@ description: Audit fillable PDF structure, saving, reopening, printing and viewe
 
 ## Mission
 
-Prove what actually works, identify the structural or viewer failure and prevent unsupported compatibility claims.
+Prove what actually works, identify the structural, viewer, environment or workflow failure and prevent unsupported compatibility claims.
 
 ## Evidence hierarchy
 
@@ -86,6 +86,20 @@ A library render cannot mark a named viewer as `PASS`.
 
 Never claim universal cellphone compatibility.
 
+## Failure classification before repair
+
+Before changing the PDF, classify the failure:
+
+- `PDF_DEFECT`: malformed fields, appearances, flags, fonts, permissions or repeatable cross-viewer failure;
+- `VIEWER_DEFECT`: the named application fails independently of the target PDF;
+- `ENVIRONMENT_DEFECT`: OS, installation, security software, font subsystem or missing component prevents the test;
+- `WORKFLOW_ERROR`: the user filled a preview, failed to save a copy or reopened the wrong file;
+- `UNKNOWN`: evidence is insufficient.
+
+Do not repair the PDF merely because one viewer or automation component crashed.
+
+A PDF change is justified only when the failure reproduces in independent tools or structural evidence points to the PDF.
+
 ## Common diagnoses
 
 ### Value exists but is invisible
@@ -112,6 +126,22 @@ Inspect `/Opt` and use exact option values.
 
 Inspect form font, encoding, appearance generation, fallback font and renderer output.
 
+### Acrobat or Font Capture crashes
+
+When Acrobat fails with `Font Capture`, `0xc06d007e` or another component-load error:
+
+1. preserve the exact error and Acrobat version;
+2. confirm whether the target PDF still opens and renders;
+3. test a small known-good synthetic AcroForm in the same Acrobat installation;
+4. compare with Edge or another independent viewer;
+5. check whether programmatic fill/save/reopen and print/flatten already passed;
+6. classify as `VIEWER_DEFECT` or `ENVIRONMENT_DEFECT` when the failure is not specific to the target PDF;
+7. keep Acrobat fill/save as `NOT VERIFIED`;
+8. route manual retest to `renova-aura-pdf-viewer-validation-runbook`;
+9. do not change the PDF solely to work around the crash.
+
+Opening and rendering in Acrobat is not proof that filling and saving passed.
+
 ## Visual regression
 
 Render all pages before and after. Compare dimensions, count, clipping, overlap, black boxes, glyphs, field borders, page bounds, headers and footers. Pixel diff supports but does not replace structural validation.
@@ -122,4 +152,4 @@ Use synthetic data only. Do not upload sensitive forms to public validators. Do 
 
 ## Required output
 
-Produce structural inventory, field manifest, duplicate/orphan report, synthetic values, save/reopen results, render results, print/flatten results, viewer matrix, root causes, repair recommendation and final state: `VALIDATED`, `VALIDATED_WITH_LIMITATIONS`, `NOT VERIFIED` or `BLOCKED`.
+Produce structural inventory, field manifest, duplicate/orphan report, synthetic values, save/reopen results, render results, print/flatten results, viewer matrix, failure classification, root causes, repair recommendation and final state: `VALIDATED`, `VALIDATED_WITH_LIMITATIONS`, `NOT VERIFIED` or `BLOCKED`.
