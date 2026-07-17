@@ -2,6 +2,8 @@
 
 Biblioteca central, reutilizável e pública de workflows para agentes de engenharia, produto e artefatos documentais da Renova Aura.
 
+O usuário pode descrever a tarefa em português normal. `renova-aura-router` identifica a intenção e escolhe o menor conjunto seguro; não é necessário memorizar nomes ou comandos de ativação.
+
 ## Princípio de separação
 
 Esta biblioteca contém apenas processos genéricos. Ela **não** deve armazenar:
@@ -28,14 +30,17 @@ Cada repositório consumidor deve manter um adaptador local com suas fontes da v
 | `renova-aura-router` | Classificar a tarefa e selecionar o menor conjunto seguro de skills |
 | `renova-aura-project-bootstrap` | Iniciar ou recuperar um projeto sem apagar trabalho existente |
 | `renova-aura-product-spec` | Converter ideia em problema validado, MVP, PRD, SPEC e aceite |
+| `renova-aura-saas-architect` | Decidir arquitetura, limites, identidade e evolução do sistema |
 | `renova-aura-engineering-guardian` | Preservar arquitetura, contratos, baixo acoplamento e evidência |
 | `renova-aura-security-data-guardian` | Proteger autenticação, autorização, isolamento, LGPD, segredos e banco |
 | `renova-aura-ux-design-system` | Criar interfaces coerentes, responsivas, acessíveis e verificáveis |
+| `renova-aura-premium-frontend` | Aplicar identidade visual premium, contida, distinta e honesta |
 | `renova-aura-ai-integration-guardian` | Projetar IA com schemas, evals, custos, fallback e revisão humana |
 | `renova-aura-quality-release` | Planejar testes, CI, release, deploy, rollback e critérios de bloqueio |
 | `renova-aura-observability-incident` | Definir logs, métricas, alertas, resposta a incidentes e recuperação |
 | `renova-aura-prompt-source-designer` | Criar prompts-fonte claros, modulares, versionáveis e avaliáveis |
 | `renova-aura-project-handoff` | Atualizar documentação, estado real, próximos passos e continuidade |
+| `renova-aura-skill-library-curator` | Inventariar, deduplicar, validar, instalar e publicar a biblioteca |
 | `renova-aura-pdf-forms-router` | Classificar criação, reparo, validação e entrega de PDFs preenchíveis |
 | `renova-aura-fillable-pdf-architect` | Criar ou reconstruir AcroForm preservando o visual e a versão para impressão |
 | `renova-aura-pdf-compatibility-auditor` | Verificar estrutura, salvamento, reabertura, impressão e compatibilidade por visualizador |
@@ -72,6 +77,22 @@ Cada projeto deve possuir, preferencialmente no `AGENTS.md` ou em documento apon
 - ambientes válidos e operações proibidas;
 - ações que exigem aprovação humana;
 - formato de relatório final.
+
+## Instalação global segura
+
+Executar primeiro o dry-run:
+
+```powershell
+.\tools\install-renova-aura-skills-global.ps1 -Group All -Replace -WhatIf
+```
+
+Depois de revisar conflitos e backups planejados:
+
+```powershell
+.\tools\install-renova-aura-skills-global.ps1 -Group All -Replace
+```
+
+O conjunto `All` contém somente skills gerais aprovadas. Adaptadores e inventários privados não fazem parte do manifesto.
 
 ## Regras globais
 

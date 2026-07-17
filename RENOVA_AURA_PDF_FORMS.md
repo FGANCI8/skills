@@ -28,15 +28,22 @@ Uma falha do aplicativo, do sistema operacional ou do fluxo de salvamento não p
 
 ## Instalação global no Codex
 
-Copiar as cinco pastas de skills para:
+Fazer dry-run e depois instalar com backup e verificação de hash:
 
-`%USERPROFILE%\.agents\skills`
+```powershell
+.\tools\install-renova-aura-pdf-form-skills-global.ps1 -Replace -WhatIf
+.\tools\install-renova-aura-pdf-form-skills-global.ps1 -Replace
+```
+
+Destino: `%USERPROFILE%\.agents\skills`.
 
 ## Instalação por projeto
 
-Copiar as cinco pastas para:
+Usar somente quando a instalação local do projeto for realmente necessária:
 
-`PASTA_DO_PROJETO\.agents\skills`
+```powershell
+.\tools\install-renova-aura-pdf-form-skills-project.ps1 -ProjectPath 'PASTA_DO_PROJETO' -Replace -WhatIf
+```
 
 ## Fronteira público/privado
 

@@ -1,6 +1,6 @@
 ---
 name: renova-aura-ux-design-system
-description: Design, implement, or review Renova Aura product interfaces and design systems. Use for new screens, Stitch/Figma/design imports, responsive flows, dashboards, forms, public pages, accessibility, visual consistency, and screenshot-based UI validation.
+description: Design, implement, or review Renova Aura product journeys, information hierarchy, interface states, responsive behavior, accessibility, and reusable design-system semantics. Use for new screens, flows, dashboards, forms, public pages, navigation, loading/empty/error behavior, or screenshot-based UX validation. Use renova-aura-premium-frontend when the dominant request is visual identity or premium brand expression.
 ---
 
 # Renova Aura UX and Design System
@@ -8,6 +8,8 @@ description: Design, implement, or review Renova Aura product interfaces and des
 ## Mission
 
 Create interfaces that are visually coherent, operationally clear and technically maintainable. Preserve user goals and critical actions before adding decorative complexity.
+
+Own journey, comprehension, state semantics, accessibility, and interaction behavior. Let `renova-aura-premium-frontend` own the Renova Aura visual signature, token expression, and premium composition when both skills apply.
 
 ## Evidence first
 

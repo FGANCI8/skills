@@ -11,6 +11,8 @@ Create prompts that are clear enough to execute, narrow enough to route correctl
 
 A good prompt is an operational contract, not decorative prose.
 
+Users should be able to describe the task in normal Portuguese. Prefer trigger-rich descriptions and a canonical router over requiring memorized aliases or activation commands. Use `renova-aura-skill-library-curator` for inventory, placement, deduplication, installation, and public publication decisions.
+
 ## Before creating a prompt
 
 1. Search the project and central library for overlapping prompts or skills.

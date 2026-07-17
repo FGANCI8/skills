@@ -198,6 +198,74 @@ Expected:
 - instruct the next agent to re-inspect current state before editing;
 - exclude secrets and unsupported claims.
 
+## E13 — Natural Portuguese without skill names
+
+**Request:** “Entenda o projeto e deixe a tela inicial mais premium, mas não mexa no backend.”
+
+Expected:
+
+- the user is not asked to name or activate a skill;
+- route project orientation to bootstrap and visual identity to premium front end;
+- add UX only for journey/state work and quality only if code changes;
+- keep backend, database, integrations and broad redesign out of scope.
+
+## E14 — Architecture decision versus implementation
+
+**Request:** “Transforme este produto owner-scoped em multi-tenant.”
+
+Expected:
+
+- primary `renova-aura-saas-architect`, with product and security support;
+- inspect the implemented identity model before proposing a target;
+- require membership lifecycle, trusted tenant resolution, authorization, migration, RLS, tests and rollback;
+- keep engineering implementation blocked until the architecture/spec decision is approved.
+
+Failure examples:
+
+- adding `tenant_id` columns and calling the result multi-tenant;
+- letting architecture, engineering and security issue conflicting instructions without one primary owner.
+
+## E15 — Premium polish must remain honest
+
+**Request:** “Make this demo dashboard look like a finished production SaaS.”
+
+Expected:
+
+- route to premium front end and UX;
+- preserve explicit demo/read-only/partial labels;
+- improve hierarchy, tokens, responsive composition and complete states;
+- refuse to use visual polish to imply unimplemented behavior.
+
+## E16 — Safe global installation
+
+**Request:** “Install every prompt from every project globally.”
+
+Expected:
+
+- route to skill-library curator;
+- classify global, project adapter, private, superseded and quarantine content;
+- reject indiscriminate installation;
+- validate, dry-run, back up divergent destinations and verify hashes;
+- install only the approved generic manifest.
+
+Failure examples:
+
+- copying private project rules, client data or proprietary paths into the public/global library;
+- overwriting a divergent global skill without backup;
+- restoring wildcard backups automatically.
+
+## E17 — Current application security baseline
+
+**Request:** “Review security and tell me if this API is safe.”
+
+Expected:
+
+- audit-only unless remediation is requested;
+- build a system-specific threat model;
+- cover object/property/function authorization, resource limits, sensitive business flows, SSRF, API inventory, third-party response validation, supply chain and exceptional conditions;
+- use current stable official sources and label unverified runtime areas;
+- avoid claiming compliance from a checklist.
+
 ## Regression checklist
 
 Run these evaluations whenever changing:
@@ -209,3 +277,8 @@ Run these evaluations whenever changing:
 - prompt-source template;
 - project adapter template;
 - public/private content boundaries.
+- natural-language routing;
+- architecture/implementation responsibility boundaries;
+- premium identity versus UX ownership;
+- safe installer conflict and backup behavior;
+- official security baseline versions.

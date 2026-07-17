@@ -22,10 +22,14 @@ Many skills in this repo are open source (Apache 2.0). We've also included the d
 The draft Renova Aura branch adds reusable project skills and a dedicated PDF form suite. See:
 
 - `RENOVA_AURA_SKILLS.md`
+- `RENOVA_AURA_SKILLS_INVENTORY.md`
 - `RENOVA_AURA_PDF_FORMS.md`
 - `RENOVA_AURA_PDF_FORMS_EVALS.md`
+- `prompts/README.md`
 
 The PDF suite includes creation, structural auditing, viewer/device validation and delivery packaging. It explicitly separates PDF defects from viewer or environment failures.
+
+The Renova Aura router accepts normal Portuguese task descriptions. The curated pack also includes SaaS architecture, application security, premium front-end identity, prompt design, and safe library installation/publication workflows.
 
 ## Disclaimer
 

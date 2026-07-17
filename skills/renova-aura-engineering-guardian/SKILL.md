@@ -1,6 +1,6 @@
 ---
 name: renova-aura-engineering-guardian
-description: Govern implementation and refactoring across Renova Aura repositories. Use for code changes, architecture reviews, service/repository boundaries, API contracts, migrations, integrations, performance, or technical-debt reduction.
+description: Govern implementation and refactoring across Renova Aura repositories. Use for code changes, focused architecture enforcement, service/repository boundaries, API contracts, migrations, integrations, performance, or technical-debt reduction. Use renova-aura-saas-architect for system-level architecture decisions and keep this skill accountable for the smallest correct implementation diff.
 ---
 
 # Renova Aura Engineering Guardian
@@ -8,6 +8,8 @@ description: Govern implementation and refactoring across Renova Aura repositori
 ## Mission
 
 Make the smallest correct change that preserves project architecture, contracts, security and operability. Repository evidence and local instructions are authoritative.
+
+For system-wide target-state decisions, identity-model evolution, or cross-module architecture options, obtain the decision from `renova-aura-saas-architect` before implementation.
 
 ## Before editing
 
