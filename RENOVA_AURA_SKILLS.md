@@ -1,6 +1,6 @@
 # Renova Aura Agent Skills
 
-Biblioteca central, reutilizável e pública de workflows para agentes de engenharia e produto da Renova Aura.
+Biblioteca central, reutilizável e pública de workflows para agentes de engenharia, produto e artefatos documentais da Renova Aura.
 
 ## Princípio de separação
 
@@ -36,6 +36,26 @@ Cada repositório consumidor deve manter um adaptador local com suas fontes da v
 | `renova-aura-observability-incident` | Definir logs, métricas, alertas, resposta a incidentes e recuperação |
 | `renova-aura-prompt-source-designer` | Criar prompts-fonte claros, modulares, versionáveis e avaliáveis |
 | `renova-aura-project-handoff` | Atualizar documentação, estado real, próximos passos e continuidade |
+| `renova-aura-pdf-forms-router` | Classificar criação, reparo, validação e entrega de PDFs preenchíveis |
+| `renova-aura-fillable-pdf-architect` | Criar ou reconstruir AcroForm preservando o visual e a versão para impressão |
+| `renova-aura-pdf-compatibility-auditor` | Verificar estrutura, salvamento, reabertura, impressão e compatibilidade por visualizador |
+| `renova-aura-pdf-delivery-guardian` | Empacotar PDF interativo, impressão, teste sintético, manifesto, relatório e hashes |
+
+## Suíte de PDFs preenchíveis
+
+Use `renova-aura-pdf-forms-router` como entrada. A suíte obriga:
+
+- original imutável;
+- identidade visual preservada;
+- AcroForm real, sem XFA ou JavaScript embutido;
+- aparências geradas, sem depender somente de `/NeedAppearances`;
+- teste sintético de preenchimento, salvamento e reabertura;
+- versão separada para impressão;
+- compatibilidade declarada apenas para visualizadores realmente testados;
+- manifesto de campos, relatório de validação e hashes;
+- dados sintéticos em testes e separação entre workflow público e decisões privadas.
+
+Consulte também `RENOVA_AURA_PDF_FORMS.md` e `RENOVA_AURA_PDF_FORMS_EVALS.md`.
 
 ## Adaptador obrigatório por projeto
 
