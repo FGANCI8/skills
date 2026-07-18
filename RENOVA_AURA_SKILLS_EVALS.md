@@ -282,3 +282,7 @@ Run these evaluations whenever changing:
 - premium identity versus UX ownership;
 - safe installer conflict and backup behavior;
 - official security baseline versions.
+
+## Agent Operating System regression
+
+As avaliações A01–A30 em `RENOVA_AURA_AGENT_OS_EVALS.md` são obrigatórias quando mudarem roteador, orquestrador, agentes, ownership, loops, gates, handoff, referência Python ou manifestos de instalação. Elas cobrem equipe mínima, independência autor/avaliador, conflitos de arquivo, stop reasons, prompt injection, privacidade, release sem merge, Python mock e provider real desabilitado.

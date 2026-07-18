@@ -4,6 +4,8 @@ Biblioteca central, reutilizável e pública de workflows para agentes de engenh
 
 O usuário pode descrever a tarefa em português normal. `renova-aura-router` identifica a intenção e escolhe o menor conjunto seguro; não é necessário memorizar nomes ou comandos de ativação.
 
+Para trabalho médio, complexo, iterativo ou longo, `renova-aura-agent-orchestrator` compõe a menor equipe do `RENOVA_AURA_AGENT_OS.md`. Tarefas simples continuam com um especialista.
+
 ## Princípio de separação
 
 Esta biblioteca contém apenas processos genéricos. Ela **não** deve armazenar:
@@ -28,10 +30,16 @@ Cada repositório consumidor deve manter um adaptador local com suas fontes da v
 | Skill | Uso principal |
 |---|---|
 | `renova-aura-router` | Classificar a tarefa e selecionar o menor conjunto seguro de skills |
+| `renova-aura-agent-orchestrator` | Coordenar equipe, dependências, ownership, loops e handoffs limitados |
 | `renova-aura-project-bootstrap` | Iniciar ou recuperar um projeto sem apagar trabalho existente |
 | `renova-aura-product-spec` | Converter ideia em problema validado, MVP, PRD, SPEC e aceite |
 | `renova-aura-saas-architect` | Decidir arquitetura, limites, identidade e evolução do sistema |
 | `renova-aura-engineering-guardian` | Preservar arquitetura, contratos, baixo acoplamento e evidência |
+| `renova-aura-backend-api-engineer` | Projetar serviços, APIs, webhooks, filas, validação e idempotência |
+| `renova-aura-database-reliability` | Proteger schema, migrations, constraints, RLS, consultas e rollback |
+| `renova-aura-python-engineering` | Criar Python tipado, seguro, testável e empacotado |
+| `renova-aura-performance-engineering` | Medir e melhorar desempenho com baseline comparável |
+| `renova-aura-independent-reviewer` | Revisar diffs e evidências sem autoaprovação |
 | `renova-aura-security-data-guardian` | Proteger autenticação, autorização, isolamento, LGPD, segredos e banco |
 | `renova-aura-ux-design-system` | Criar interfaces coerentes, responsivas, acessíveis e verificáveis |
 | `renova-aura-premium-frontend` | Aplicar identidade visual premium, contida, distinta e honesta |
@@ -44,7 +52,21 @@ Cada repositório consumidor deve manter um adaptador local com suas fontes da v
 | `renova-aura-pdf-forms-router` | Classificar criação, reparo, validação e entrega de PDFs preenchíveis |
 | `renova-aura-fillable-pdf-architect` | Criar ou reconstruir AcroForm preservando o visual e a versão para impressão |
 | `renova-aura-pdf-compatibility-auditor` | Verificar estrutura, salvamento, reabertura, impressão e compatibilidade por visualizador |
+| `renova-aura-pdf-viewer-validation-runbook` | Executar validação manual e rastreável em visualizadores e dispositivos declarados |
 | `renova-aura-pdf-delivery-guardian` | Empacotar PDF interativo, impressão, teste sintético, manifesto, relatório e hashes |
+
+## Agent Operating System V1
+
+- 18 agentes declarativos em `agents/definitions/`;
+- 9 modos de orquestração;
+- 7 protocolos de loop, com máximo padrão de 3 rodadas;
+- 9 motivos terminais padronizados;
+- um integrador final e avaliadores independentes;
+- ownership exclusivo por arquivo;
+- templates persistentes para handoff, ledger, decisões, arquivos e avaliações;
+- referência Python mock, sem chave, rede ou side effects.
+
+Consulte `RENOVA_AURA_AGENT_OS.md`, `agents/README.md` e `RENOVA_AURA_AGENT_OS_EVALS.md`.
 
 ## Suíte de PDFs preenchíveis
 
@@ -93,6 +115,8 @@ Depois de revisar conflitos e backups planejados:
 ```
 
 O conjunto `All` contém somente skills gerais aprovadas. Adaptadores e inventários privados não fazem parte do manifesto.
+
+O grupo `AgentOs` instala somente as seis skills de método do sistema multiagente. Definições de agentes, prompts, documentos e a referência Python nunca são instalados como skills globais.
 
 ## Regras globais
 

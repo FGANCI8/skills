@@ -23,6 +23,8 @@ The draft Renova Aura branch adds reusable project skills and a dedicated PDF fo
 
 - `RENOVA_AURA_SKILLS.md`
 - `RENOVA_AURA_SKILLS_INVENTORY.md`
+- `RENOVA_AURA_AGENT_OS.md`
+- `RENOVA_AURA_AGENT_OS_EVALS.md`
 - `RENOVA_AURA_PDF_FORMS.md`
 - `RENOVA_AURA_PDF_FORMS_EVALS.md`
 - `prompts/README.md`
@@ -30,6 +32,8 @@ The draft Renova Aura branch adds reusable project skills and a dedicated PDF fo
 The PDF suite includes creation, structural auditing, viewer/device validation and delivery packaging. It explicitly separates PDF defects from viewer or environment failures.
 
 The Renova Aura router accepts normal Portuguese task descriptions. The curated pack also includes SaaS architecture, application security, premium front-end identity, prompt design, and safe library installation/publication workflows.
+
+The Agent Operating System adds 18 declarative roles, bounded orchestration, independent evaluation, exclusive file ownership, durable handoffs, 20 reusable Portuguese prompts, and a mock-only Python reference. Simple work still uses one specialist; no agent definition grants merge, deployment, production, real-provider, payment, messaging, or database authority.
 
 ## Disclaimer
 

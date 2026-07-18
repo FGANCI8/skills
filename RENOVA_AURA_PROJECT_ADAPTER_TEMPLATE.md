@@ -172,6 +172,18 @@ If a referenced skill is missing, mark `MISSING_REFERENCE`; do not invent execut
 
 ## 12. Final report
 
+Before parallel or long-running work, declare:
+
+- accountable integrator;
+- exclusive write owner for each relative file;
+- dependency order for schema, contracts and consumers;
+- author and independent evaluator;
+- maximum rounds, timeout and budget;
+- task ledger, decisions, evaluation log and handoff path;
+- exact human approval gates.
+
+Never allow two agents to write the same file or depend on conversation memory instead of current repository evidence.
+
 ### EXECUTAR AGORA
 
 - objective and authorized scope;

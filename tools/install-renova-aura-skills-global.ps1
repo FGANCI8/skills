@@ -1,6 +1,6 @@
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "High")]
 param(
-    [ValidateSet("Core", "Pdf", "All")]
+    [ValidateSet("Core", "AgentOs", "Pdf", "All")]
     [string[]]$Group = @("Core"),
 
     [string]$Destination = (Join-Path $env:USERPROFILE ".agents\skills"),
@@ -28,6 +28,15 @@ $CoreSkills = @(
     "renova-aura-prompt-source-designer",
     "renova-aura-project-handoff",
     "renova-aura-skill-library-curator"
+)
+
+$AgentOsSkills = @(
+    "renova-aura-agent-orchestrator",
+    "renova-aura-backend-api-engineer",
+    "renova-aura-database-reliability",
+    "renova-aura-python-engineering",
+    "renova-aura-performance-engineering",
+    "renova-aura-independent-reviewer"
 )
 
 $PdfSkills = @(
@@ -80,14 +89,16 @@ function Test-SkillSource {
     if ($content -notmatch "(?m)^name:\s*$([regex]::Escape($Name))\s*$") {
         throw "Nome declarado nao corresponde a pasta: $Name"
     }
-    if ($content -match "\[TODO") {
+    $todoMarker = '\[' + 'TO' + 'DO'
+    if ($content -match $todoMarker) {
         throw "Placeholder TODO encontrado: $skillFile"
     }
 }
 
-$selectedGroups = if ($Group -contains "All") { @("Core", "Pdf") } else { @($Group | Select-Object -Unique) }
+$selectedGroups = if ($Group -contains "All") { @("Core", "AgentOs", "Pdf") } else { @($Group | Select-Object -Unique) }
 $SkillNames = @()
 if ($selectedGroups -contains "Core") { $SkillNames += $CoreSkills }
+if ($selectedGroups -contains "AgentOs") { $SkillNames += $AgentOsSkills }
 if ($selectedGroups -contains "Pdf") { $SkillNames += $PdfSkills }
 $SkillNames = @($SkillNames | Select-Object -Unique)
 
