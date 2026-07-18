@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Python Engineering"
+  short_description: "Cria Python tipado, seguro, testável e empacotado"
+  default_prompt: "Use $renova-aura-python-engineering para criar ou revisar este projeto Python com qualidade."

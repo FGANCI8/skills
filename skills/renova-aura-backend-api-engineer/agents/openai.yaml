@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Backend and API Engineer"
+  short_description: "Projeta APIs e serviços robustos e testáveis"
+  default_prompt: "Use $renova-aura-backend-api-engineer para implementar este backend ou contrato de API com segurança."

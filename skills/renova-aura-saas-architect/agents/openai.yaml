@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura SaaS Architect"
+  short_description: "Decide arquitetura SaaS com evidência e segurança"
+  default_prompt: "Use $renova-aura-saas-architect para auditar esta arquitetura e propor a menor evolução segura."

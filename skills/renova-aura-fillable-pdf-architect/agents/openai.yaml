@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Fillable PDF Architect"
+  short_description: "Cria AcroForms fiéis, editáveis e imprimíveis"
+  default_prompt: "Use $renova-aura-fillable-pdf-architect para criar ou reparar este PDF preenchível preservando o original."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Observability and Incident"
+  short_description: "Investiga sinais, incidentes, retries e recuperação"
+  default_prompt: "Use $renova-aura-observability-incident para investigar este incidente e definir contenção e recuperação seguras."

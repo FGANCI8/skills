@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Independent Reviewer"
+  short_description: "Revisa diffs e evidências sem autoaprovação"
+  default_prompt: "Use $renova-aura-independent-reviewer para revisar esta entrega de forma independente e objetiva."

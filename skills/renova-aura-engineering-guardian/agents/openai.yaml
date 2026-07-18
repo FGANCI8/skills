@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Engineering Guardian"
+  short_description: "Implementa o menor diff correto e verificável"
+  default_prompt: "Use $renova-aura-engineering-guardian para implementar esta mudança preservando arquitetura e contratos."
