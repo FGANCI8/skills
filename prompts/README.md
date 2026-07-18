@@ -1,14 +1,49 @@
 # Renova Aura reusable prompts
 
-Use these prompts as plain-language entry points. The user does not need to know a skill name; the master router selects the smallest safe workflow after inspecting the repository.
+Use estes prompts como entradas em português normal. O usuário não precisa saber nomes de skills ou agentes: o roteador inspeciona o projeto, escolhe a menor equipe, define gates e exige relatório com evidências.
 
-| Need | Prompt |
+## Construção e manutenção
+
+| Necessidade | Prompt |
 |---|---|
-| understand a repository without changes | `auditar-projeto.md` |
-| plan and implement a bounded change | `planejar-e-implementar.md` |
-| review application/SaaS security | `revisar-seguranca-saas.md` |
-| create premium, honest interface polish | `polir-frontend-premium.md` |
-| resume interrupted work | `continuar-trabalho.md` |
-| inventory and maintain a skill library | `organizar-biblioteca.md` |
+| mudança pequena e delimitada | `planejar-e-implementar.md` |
+| funcionalidade completa | `construir-funcionalidade-completa.md` |
+| backend/API | `criar-backend.md` |
+| projeto Python | `criar-projeto-python.md` |
+| corrigir bug | `corrigir-bug.md` |
+| refatorar | `refatorar.md` |
+| desempenho | `melhorar-desempenho.md` |
 
-Project-local `AGENTS.md`, product decisions, code, migrations, tests, and configuration remain the sources of truth. Replace bracketed placeholders with public-safe task context and never paste credentials, client data, or private production payloads.
+## Produto, interface e dados
+
+| Necessidade | Prompt |
+|---|---|
+| front-end premium | `polir-frontend-premium.md` |
+| banco/schema/migration em auditoria | `revisar-banco.md` |
+| segurança de aplicação/SaaS | `revisar-seguranca-saas.md` |
+
+## IA, operações e equipe
+
+| Necessidade | Prompt |
+|---|---|
+| automação segura | `criar-automacao.md` |
+| agente de IA em mock | `criar-agente-ia.md` |
+| equipe multiagente | `formar-equipe-multiagente.md` |
+| loop limitado de qualidade | `executar-loop-qualidade.md` |
+| revisão independente | `revisao-independente.md` |
+| preparar release sem merge/deploy | `preparar-release.md` |
+| investigar incidente | `investigar-incidente.md` |
+| continuar trabalho longo | `continuar-trabalho.md` |
+
+## Biblioteca e orientação
+
+| Necessidade | Prompt |
+|---|---|
+| entender repositório sem alterar | `auditar-projeto.md` |
+| organizar skills e prompts | `organizar-biblioteca.md` |
+
+## Regras comuns
+
+Instruções locais, decisões, código, migrations, testes e configuração permanecem fontes da verdade. Substitua placeholders apenas por contexto seguro. Nunca cole credenciais, dados pessoais/clientes, payloads privados ou caminhos de produção.
+
+Prompts não concedem autorização para merge, deploy, banco real, migration, pagamento, mensagem, provider real, exclusão ou mudança crítica de segurança. Cada execução deve reportar rota, ownership, arquivos, resultados literais, gaps, gates, risco e rollback.
