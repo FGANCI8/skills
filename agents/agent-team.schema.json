@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://renovaaura.example/schemas/agent-team.schema.json",
+  "title": "Renova Aura Agent Operating System",
+  "oneOf": [
+    { "$ref": "#/$defs/team" },
+    { "$ref": "#/$defs/agent" }
+  ],
+  "$defs": {
+    "nonEmptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 2 }
+    },
+    "agentId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_rounds", "max_turns", "timeout_minutes", "budget_units", "max_parallel_workers", "max_tool_calls"],
+      "properties": {
+        "max_rounds": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "max_turns": { "type": "integer", "minimum": 1, "maximum": 20, "description": "Maximum turns per delegated agent or provider invocation; not a whole-team step limit." },
+        "timeout_minutes": { "type": "integer", "minimum": 1, "maximum": 480 },
+        "budget_units": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "max_parallel_workers": { "type": "integer", "minimum": 1, "maximum": 8 },
+        "max_tool_calls": { "type": "integer", "minimum": 1, "maximum": 1000 }
+      }
+    },
+    "agentRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "file"],
+      "properties": {
+        "id": { "$ref": "#/$defs/agentId" },
+        "file": { "type": "string", "pattern": "^definitions/[a-z0-9-]+\\.yaml$" }
+      }
+    },
+    "mode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "purpose", "max_rounds"],
+      "properties": {
+        "id": {
+          "enum": [
+            "SINGLE_SPECIALIST",
+            "SPECIALIST_PLUS_REVIEWER",
+            "SEQUENTIAL_PIPELINE",
+            "ORCHESTRATOR_WORKERS",
+            "CONTROLLED_PARALLEL",
+            "EVALUATOR_OPTIMIZER_LOOP",
+            "LONG_RUNNING_INCREMENTAL",
+            "INCIDENT_MODE",
+            "RELEASE_MODE"
+          ]
+        },
+        "purpose": { "type": "string", "minLength": 5 },
+        "max_rounds": { "type": "integer", "minimum": 1, "maximum": 5 }
+      }
+    },
+    "team": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_version", "team_id", "name", "language", "accountable_integrator", "default_limits", "stop_reasons", "orchestration_modes", "critical_gates", "agents"],
+      "properties": {
+        "kind": { "const": "team" },
+        "schema_version": { "const": "1.0.0" },
+        "team_id": { "$ref": "#/$defs/agentId" },
+        "name": { "type": "string", "minLength": 3 },
+        "language": { "const": "pt-BR" },
+        "accountable_integrator": { "$ref": "#/$defs/agentId" },
+        "default_limits": { "$ref": "#/$defs/limits" },
+        "stop_reasons": {
+          "type": "array",
+          "minItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["PASS", "MAX_ROUNDS", "TIMEOUT", "BUDGET_LIMIT", "HUMAN_APPROVAL_REQUIRED", "SECURITY_BLOCK", "ENVIRONMENT_BLOCK", "MISSING_EVIDENCE", "SCOPE_CHANGE"]
+          }
+        },
+        "orchestration_modes": {
+          "type": "array",
+          "minItems": 9,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/mode" }
+        },
+        "critical_gates": { "$ref": "#/$defs/nonEmptyStrings" },
+        "agents": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/agentRef" }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["can_write", "can_integrate", "can_evaluate", "must_be_independent_from_author"],
+      "properties": {
+        "can_write": { "type": "boolean", "description": "May mutate preassigned repository files; structured chat output is not a repository write." },
+        "can_integrate": { "type": "boolean" },
+        "can_evaluate": { "type": "boolean" },
+        "must_be_independent_from_author": { "type": "boolean" }
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_version", "id", "name", "mission", "when_to_use", "when_not_to_use", "inputs", "structured_outputs", "skills", "allowed_tools", "read_scope", "write_scope", "forbidden_actions", "risk_level", "dependencies", "completion_criteria", "handoff_in", "handoff_out", "human_approval", "max_rounds", "accountable_integrator", "capabilities"],
+      "properties": {
+        "kind": { "const": "agent" },
+        "schema_version": { "const": "1.0.0" },
+        "id": { "$ref": "#/$defs/agentId" },
+        "name": { "type": "string", "minLength": 3 },
+        "mission": { "type": "string", "minLength": 10 },
+        "when_to_use": { "$ref": "#/$defs/nonEmptyStrings" },
+        "when_not_to_use": { "$ref": "#/$defs/nonEmptyStrings" },
+        "inputs": { "$ref": "#/$defs/nonEmptyStrings" },
+        "structured_outputs": { "$ref": "#/$defs/nonEmptyStrings" },
+        "skills": { "$ref": "#/$defs/nonEmptyStrings" },
+        "allowed_tools": { "$ref": "#/$defs/nonEmptyStrings" },
+        "read_scope": { "$ref": "#/$defs/nonEmptyStrings" },
+        "write_scope": { "$ref": "#/$defs/nonEmptyStrings" },
+        "forbidden_actions": { "$ref": "#/$defs/nonEmptyStrings" },
+        "risk_level": { "enum": ["low", "medium", "high", "critical"] },
+        "dependencies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/agentId" }
+        },
+        "completion_criteria": { "$ref": "#/$defs/nonEmptyStrings" },
+        "handoff_in": { "$ref": "#/$defs/nonEmptyStrings" },
+        "handoff_out": { "$ref": "#/$defs/nonEmptyStrings" },
+        "human_approval": { "$ref": "#/$defs/nonEmptyStrings" },
+        "max_rounds": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "accountable_integrator": { "type": "boolean" },
+        "capabilities": { "$ref": "#/$defs/capabilities" }
+      }
+    }
+  }
+}
