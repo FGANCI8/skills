@@ -1,0 +1,95 @@
+kind: team
+schema_version: "1.0.0"
+team_id: renova-aura-agent-os
+name: "Renova Aura Agent Operating System V1"
+language: pt-BR
+accountable_integrator: technical-director-orchestrator
+default_limits:
+  max_rounds: 3
+  max_turns: 3 # por execução delegada de um agente/provider, não para a equipe inteira
+  timeout_minutes: 60
+  budget_units: 100
+  max_parallel_workers: 3
+  max_tool_calls: 50
+stop_reasons:
+  - PASS
+  - MAX_ROUNDS
+  - TIMEOUT
+  - BUDGET_LIMIT
+  - HUMAN_APPROVAL_REQUIRED
+  - SECURITY_BLOCK
+  - ENVIRONMENT_BLOCK
+  - MISSING_EVIDENCE
+  - SCOPE_CHANGE
+orchestration_modes:
+  - id: SINGLE_SPECIALIST
+    purpose: "Uma tarefa pequena e bem delimitada para um especialista."
+    max_rounds: 1
+  - id: SPECIALIST_PLUS_REVIEWER
+    purpose: "Uma mudança média com revisão independente."
+    max_rounds: 2
+  - id: SEQUENTIAL_PIPELINE
+    purpose: "Etapas dependentes executadas em ordem explícita."
+    max_rounds: 3
+  - id: ORCHESTRATOR_WORKERS
+    purpose: "Subtarefas independentes retornam ao integrador."
+    max_rounds: 2
+  - id: CONTROLLED_PARALLEL
+    purpose: "Análises ou arquivos distintos com propriedade exclusiva."
+    max_rounds: 2
+  - id: EVALUATOR_OPTIMIZER_LOOP
+    purpose: "Autor corrige críticas objetivas de avaliador independente."
+    max_rounds: 3
+  - id: LONG_RUNNING_INCREMENTAL
+    purpose: "Blocos verificáveis com handoff persistente entre sessões."
+    max_rounds: 3
+  - id: INCIDENT_MODE
+    purpose: "Contenção, segurança e recuperação precedem mudanças não essenciais."
+    max_rounds: 3
+  - id: RELEASE_MODE
+    purpose: "Qualidade, segurança, plataforma e rollback aplicam gates."
+    max_rounds: 2
+critical_gates:
+  - "merge, deploy ou produção"
+  - "migration irreversível, banco real ou exclusão"
+  - "pagamento, cobrança ou envio real"
+  - "Meta, WhatsApp, OpenAI ou outro provedor com credencial real"
+  - "autenticação, autorização, RLS, identidade ou tenant"
+  - "dados pessoais, clínicos, jurídicos ou decisão de alto impacto"
+agents:
+  - id: technical-director-orchestrator
+    file: definitions/technical-director-orchestrator.yaml
+  - id: product-requirements-analyst
+    file: definitions/product-requirements-analyst.yaml
+  - id: saas-architect
+    file: definitions/saas-architect.yaml
+  - id: premium-frontend-specialist
+    file: definitions/premium-frontend-specialist.yaml
+  - id: ux-accessibility-specialist
+    file: definitions/ux-accessibility-specialist.yaml
+  - id: backend-api-engineer
+    file: definitions/backend-api-engineer.yaml
+  - id: database-data-engineer
+    file: definitions/database-data-engineer.yaml
+  - id: appsec-specialist
+    file: definitions/appsec-specialist.yaml
+  - id: quality-test-engineer
+    file: definitions/quality-test-engineer.yaml
+  - id: independent-technical-reviewer
+    file: definitions/independent-technical-reviewer.yaml
+  - id: independent-visual-evaluator
+    file: definitions/independent-visual-evaluator.yaml
+  - id: performance-engineer
+    file: definitions/performance-engineer.yaml
+  - id: platform-release-engineer
+    file: definitions/platform-release-engineer.yaml
+  - id: observability-incident-engineer
+    file: definitions/observability-incident-engineer.yaml
+  - id: ai-automation-specialist
+    file: definitions/ai-automation-specialist.yaml
+  - id: python-engineer
+    file: definitions/python-engineer.yaml
+  - id: documentation-handoff-specialist
+    file: definitions/documentation-handoff-specialist.yaml
+  - id: skills-agents-prompts-curator
+    file: definitions/skills-agents-prompts-curator.yaml

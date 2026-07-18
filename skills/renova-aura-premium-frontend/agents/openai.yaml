@@ -1,0 +1,4 @@
+﻿interface:
+  display_name: "Renova Aura Premium Frontend"
+  short_description: "Cria interfaces premium, claras e acessíveis"
+  default_prompt: "Use $renova-aura-premium-frontend para transformar esta interface em uma experiência premium e verificável."

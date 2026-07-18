@@ -1,0 +1,29 @@
+schema_version: "1.0.0"
+objective: "synthetic objective"
+status: PLANNED
+mode: SINGLE_SPECIALIST
+accountable_owner: technical-director-orchestrator
+acceptance_criteria:
+  - "the bounded synthetic objective is satisfied with evidence"
+current_block: "block-001"
+limits:
+  max_rounds: 3
+  max_turns: 3 # por execução delegada de agente/provider
+  timeout_minutes: 60
+  budget_units: 100
+  max_tool_calls: 50
+allowed_tools:
+  - "repository read within the authorized workspace"
+file_ownership:
+  - path: "docs/synthetic-artifact.md"
+    owner: technical-director-orchestrator
+    access: write
+evaluator: independent-technical-reviewer
+human_gates: []
+completed: []
+pending:
+  - "define the next bounded action"
+blocked: []
+artifacts: []
+stop_reason: null
+next_action: "inspect the authorized workspace"

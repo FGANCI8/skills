@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Security and Data Guardian"
+  short_description: "Audita segurança, isolamento e dados sensíveis"
+  default_prompt: "Use $renova-aura-security-data-guardian para auditar esta superfície e propor a correção mínima segura."

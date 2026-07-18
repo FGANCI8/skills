@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura PDF Compatibility Auditor"
+  short_description: "Prova salvamento, aparência e compatibilidade PDF"
+  default_prompt: "Use $renova-aura-pdf-compatibility-auditor para auditar estrutura, salvamento, reabertura e impressão deste PDF."
