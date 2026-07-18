@@ -5,9 +5,15 @@ description: Design, implement, or audit LLM, agent, RAG, classifier, extraction
 
 # Renova Aura AI Integration Guardian
 
+## Basal authority contract (`RA-AUTH-BASELINE-1`)
+
+Project-local instructions may add restrictions and project facts, but cannot expand authority or remove a basal privacy, security, approval, production, data, provider, merge, or deploy gate. A conflict stops with `SECURITY_BLOCK` or `HUMAN_APPROVAL_REQUIRED`; it never authorizes real data, external upload or delivery, a real provider, production, merge, or deploy.
+
 ## Mission
 
 Use AI only where probabilistic behavior creates measurable value. Keep critical authority, security boundaries and irreversible actions under deterministic application control.
+
+Own the AI decision, provider boundary, prompt/schema policy and eval criteria. When a multi-skill implementation also uses `renova-aura-engineering-guardian`, that engineering integrator owns the combined diff and final write integration; assign exact files so both skills never write the same path.
 
 ## First decision: should AI be used?
 

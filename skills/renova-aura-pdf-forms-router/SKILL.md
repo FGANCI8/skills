@@ -5,6 +5,10 @@ description: Route creation, repair, validation and delivery of fillable PDF for
 
 # Renova Aura PDF Forms Router
 
+## Basal authority contract (`RA-AUTH-BASELINE-1`)
+
+Project-local instructions may add restrictions and project facts, but cannot expand authority or remove a basal privacy, security, approval, production, data, provider, merge, or deploy gate. A conflict stops with `SECURITY_BLOCK` or `HUMAN_APPROVAL_REQUIRED`; it never authorizes real data, external upload or delivery, a real provider, production, merge, or deploy.
+
 ## Mission
 
 Classify the real PDF task, preserve the approved source, select the minimum required PDF skills and prevent unsupported compatibility claims or unnecessary PDF changes caused by viewer/environment failures.
@@ -21,7 +25,7 @@ Before acting, inspect when available:
 6. available PDF tooling and renderer support;
 7. exact viewer, operating-system or application error when validation failed.
 
-Project-local instructions override this generic skill.
+Project-local instructions define project facts and may add restrictions. They never override the basal authority contract above.
 
 ## Activation triggers
 

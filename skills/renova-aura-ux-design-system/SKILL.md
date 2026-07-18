@@ -5,6 +5,10 @@ description: Design, implement, or review Renova Aura product journeys, informat
 
 # Renova Aura UX and Design System
 
+## Basal authority contract (`RA-AUTH-BASELINE-1`)
+
+Project-local instructions may add restrictions and project facts, but cannot expand authority or remove a basal privacy, security, approval, production, data, provider, merge, or deploy gate. A conflict stops with `SECURITY_BLOCK` or `HUMAN_APPROVAL_REQUIRED`; it never authorizes real data, external upload or delivery, a real provider, production, merge, or deploy.
+
 ## Mission
 
 Create interfaces that are visually coherent, operationally clear and technically maintainable. Preserve user goals and critical actions before adding decorative complexity.
@@ -91,7 +95,7 @@ Validate applicable requirements:
 3. Check overflow, overlap, truncation and fixed elements.
 4. Exercise realistic long text, empty and error states.
 5. Inspect keyboard and form behavior.
-6. Record screenshots or evidence for changed critical screens.
+6. Record screenshots or evidence for changed critical screens only with synthetic or redacted data and reviewed metadata; otherwise report `NOT RUN`.
 7. Run relevant lint, typecheck, tests and build.
 
 Do not rely only on static code inspection for visual claims.

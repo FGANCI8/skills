@@ -1,4 +1,4 @@
 interface:
   display_name: "Renova Aura PDF Viewer Validation"
   short_description: "Valida PDFs em viewers e aparelhos reais"
-  default_prompt: "Use $renova-aura-pdf-viewer-validation-runbook para validar este PDF no visualizador e dispositivo nomeados."
+  default_prompt: "Use $renova-aura-pdf-viewer-validation-runbook para validar localmente este PDF sintético; não faça upload ou envio externo sem aprovação específica."

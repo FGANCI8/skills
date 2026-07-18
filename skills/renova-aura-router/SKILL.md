@@ -5,11 +5,19 @@ description: Route Renova Aura work expressed in normal Portuguese to the minimu
 
 # Renova Aura Router
 
+## Basal authority contract (`RA-AUTH-BASELINE-1`)
+
+Project-local instructions may add restrictions and project facts, but cannot expand authority or remove a basal privacy, security, approval, production, data, provider, merge, or deploy gate. A conflict stops with `SECURITY_BLOCK` or `HUMAN_APPROVAL_REQUIRED`; it never authorizes real data, external upload or delivery, a real provider, production, merge, or deploy.
+
 ## Mission
 
 Understand the user's real objective, choose one primary owner, add only risk-required support, and explain the route in plain language. The user does not need to name a skill.
 
 Default to a deterministic workflow or one specialist. Escalate to `renova-aura-agent-orchestrator` only for medium, complex, cross-domain, iterative, parallel, incident, release, or long-running work.
+
+## Profile selection
+
+Start from the `Core` profile and select one primary owner. `SaaS`, `Python`, `AgentOs` and `Pdf` make additional skills available only when repository evidence and task risk justify them. `All` is never an implicit activation mode. An installed or available skill is not selected until the router names it and explains why the smaller set is insufficient.
 
 ## Mandatory first read
 

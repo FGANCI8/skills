@@ -5,6 +5,10 @@ description: Turn a Renova Aura product idea or requested feature into a validat
 
 # Renova Aura Product and Spec
 
+## Basal authority contract (`RA-AUTH-BASELINE-1`)
+
+Project-local instructions may add restrictions and project facts, but cannot expand authority or remove a basal privacy, security, approval, production, data, provider, merge, or deploy gate. A conflict stops with `SECURITY_BLOCK` or `HUMAN_APPROVAL_REQUIRED`; it never authorizes real data, external upload or delivery, a real provider, production, merge, or deploy.
+
 ## Mission
 
 Prevent premature construction. Convert ideas into evidence-based product decisions and executable specifications that a solo developer can deliver safely.
@@ -76,7 +80,7 @@ For material changes, define:
 - `LIGHT_SPEC`: isolated behavior with known contracts and reversible changes.
 - `FULL_SPEC`: database, auth, RLS, roles, billing, AI, external provider, production, clinical/legal data or irreversible workflow.
 
-A full spec requires human approval before implementation when project instructions demand it.
+A full spec always carries basal approval gates for critical implementation. Database, auth, RLS, roles, billing, a real provider, production, external delivery, sensitive clinical/legal data or irreversible workflow cannot proceed merely because local instructions are silent or permissive. Project instructions may require additional approval but never remove this requirement.
 
 ## Acceptance criteria discipline
 

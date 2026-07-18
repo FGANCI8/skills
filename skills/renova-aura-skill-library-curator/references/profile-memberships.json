@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "default_profile": "Core",
+  "profile_semantics": "ELIGIBLE_DISCOVERY_SET_NOT_AUTO_ACTIVATION",
+  "profiles": {
+    "Core": [
+      "renova-aura-router",
+      "renova-aura-project-bootstrap",
+      "renova-aura-product-spec",
+      "renova-aura-engineering-guardian",
+      "renova-aura-security-data-guardian",
+      "renova-aura-ux-design-system",
+      "renova-aura-premium-frontend",
+      "renova-aura-quality-release",
+      "renova-aura-observability-incident",
+      "renova-aura-prompt-source-designer",
+      "renova-aura-project-handoff",
+      "renova-aura-skill-library-curator"
+    ],
+    "SaaS": [
+      "renova-aura-saas-architect",
+      "renova-aura-backend-api-engineer",
+      "renova-aura-database-reliability",
+      "renova-aura-performance-engineering",
+      "renova-aura-ai-integration-guardian"
+    ],
+    "Python": [
+      "renova-aura-python-engineering"
+    ],
+    "AgentOs": [
+      "renova-aura-agent-orchestrator",
+      "renova-aura-backend-api-engineer",
+      "renova-aura-database-reliability",
+      "renova-aura-python-engineering",
+      "renova-aura-performance-engineering",
+      "renova-aura-independent-reviewer"
+    ],
+    "Pdf": [
+      "renova-aura-pdf-forms-router",
+      "renova-aura-fillable-pdf-architect",
+      "renova-aura-pdf-compatibility-auditor",
+      "renova-aura-pdf-viewer-validation-runbook",
+      "renova-aura-pdf-delivery-guardian"
+    ]
+  },
+  "all_profile_rule": "EXPLICIT_UNION_ONLY_NEVER_DEFAULT",
+  "selection_rule": "SELECT_ONE_OWNER_AND_ONLY_RISK_REQUIRED_SUPPORT"
+}

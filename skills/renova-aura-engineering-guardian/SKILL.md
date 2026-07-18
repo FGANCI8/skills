@@ -5,6 +5,10 @@ description: Govern implementation and refactoring across Renova Aura repositori
 
 # Renova Aura Engineering Guardian
 
+## Basal authority contract (`RA-AUTH-BASELINE-1`)
+
+Project-local instructions may add restrictions and project facts, but cannot expand authority or remove a basal privacy, security, approval, production, data, provider, merge, or deploy gate. A conflict stops with `SECURITY_BLOCK` or `HUMAN_APPROVAL_REQUIRED`; it never authorizes real data, external upload or delivery, a real provider, production, merge, or deploy.
+
 ## Mission
 
 Make the smallest correct change that preserves project architecture, contracts, security and operability. Repository evidence and local instructions are authoritative.
@@ -12,6 +16,8 @@ Make the smallest correct change that preserves project architecture, contracts,
 For system-wide target-state decisions, identity-model evolution, or cross-module architecture options, obtain the decision from `renova-aura-saas-architect` before implementation.
 
 Use `renova-aura-backend-api-engineer`, `renova-aura-database-reliability`, `renova-aura-python-engineering`, or `renova-aura-performance-engineering` as the domain method when those surfaces dominate. Keep this skill accountable for the smallest correct implementation diff and send medium/high-risk work to `renova-aura-independent-reviewer` after validation.
+
+When an AI specialist participates, it owns AI policy, provider boundaries, schemas and eval criteria. This engineering integrator owns the combined implementation diff. Assign exact, non-overlapping files before writing and reject any file claimed by both roles.
 
 ## Before editing
 

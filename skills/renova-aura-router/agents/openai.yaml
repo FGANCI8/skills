@@ -1,4 +1,4 @@
 interface:
   display_name: "Renova Aura Router"
   short_description: "Roteia pedidos em português com segurança"
-  default_prompt: "Use $renova-aura-router para entender meu pedido e escolher o menor fluxo seguro."
+  default_prompt: "Use $renova-aura-router para entender meu pedido, começar pelo perfil Core e escolher somente o menor fluxo seguro necessário."
