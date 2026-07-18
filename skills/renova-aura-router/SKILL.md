@@ -1,6 +1,6 @@
 ---
 name: renova-aura-router
-description: Route Renova Aura work expressed in normal Portuguese to the minimum safe set of reusable skills without requiring users to know skill names or technical commands. Use at the start of repository work, planning, architecture, audits, fixes, premium front-end work, security reviews, releases, incidents, prompt or skill-library maintenance, handoffs, or PDF form tasks. Inspect project evidence first and never replace applicable AGENTS.md rules.
+description: Route Renova Aura work expressed in normal Portuguese to the minimum safe set of reusable skills and, only when justified, a bounded agent team. Use at the start of repository work, planning, architecture, audits, fixes, full-stack or Python work, premium front-end work, backend or database changes, security reviews, releases, incidents, performance work, prompt or skill-library maintenance, handoffs, or PDF form tasks. Inspect project evidence first and never replace applicable AGENTS.md rules.
 ---
 
 # Renova Aura Router
@@ -8,6 +8,8 @@ description: Route Renova Aura work expressed in normal Portuguese to the minimu
 ## Mission
 
 Understand the user's real objective, choose one primary owner, add only risk-required support, and explain the route in plain language. The user does not need to name a skill.
+
+Default to a deterministic workflow or one specialist. Escalate to `renova-aura-agent-orchestrator` only for medium, complex, cross-domain, iterative, parallel, incident, release, or long-running work.
 
 ## Mandatory first read
 
@@ -38,6 +40,11 @@ Use:
 | "vale a pena?", "defina MVP/PRD/SPEC" | `renova-aura-product-spec` | architecture, UX, security |
 | "desenhe/evolua a arquitetura", "torne SaaS" | `renova-aura-saas-architect` | product, security, engineering |
 | "implemente", "corrija", "refatore" | `renova-aura-engineering-guardian` | domain owner, security, quality |
+| "faça o backend/API/webhook/fila" | `renova-aura-backend-api-engineer` | engineering, security, database, quality |
+| "revise schema/migration/query/RLS" | `renova-aura-database-reliability` | security, engineering, quality |
+| "crie este projeto/serviço em Python" | `renova-aura-python-engineering` | backend, engineering, security, quality |
+| "meça/melhore desempenho, bundle ou consulta" | `renova-aura-performance-engineering` | engineering, database, observability, quality |
+| "faça revisão independente" | `renova-aura-independent-reviewer` | quality, relevant domain owner |
 | "audite auth/RLS/tenant/API/dados/segredos" | `renova-aura-security-data-guardian` | architecture, quality |
 | "melhore o fluxo/usabilidade/acessibilidade" | `renova-aura-ux-design-system` | premium front end, quality |
 | "deixe premium/elegante/sofisticado" | `renova-aura-premium-frontend` | UX, quality |
@@ -45,9 +52,11 @@ Use:
 | "teste/prepare PR/release/rollback" | `renova-aura-quality-release` | security, observability |
 | "investigue incidente/logs/retries" | `renova-aura-observability-incident` | security, quality |
 | "crie/melhore um prompt ou uma skill" | `renova-aura-prompt-source-designer` | library curator |
-| "inventeie/organize/instale/publique skills" | `renova-aura-skill-library-curator` | prompt designer, quality |
+| "inventarie/organize/instale/publique skills" | `renova-aura-skill-library-curator` | prompt designer, quality |
 | "crie/repare/valide formulário PDF" | `renova-aura-pdf-forms-router` | security for sensitive content |
 | "faça handoff/status/continuação" | `renova-aura-project-handoff` | relevant domain owner |
+| "monte uma equipe/use vários agentes/cada agente faz uma parte" | `renova-aura-agent-orchestrator` | minimum domain specialists and reviewer |
+| "trabalhe em loop/continue por várias etapas" | `renova-aura-agent-orchestrator` | independent evaluator, handoff |
 
 ## Responsibility boundaries
 
@@ -82,12 +91,22 @@ Resolve conflicts by evidence and risk:
 
 Do not activate a long mandatory chain for a small task. One primary owner remains accountable.
 
+## Complexity and orchestration gate
+
+- `TRIVIAL` or `SMALL`: deterministic path or `SINGLE_SPECIALIST`.
+- `MEDIUM`: `SPECIALIST_PLUS_REVIEWER` when code or material judgment changes.
+- `COMPLEX`: `SEQUENTIAL_PIPELINE` or bounded orchestrator-workers.
+- `LONG`: incremental blocks plus persistent handoff.
+- `INCIDENT` or `RELEASE`: use the matching controlled mode and human gates.
+
+Parallel work is allowed only for independent read-only analysis or preassigned, non-overlapping files. Shared contracts, migrations, schema, identity, RLS, and dependent code remain sequential. Every loop has a distinct author/evaluator and at most three rounds by default.
+
 ## Approval gates
 
 Stop with `NEEDS_HUMAN_APPROVAL` before destructive database/repository actions, merge/deploy, billing, real external delivery, irreversible migration, production secrets/configuration, identity/RLS/retention changes, or publication of private/proprietary information.
 
 ## Required routing output
 
-Return task type, facts inspected, primary owner, supporting skills, execution order, validation order, approval gates, and final state: `SAFE_TO_PLAN`, `SAFE_TO_APPLY`, `SAFE_WITH_CAUTION`, `NEEDS_HUMAN_APPROVAL`, or `BLOCKED`.
+Return task type, facts inspected, complexity, risk, primary owner, supporting skills, whether orchestration is justified, selected mode, execution order, validation order, approval gates, limits, and final state: `SAFE_TO_PLAN`, `SAFE_TO_APPLY`, `SAFE_WITH_CAUTION`, `NEEDS_HUMAN_APPROVAL`, or `BLOCKED`.
 
 Mark skill lifecycle separately as `SELECTED`, `EXECUTED`, `NOT_APPLICABLE`, `MISSING_REFERENCE`, or `BLOCKED`. Selection is not execution.

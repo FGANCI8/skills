@@ -35,6 +35,8 @@ Inspect when available:
 - migrations, env/config and deployment state;
 - screenshots or runtime evidence;
 - approval gates and actions explicitly not performed.
+- file ownership, active agents, evaluation rounds and terminal stop reason;
+- remaining context limit and exact sources the next session must reread.
 
 ## Status vocabulary
 
@@ -94,6 +96,12 @@ Separate:
 ### 6. Exact continuation point
 
 Provide the smallest next action, target files and the validation that should follow.
+
+### 7. Long-running control
+
+Record objective, acceptance criteria, current block, task ledger, decision log, file ownership, author/evaluator identity, evaluation results, maximum rounds, consumed rounds, timeout/budget state, stop reason, context remaining, and the compact summary for a new session. Reference large artifacts by path and hash rather than copying them.
+
+The next session must recheck branch, HEAD, status, instructions, files and evidence. Conversation memory never overrides current repository state.
 
 ## Decision record
 

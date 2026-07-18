@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Database Reliability"
+  short_description: "Protege schemas, migrations, integridade e rollback"
+  default_prompt: "Use $renova-aura-database-reliability para revisar esta mudança de banco, migration ou consulta."

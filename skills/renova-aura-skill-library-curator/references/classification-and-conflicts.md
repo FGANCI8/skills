@@ -30,10 +30,16 @@ Do not solve semantic duplication by keeping several active aliases with differe
 | Responsibility | Canonical Renova Aura owner |
 |---|---|
 | natural-language task routing | `renova-aura-router` |
+| bounded multi-agent coordination | `renova-aura-agent-orchestrator` |
 | library inventory/install/publication | `renova-aura-skill-library-curator` |
 | prompt and skill content design | `renova-aura-prompt-source-designer` |
 | system architecture decision | `renova-aura-saas-architect` |
 | implementation/refactor discipline | `renova-aura-engineering-guardian` |
+| backend/API method | `renova-aura-backend-api-engineer` |
+| database reliability | `renova-aura-database-reliability` |
+| Python-dominant engineering | `renova-aura-python-engineering` |
+| measured performance work | `renova-aura-performance-engineering` |
+| independent technical evaluation | `renova-aura-independent-reviewer` |
 | application/data security | `renova-aura-security-data-guardian` |
 | user journey and state semantics | `renova-aura-ux-design-system` |
 | premium visual identity | `renova-aura-premium-frontend` |

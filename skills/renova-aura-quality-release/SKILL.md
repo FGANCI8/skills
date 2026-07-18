@@ -9,6 +9,8 @@ description: Plan and execute risk-based validation, CI, pull request, release, 
 
 Produce evidence that a change is correct enough for its risk and can be safely reviewed, released and reversed. Never equate compilation with product, security or operational correctness.
 
+The implementer cannot be the sole approver. Medium/high-risk, subjective, architectural, migration, authentication, authorization, security, or release work requires an independent reviewer who inspects raw artifacts and evidence. A failing review returns to the responsible implementer for the next bounded round.
+
 ## Change inventory
 
 Before validation, identify:
@@ -72,6 +74,8 @@ CI should be deterministic and avoid real production dependencies. Prefer:
 - artifact or report retention only when useful and safe.
 
 A green CI run proves only the checks configured for that commit.
+
+For evaluator-optimizer work, define a concrete rubric and default to at most three rounds. Stop on `PASS`, `MAX_ROUNDS`, `TIMEOUT`, `BUDGET_LIMIT`, required human approval, missing evidence, environment/security block, or scope change.
 
 ## Release plan
 

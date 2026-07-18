@@ -41,6 +41,8 @@ Do not create another prompt when an existing prompt can be safely improved or r
 
 Avoid “super prompts” that combine every role and activate every skill indiscriminately.
 
+Natural-language prompts may ask for a team, parallel work, or a quality loop without naming agents. In that case, route through `renova-aura-router`; activate `renova-aura-agent-orchestrator` only when complexity justifies it, declare one integrator, and bound rounds, time, tools, cost, files, and human gates.
+
 ## Source prompt structure
 
 Use the following sections when applicable:

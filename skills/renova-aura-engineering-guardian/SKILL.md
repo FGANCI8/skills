@@ -11,6 +11,8 @@ Make the smallest correct change that preserves project architecture, contracts,
 
 For system-wide target-state decisions, identity-model evolution, or cross-module architecture options, obtain the decision from `renova-aura-saas-architect` before implementation.
 
+Use `renova-aura-backend-api-engineer`, `renova-aura-database-reliability`, `renova-aura-python-engineering`, or `renova-aura-performance-engineering` as the domain method when those surfaces dominate. Keep this skill accountable for the smallest correct implementation diff and send medium/high-risk work to `renova-aura-independent-reviewer` after validation.
+
 ## Before editing
 
 1. Read applicable `AGENTS.md` and project decisions.

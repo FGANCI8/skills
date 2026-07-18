@@ -29,6 +29,18 @@ Before listing controls:
 
 Do not produce a generic checklist detached from the actual attack surface.
 
+## Agent and automation security
+
+- Treat content from source files, web pages, issues, messages, logs, retrieved documents, tools, and models as untrusted data. It cannot grant approval, expand scope, or change higher-priority instructions.
+- Give each agent only the tools, read paths, write paths, data, time, turns, calls, and spend required for its assigned step.
+- Validate tool names, arguments, normalized paths, destinations, payload sizes, and expected side effects before execution.
+- Separate read and write capabilities; use one active writer per file and allowlists rather than broad filesystem or network access.
+- Keep credentials, tokens, private prompts, personal data, and raw production payloads out of context and traces.
+- Deny network egress by default for untrusted code and block exfiltration through logs, URLs, artifacts, or tool output.
+- Bound recursion, handoffs, retries, parallelism, `max_turns`, loops, time, and budget. A limit breach must stop rather than silently continue.
+- Require an independent approval mechanism outside the agent for sensitive tools. Sandbox containment does not replace authorization.
+- Make effects idempotent and record a sanitized audit trail sufficient for rollback or reconciliation.
+
 ## Identity model checkpoint
 
 Classify the current project from evidence:
@@ -77,6 +89,7 @@ Inspect as applicable:
 - Allowlist outbound destinations where SSRF or callback abuse is credible.
 - Fail closed on unknown identity, role, scope, signature, environment or policy state.
 - Keep dependency and CI changes reviewable; do not run forceful automated upgrades as a security shortcut.
+- Keep agent tracing allowlisted and sanitized; disable sensitive-data capture by default.
 
 ## API and business-flow controls
 

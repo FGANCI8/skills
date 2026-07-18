@@ -45,6 +45,8 @@ Define explicitly:
 - timeout, retry, fallback and circuit-breaker behavior;
 - cost and usage limits.
 
+For agent runtimes, also define session ownership and retention, maximum turns, handoff limits, tool-call limits, approval interruptions, tracing policy, and a terminal stop reason. Do not use an unlimited loop as a production default.
+
 AI must not directly authorize access, decide ownership/tenant scope, bypass server validation, mutate critical state without checks or act as clinical/legal authority.
 
 ## Prompt architecture
@@ -69,6 +71,7 @@ Do not inject raw private repositories, conversations or logs without necessity 
 - Sanitize content before persistence, logging or external delivery.
 - Treat model text as untrusted input.
 - Record prompt/model/version metadata without storing unnecessary sensitive content.
+- Prefer structured outputs for routing, tool arguments, evaluation and handoff.
 
 ## RAG and knowledge systems
 
@@ -100,6 +103,17 @@ Create representative synthetic cases for:
 - latency and cost limits.
 
 Track task success, groundedness, safety failures, handoff quality, latency and cost. Do not approve production from a few manually selected examples.
+
+Use multiple synthetic trials for variable behavior. Evaluate outcome, tool policy, handoffs, limits, latency and cost in addition to generated text.
+
+## Sessions, tracing, and HITL
+
+- Keep session state minimal, scoped to the correct user/owner/tenant, encrypted and time-limited when persisted.
+- Never place a secret in runtime context or durable memory.
+- Keep external tracing disabled in mock/reference work and sensitive-data capture disabled by default.
+- Pause before sensitive tool execution and resume only from an authenticated human approval record.
+- Treat hosted or local sandboxes as defense in depth; approval and least privilege remain outside the sandbox.
+- Use provider-specific runtime features only after checking current official documentation.
 
 ## External communication
 

@@ -48,7 +48,9 @@ Avoid generic purple SaaS gradients, excessive glow, interchangeable card grids,
 6. Implement complete loading, empty, partial, error, denied, success, and destructive states.
 7. Validate accessibility, content stress, motion preferences, and interaction feedback.
 8. Compare rendered screenshots against the approved reference and product truth.
-9. Report literal checks and remaining visual debt.
+9. Send desktop and mobile evidence to an independent visual evaluator with an objective rubric.
+10. Correct concrete findings in a bounded loop of at most three rounds.
+11. Report literal checks and remaining visual debt.
 
 ## Premium quality bar
 
@@ -67,6 +69,8 @@ Avoid generic purple SaaS gradients, excessive glow, interchangeable card grids,
 Validate representative small, medium, and large viewports. Use realistic long Brazilian Portuguese, reduced motion, keyboard navigation, zoom, loading, empty, error, and permission-denied cases. Record screenshots only when they contain no secrets or personal data.
 
 Do not claim pixel parity, accessibility, performance, or responsiveness without the corresponding evidence.
+
+The visual author cannot be the sole evaluator. The evaluator must report viewport, criterion, observed divergence, priority, and concrete correction rather than generic praise.
 
 ## Required output
 

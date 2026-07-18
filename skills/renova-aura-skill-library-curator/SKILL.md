@@ -9,6 +9,8 @@ description: Inventory, classify, deduplicate, improve, validate, install, and p
 
 Maintain one discoverable, public-safe source of reusable process while keeping project facts, client information, credentials, proprietary code, and sensitive decisions in their original private context.
 
+Maintain agent definitions and prompt indexes as separate public artifacts. Install only approved skill directories globally; never install root agent manifests, prompts, documentation, templates, or Python references as skills.
+
 ## Modes
 
 - `INVENTORY_ONLY`: inspect and report without changing sources.
@@ -68,6 +70,8 @@ Require:
 - public-safe examples and synthetic data;
 - evaluation cases for routing and dangerous requests.
 
+For an agent catalog, also require a valid schema, unique IDs, existing skill references, acyclic dependencies, one accountable integrator, bounded rounds, independent evaluators, exclusive file ownership, and human gates for critical actions.
+
 ## Safe global installation
 
 Before writing to the global destination:
@@ -82,6 +86,8 @@ Before writing to the global destination:
 8. re-hash and compare source to destination;
 9. keep project adapters and private references out of the global set;
 10. report restart/reload requirements.
+
+The global manifest contains only `skills/<name>` folders. The Agent OS team catalog and reference runtime remain repository documentation/reference material.
 
 Never restore wildcard backups automatically.
 
