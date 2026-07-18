@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Performance Engineering"
+  short_description: "Mede e melhora gargalos com evidência comparável"
+  default_prompt: "Use $renova-aura-performance-engineering para medir e melhorar este gargalo sem otimização especulativa."
