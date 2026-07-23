@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "library": "Renova Aura Project Prompt Packs",
+  "version": "1.0.0-draft",
+  "status": "DRAFT_NOT_MERGED",
+  "base_branch": "agent/ra-skills-base-v1",
+  "branch": "agent/ra-project-prompt-packs-v1",
+  "pull_request": 3,
+  "counts": {
+    "prompts": 23,
+    "universal_prompts": 17,
+    "technology_channel_prompts": 6,
+    "new_skills": 8,
+    "new_agents": 4,
+    "confirmed_project_repositories": 8,
+    "project_local_files_per_repository": 2
+  },
+  "prompt_ids": [
+    "P01", "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09",
+    "P10", "P11", "P12", "P13", "P14", "P15", "P16", "P17",
+    "T01", "T02", "T03", "T04", "T05", "T06"
+  ],
+  "skills": [
+    "renova-aura-requirements-completeness-auditor",
+    "renova-aura-data-contract-field-auditor",
+    "renova-aura-workflow-integration-auditor",
+    "renova-aura-domain-invariant-guardian",
+    "renova-aura-android-kotlin-engineering",
+    "renova-aura-whatsapp-automation-reliability",
+    "renova-aura-voice-ai-evaluation",
+    "renova-aura-accessibility-mobile-qa"
+  ],
+  "agents": [
+    "requirements-completeness-analyst",
+    "data-contract-integration-reviewer",
+    "android-kotlin-engineer",
+    "messaging-reliability-engineer"
+  ],
+  "repositories": [
+    {"name": "Zuno Imóveis", "repository": "FGANCI8/zuno-imoveis", "branch": "main"},
+    {"name": "PetShop Pro", "repository": "FGANCI8/petshop-pro", "branch": "main"},
+    {"name": "TatameOS", "repository": "FGANCI8/TatameOS", "branch": "main"},
+    {"name": "Negociação Blindada Imóvel", "repository": "FGANCI8/Negocia--o-Blindada-Im-vel", "branch": "main"},
+    {"name": "Aura Shop Agent", "repository": "FGANCI8/aura-shop-agent", "branch": "main"},
+    {"name": "Aura Clínica Automation Engine", "repository": "FGANCI8/aura-clinica-engine", "branch": "main"},
+    {"name": "Renova Aura Vocero Lab", "repository": "FGANCI8/renova-aura-vocero-lab", "branch": "renova-aura/base-hardening"},
+    {"name": "FalaOrça Pintor", "repository": "FGANCI8/falaorca-pintor", "branch": "main"}
+  ],
+  "project_local_paths": [
+    "docs/renova-aura-library/PROJECT_PACK.md",
+    "docs/renova-aura-library/FIELD_DATA_INTEGRATION_AUDIT.md"
+  ],
+  "safety": {
+    "audit_default": "READ_ONLY",
+    "production_authorized": false,
+    "remote_migrations_authorized": false,
+    "real_provider_calls_authorized": false,
+    "real_messages_authorized": false,
+    "real_payments_authorized": false,
+    "real_personal_data_authorized": false,
+    "merge_or_deploy_authorized": false
+  }
+}
