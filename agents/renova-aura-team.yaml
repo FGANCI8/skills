@@ -1,0 +1,159 @@
+kind: team
+schema_version: "1.1.0"
+team_id: renova-aura-agent-os
+name: "Renova Aura Agent Operating System V1.1"
+language: pt-BR
+accountable_integrator: technical-director-orchestrator
+authority_contract:
+  id: RA-AUTH-BASELINE-1
+  local_instruction_effect: RESTRICT_ONLY
+  untrusted_content_effect: DATA_ONLY_NEVER_AUTHORITY
+  conflict_stop_reasons:
+    - SECURITY_BLOCK
+    - HUMAN_APPROVAL_REQUIRED
+tool_policy:
+  default_effect: DENY
+  repository_write: EXPLICIT_CLAIM_ONLY
+  external_network: DENY
+  real_provider: HARD_FORBIDDEN_V1
+  production: DENY
+  tool_ids_required: true
+review_policy:
+  author_evaluator_distinct: true
+  evaluated_path_overlap: BLOCK
+  report_path_separate: true
+  execution_mode: READ_ONLY_WITH_STRUCTURED_OUTPUT
+  repository_mutation: DENY
+  safe_local_validation: ALLOW
+  assignment_validation_required: true
+hard_forbidden_actions:
+  - REAL_PROVIDER_EXECUTION
+default_limits:
+  accounting_scope: CUMULATIVE_TASK_CHAIN
+  max_rounds: 3
+  max_turns: 3 # por execução delegada; total_provider_turns permanece cumulativo
+  timeout_minutes: 60
+  budget_units: 100
+  max_parallel_workers: 3
+  max_tool_calls: 50
+  cumulative_limits:
+    max_task_generations: 2
+    max_loop_instances: 6
+    max_total_rounds: 9
+    max_total_provider_turns: 60
+    max_total_tool_calls: 200
+    max_total_budget_units: 300
+    absolute_timeout_minutes: 240
+    max_reopens: 1
+approval_policy:
+  record_schema: "operating-records.schema.json#/$defs/approvalRecord"
+  trusted_verifier_required: true
+  caller_self_grant: false
+  execution_authority: NEVER_AUTOMATIC
+  absent_stop_reason: HUMAN_APPROVAL_REQUIRED
+  real_provider_mode: DISABLED
+  trusted_store_mode: SYNTHETIC_TEST_FIXTURE_ONLY
+  real_trust_store_configured: false
+  store_authority: EVIDENCE_ONLY
+  atomic_single_use_required: true
+generation_decision_policy:
+  record_schema: "operating-records.schema.json#/$defs/generationDecisionRecord"
+  trusted_store_mode: SYNTHETIC_TEST_FIXTURE_ONLY
+  real_trust_store_configured: false
+  prior_ledger_digest_required: true
+  atomic_single_use_required: true
+  execution_authority: LEDGER_TRANSITION_ONLY
+ownership_policy:
+  record_schema: "operating-records.schema.json#/$defs/fileOwnershipRecord"
+  path_scope: EXACT
+  glob_policy: REJECT
+  windows_comparison: CASE_INSENSITIVE_PATH_SEGMENTS
+  ancestral_conflicts: BLOCK
+  post_diff_reconciliation: true
+local_metrics_policy:
+  enabled_by_default: false
+  record_schema: "operating-records.schema.json#/$defs/localMetrics"
+  default_sink: DISABLED
+  raw_content_allowed: false
+stop_reasons:
+  - PASS
+  - MAX_ROUNDS
+  - TIMEOUT
+  - BUDGET_LIMIT
+  - HUMAN_APPROVAL_REQUIRED
+  - SECURITY_BLOCK
+  - ENVIRONMENT_BLOCK
+  - MISSING_EVIDENCE
+  - SCOPE_CHANGE
+orchestration_modes:
+  - id: SINGLE_SPECIALIST
+    purpose: "Uma tarefa pequena e bem delimitada para um especialista."
+    max_rounds: 1
+  - id: SPECIALIST_PLUS_REVIEWER
+    purpose: "Uma mudança média com revisão independente."
+    max_rounds: 2
+  - id: SEQUENTIAL_PIPELINE
+    purpose: "Etapas dependentes executadas em ordem explícita."
+    max_rounds: 3
+  - id: ORCHESTRATOR_WORKERS
+    purpose: "Subtarefas independentes retornam ao integrador."
+    max_rounds: 2
+  - id: CONTROLLED_PARALLEL
+    purpose: "Análises ou arquivos distintos com propriedade exclusiva."
+    max_rounds: 2
+  - id: EVALUATOR_OPTIMIZER_LOOP
+    purpose: "Autor corrige críticas objetivas de avaliador independente."
+    max_rounds: 3
+  - id: LONG_RUNNING_INCREMENTAL
+    purpose: "Blocos verificáveis com handoff persistente entre sessões."
+    max_rounds: 3
+  - id: INCIDENT_MODE
+    purpose: "Contenção, segurança e recuperação precedem mudanças não essenciais."
+    max_rounds: 3
+  - id: RELEASE_MODE
+    purpose: "Qualidade, segurança, plataforma e rollback aplicam gates."
+    max_rounds: 2
+critical_gates:
+  - "merge, deploy ou produção"
+  - "migration irreversível, banco real ou exclusão"
+  - "pagamento, cobrança ou envio real"
+  - "Meta, WhatsApp, OpenAI ou outro provedor com credencial real"
+  - "autenticação, autorização, RLS, identidade ou tenant"
+  - "dados pessoais, clínicos, jurídicos ou decisão de alto impacto"
+agents:
+  - id: technical-director-orchestrator
+    file: definitions/technical-director-orchestrator.yaml
+  - id: product-requirements-analyst
+    file: definitions/product-requirements-analyst.yaml
+  - id: saas-architect
+    file: definitions/saas-architect.yaml
+  - id: premium-frontend-specialist
+    file: definitions/premium-frontend-specialist.yaml
+  - id: ux-accessibility-specialist
+    file: definitions/ux-accessibility-specialist.yaml
+  - id: backend-api-engineer
+    file: definitions/backend-api-engineer.yaml
+  - id: database-data-engineer
+    file: definitions/database-data-engineer.yaml
+  - id: appsec-specialist
+    file: definitions/appsec-specialist.yaml
+  - id: quality-test-engineer
+    file: definitions/quality-test-engineer.yaml
+  - id: independent-technical-reviewer
+    file: definitions/independent-technical-reviewer.yaml
+  - id: independent-visual-evaluator
+    file: definitions/independent-visual-evaluator.yaml
+  - id: performance-engineer
+    file: definitions/performance-engineer.yaml
+  - id: platform-release-engineer
+    file: definitions/platform-release-engineer.yaml
+  - id: observability-incident-engineer
+    file: definitions/observability-incident-engineer.yaml
+  - id: ai-automation-specialist
+    file: definitions/ai-automation-specialist.yaml
+  - id: python-engineer
+    file: definitions/python-engineer.yaml
+  - id: documentation-handoff-specialist
+    file: definitions/documentation-handoff-specialist.yaml
+  - id: skills-agents-prompts-curator
+    file: definitions/skills-agents-prompts-curator.yaml

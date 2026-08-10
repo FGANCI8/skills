@@ -1,0 +1,15 @@
+# Synthetic template. Replace every opaque ID before use.
+kind: FileOwnershipRecord
+schema_version: "1.1.0"
+task_id: task_2f5a9bd5ac5f4a7185c71b38f4ec2e51
+comparison: WINDOWS_CASE_INSENSITIVE_PATH_SEGMENTS
+claims:
+  - claim_id: claim_8d67fa39e58c4dc3b0ab89f171589b39
+    path: "docs/synthetic-artifact.md"
+    path_type: FILE
+    path_scope: EXACT
+    owner: technical-director-orchestrator
+    access: WRITE
+    step: step_bounded-synthetic-write
+    dependencies: []
+    status: PLANNED

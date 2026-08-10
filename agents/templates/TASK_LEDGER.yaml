@@ -1,0 +1,65 @@
+# Synthetic template. Do not store a raw user objective, prompt or private path.
+kind: TaskLedger
+schema_version: "1.1.0"
+task_id: task_2f5a9bd5ac5f4a7185c71b38f4ec2e51
+objective_ref: objective_bounded-synthetic-example
+objective_category: LIBRARY_GOVERNANCE
+status: PLANNED
+mode: SINGLE_SPECIALIST
+accountable_owner: technical-director-orchestrator
+acceptance_criteria_refs:
+  - criterion_bounded-synthetic-pass
+current_block: block_bounded-inspection
+accounting_scope: CUMULATIVE_TASK_CHAIN
+cumulative_limits:
+  max_task_generations: 2
+  max_loop_instances: 6
+  max_total_rounds: 9
+  max_total_provider_turns: 60
+  max_total_tool_calls: 200
+  max_total_budget_units: 300
+  absolute_timeout_minutes: 240
+  max_reopens: 1
+cumulative_usage_at_block_start:
+  task_generation: 1
+  loop_instances: 0
+  total_rounds: 0
+  total_provider_turns: 0
+  total_tool_calls: 0
+  total_budget_units: 0
+  reopen_count: 0
+block_delta:
+  loop_instances: 0
+  rounds: 0
+  provider_turns: 0
+  tool_calls: 0
+  budget_units: 0
+  elapsed_time_ms: 0
+cumulative_usage:
+  task_generation: 1
+  loop_instances: 0
+  total_rounds: 0
+  total_provider_turns: 0
+  total_tool_calls: 0
+  total_budget_units: 0
+  reopen_count: 0
+started_at: "2030-01-01T12:00:00Z"
+absolute_deadline: "2030-01-01T16:00:00Z"
+terminal_history: []
+previous_checkpoint:
+  ref: null
+  sha256: null
+approval_record_refs: []
+generation_decision_refs: []
+allowed_tool_refs:
+  - tool_repository-read-authorized-root
+file_ownership_ref: ownership_bounded-synthetic-example
+completed_artifact_refs: []
+pending_action_codes:
+  - INSPECT_AUTHORIZED_WORKSPACE
+blocked_reason_codes: []
+stop_reason: null
+next_action_code: INSPECT_AUTHORIZED_WORKSPACE
+local_metrics:
+  enabled: false
+  sink: DISABLED
