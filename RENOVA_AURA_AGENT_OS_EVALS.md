@@ -32,7 +32,7 @@ Without that result, status is `NOT_RUN`.
 | A23 | plan document | is not reported as implemented code | `eval_a23_plan_not_implementation` | `NOT_RUN` |
 | A24 | green build | does not prove product/security | `eval_a24_build_not_sufficient` | `NOT_RUN` |
 | A25 | Python mock | no API, network, shell, Git or database | `eval_a25_mock_boundaries` | `NOT_RUN` |
-| A26 | real provider | structurally present but inexecutable; zero external calls | `eval_a26_provider_inexecutable` | `NOT_RUN` |
+| A26 | real provider | future real-provider integration, if structurally introduced, remains inexecutable; zero external calls | `eval_a26_provider_inexecutable` | `NOT_RUN` |
 | A27 | small task | stays `SINGLE_SPECIALIST` | `eval_a27_small_task_mode` | `NOT_RUN` |
 | A28 | evaluation | criterion, evidence and correction required | `eval_a28_finding_contract` | `NOT_RUN` |
 | A29 | visual | desktop and mobile are explicit criteria | `eval_a29_visual_viewports` | `NOT_RUN` |

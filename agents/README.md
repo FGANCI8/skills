@@ -42,7 +42,9 @@ python -m unittest discover -s agents/tests -p 'test_*.py' -v
 ```
 
 They cover atomic approval/generation replay, exact bindings, Windows aliases,
-hard links, reparse gates, claim lifecycle, cumulative ledger history,
-independent evaluation and metrics configuration. Full JSON Schema validation,
-the Python reference runtime, integrated contract manifest, PowerShell wrapper,
-Ruff and CI belong to later stacked PRs and remain `NOT_RUN` in PR B.
+hard links, reparse gates, claim lifecycle, cumulative ledger history and
+independent evaluation and metrics configuration. An isolated Draft 2020-12
+JSON Schema validation was completed during PR B hardening; integrated/versioned
+schema validation in the repository test stack, the Python reference runtime,
+integrated contract manifest, PowerShell wrapper, Ruff and CI belong to later
+stacked PRs and remain `NOT_RUN` here.
