@@ -1,0 +1,420 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:renova-aura:agent-os:team:1.1.0",
+  "title": "Renova Aura Agent Operating System V1.1",
+  "oneOf": [
+    { "$ref": "#/$defs/team" },
+    { "$ref": "#/$defs/agent" }
+  ],
+  "$defs": {
+    "nonEmptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 2 }
+    },
+    "agentId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accounting_scope", "max_rounds", "max_turns", "timeout_minutes", "budget_units", "max_parallel_workers", "max_tool_calls", "cumulative_limits"],
+      "properties": {
+        "accounting_scope": { "const": "CUMULATIVE_TASK_CHAIN" },
+        "max_rounds": { "type": "integer", "minimum": 1, "maximum": 5, "description": "Maximum rounds for one loop instance; total_rounds remains cumulative." },
+        "max_turns": { "type": "integer", "minimum": 1, "maximum": 20, "description": "Maximum turns per delegated agent or provider invocation; not a whole-team step limit." },
+        "timeout_minutes": { "type": "integer", "minimum": 1, "maximum": 480 },
+        "budget_units": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "max_parallel_workers": { "type": "integer", "minimum": 1, "maximum": 8 },
+        "max_tool_calls": { "type": "integer", "minimum": 1, "maximum": 1000 },
+        "cumulative_limits": { "$ref": "#/$defs/cumulativeLimits" }
+      }
+    },
+    "toolId": {
+      "enum": [
+        "REPOSITORY_READ",
+        "OFFICIAL_DOCUMENTATION_READ",
+        "REPOSITORY_WRITE_CLAIMED",
+        "LOCAL_TEST_RUNNER",
+        "LOCAL_STATIC_ANALYSIS",
+        "LOCAL_MOCK_SIMULATION",
+        "LOCAL_BROWSER_READ_ONLY",
+        "LOCAL_SCREENSHOT_REDACTED",
+        "LOCAL_METRICS_READ_SANITIZED",
+        "LOCAL_PROFILER",
+        "LOCAL_GIT_READ",
+        "LOCAL_GIT_METADATA_WRITE_TASK_SCOPED",
+        "LOCAL_CI_READ",
+        "LOCAL_SCHEMA_ANALYSIS",
+        "LOCAL_ARTIFACT_ANALYSIS",
+        "LOCAL_DELEGATION",
+        "LOCAL_EVIDENCE_CONSOLIDATION",
+        "DISPOSABLE_DATABASE_TEST_TASK_SCOPED"
+      ]
+    },
+    "approvalAction": {
+      "enum": [
+        "BRAND_IDENTITY_CHANGE",
+        "CONFIGURATION_CHANGE",
+        "CRITICAL_AUTHORIZATION_CHANGE",
+        "CRITICAL_FLOW_CHANGE",
+        "CRITICAL_LIMITATION_ACCEPTANCE",
+        "DATABASE_MIGRATION",
+        "DATA_RETENTION_CHANGE",
+        "DEPLOY",
+        "DESTRUCTIVE_ACTION",
+        "DESTRUCTIVE_DATA_CHANGE",
+        "DESTRUCTIVE_TEST",
+        "EXTERNAL_INTEGRATION",
+        "EXTERNAL_LOAD_TEST",
+        "EXTERNAL_PUBLICATION",
+        "EXTERNAL_SIDE_EFFECT",
+        "GIT_PUSH",
+        "GLOBAL_INSTALL_OR_REPLACE",
+        "HIGH_IMPACT_DECISION",
+        "INCIDENT_REPLAY",
+        "INCIDENT_ROLLBACK",
+        "MATERIAL_DEPENDENCY_CHANGE",
+        "MATERIAL_SCOPE_CHANGE",
+        "MATERIAL_TRADEOFF",
+        "MERGE",
+        "PACKAGE_PUBLICATION",
+        "PRIVATE_INFORMATION_PUBLICATION",
+        "PRODUCT_IDENTITY_CHANGE",
+        "PRODUCT_PROMISE_CHANGE",
+        "PRODUCTION_CHANGE",
+        "PR_STATE_CHANGE",
+        "PUBLIC_CONTRACT_BREAK",
+        "REAL_COMMUNICATION",
+        "REAL_DATABASE_OPERATION",
+        "RELEASE_STATE_CHANGE",
+        "RISK_ACCEPTANCE",
+        "SCOPE_EXPANSION",
+        "SECRET_OPERATION",
+        "SECURITY_EXCEPTION",
+        "SENSITIVE_DATA_OPERATION",
+        "SYSTEM_CONTRACT_CHANGE",
+        "TENANCY_CHANGE"
+      ]
+    },
+    "authorityContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "local_instruction_effect", "untrusted_content_effect", "conflict_stop_reasons"],
+      "properties": {
+        "id": { "const": "RA-AUTH-BASELINE-1" },
+        "local_instruction_effect": { "const": "RESTRICT_ONLY" },
+        "untrusted_content_effect": { "const": "DATA_ONLY_NEVER_AUTHORITY" },
+        "conflict_stop_reasons": {
+          "type": "array",
+          "const": ["SECURITY_BLOCK", "HUMAN_APPROVAL_REQUIRED"]
+        }
+      }
+    },
+    "toolPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["default_effect", "repository_write", "external_network", "real_provider", "production", "tool_ids_required"],
+      "properties": {
+        "default_effect": { "const": "DENY" },
+        "repository_write": { "const": "EXPLICIT_CLAIM_ONLY" },
+        "external_network": { "const": "DENY" },
+        "real_provider": { "const": "HARD_FORBIDDEN_V1" },
+        "production": { "const": "DENY" },
+        "tool_ids_required": { "const": true }
+      }
+    },
+    "reviewPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["author_evaluator_distinct", "evaluated_path_overlap", "report_path_separate", "execution_mode", "repository_mutation", "safe_local_validation", "assignment_validation_required"],
+      "properties": {
+        "author_evaluator_distinct": { "const": true },
+        "evaluated_path_overlap": { "const": "BLOCK" },
+        "report_path_separate": { "const": true },
+        "execution_mode": { "const": "READ_ONLY_WITH_STRUCTURED_OUTPUT" },
+        "repository_mutation": { "const": "DENY" },
+        "safe_local_validation": { "const": "ALLOW" },
+        "assignment_validation_required": { "const": true }
+      }
+    },
+    "cumulativeLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_task_generations", "max_loop_instances", "max_total_rounds", "max_total_provider_turns", "max_total_tool_calls", "max_total_budget_units", "absolute_timeout_minutes", "max_reopens"],
+      "properties": {
+        "max_task_generations": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "max_loop_instances": { "type": "integer", "minimum": 1, "maximum": 20 },
+        "max_total_rounds": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "max_total_provider_turns": { "type": "integer", "minimum": 1, "maximum": 1000 },
+        "max_total_tool_calls": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "max_total_budget_units": { "type": "integer", "minimum": 1, "maximum": 1000000 },
+        "absolute_timeout_minutes": { "type": "integer", "minimum": 1, "maximum": 10080 },
+        "max_reopens": { "type": "integer", "minimum": 0, "maximum": 4 }
+      }
+    },
+    "approvalPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_schema", "trusted_verifier_required", "caller_self_grant", "execution_authority", "absent_stop_reason", "real_provider_mode", "trusted_store_mode", "real_trust_store_configured", "store_authority", "atomic_single_use_required"],
+      "properties": {
+        "record_schema": { "const": "operating-records.schema.json#/$defs/approvalRecord" },
+        "trusted_verifier_required": { "const": true },
+        "caller_self_grant": { "const": false },
+        "execution_authority": { "const": "NEVER_AUTOMATIC" },
+        "absent_stop_reason": { "const": "HUMAN_APPROVAL_REQUIRED" },
+        "real_provider_mode": { "const": "DISABLED" },
+        "trusted_store_mode": { "const": "SYNTHETIC_TEST_FIXTURE_ONLY" },
+        "real_trust_store_configured": { "const": false },
+        "store_authority": { "const": "EVIDENCE_ONLY" },
+        "atomic_single_use_required": { "const": true }
+      }
+    },
+    "generationDecisionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_schema", "trusted_store_mode", "real_trust_store_configured", "prior_ledger_digest_required", "atomic_single_use_required", "execution_authority"],
+      "properties": {
+        "record_schema": { "const": "operating-records.schema.json#/$defs/generationDecisionRecord" },
+        "trusted_store_mode": { "const": "SYNTHETIC_TEST_FIXTURE_ONLY" },
+        "real_trust_store_configured": { "const": false },
+        "prior_ledger_digest_required": { "const": true },
+        "atomic_single_use_required": { "const": true },
+        "execution_authority": { "const": "LEDGER_TRANSITION_ONLY" }
+      }
+    },
+    "ownershipPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_schema", "path_scope", "glob_policy", "windows_comparison", "ancestral_conflicts", "post_diff_reconciliation"],
+      "properties": {
+        "record_schema": { "const": "operating-records.schema.json#/$defs/fileOwnershipRecord" },
+        "path_scope": { "const": "EXACT" },
+        "glob_policy": { "const": "REJECT" },
+        "windows_comparison": { "const": "CASE_INSENSITIVE_PATH_SEGMENTS" },
+        "ancestral_conflicts": { "const": "BLOCK" },
+        "post_diff_reconciliation": { "const": true }
+      }
+    },
+    "localMetricsPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled_by_default", "record_schema", "default_sink", "raw_content_allowed"],
+      "properties": {
+        "enabled_by_default": { "const": false },
+        "record_schema": { "const": "operating-records.schema.json#/$defs/localMetrics" },
+        "default_sink": { "const": "DISABLED" },
+        "raw_content_allowed": { "const": false }
+      }
+    },
+    "agentRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "file"],
+      "properties": {
+        "id": { "$ref": "#/$defs/agentId" },
+        "file": { "type": "string", "pattern": "^definitions/[a-z0-9-]+\\.yaml$" }
+      }
+    },
+    "mode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "purpose", "max_rounds"],
+      "properties": {
+        "id": {
+          "enum": [
+            "SINGLE_SPECIALIST",
+            "SPECIALIST_PLUS_REVIEWER",
+            "SEQUENTIAL_PIPELINE",
+            "ORCHESTRATOR_WORKERS",
+            "CONTROLLED_PARALLEL",
+            "EVALUATOR_OPTIMIZER_LOOP",
+            "LONG_RUNNING_INCREMENTAL",
+            "INCIDENT_MODE",
+            "RELEASE_MODE"
+          ]
+        },
+        "purpose": { "type": "string", "minLength": 5 },
+        "max_rounds": { "type": "integer", "minimum": 1, "maximum": 5 }
+      }
+    },
+    "team": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_version", "team_id", "name", "language", "accountable_integrator", "authority_contract", "tool_policy", "review_policy", "hard_forbidden_actions", "default_limits", "approval_policy", "generation_decision_policy", "ownership_policy", "local_metrics_policy", "stop_reasons", "orchestration_modes", "critical_gates", "agents"],
+      "properties": {
+        "kind": { "const": "team" },
+        "schema_version": { "const": "1.1.0" },
+        "team_id": { "$ref": "#/$defs/agentId" },
+        "name": { "type": "string", "minLength": 3 },
+        "language": { "const": "pt-BR" },
+        "accountable_integrator": { "$ref": "#/$defs/agentId" },
+        "authority_contract": { "$ref": "#/$defs/authorityContract" },
+        "tool_policy": { "$ref": "#/$defs/toolPolicy" },
+        "review_policy": { "$ref": "#/$defs/reviewPolicy" },
+        "hard_forbidden_actions": {
+          "type": "array",
+          "const": ["REAL_PROVIDER_EXECUTION"]
+        },
+        "default_limits": { "$ref": "#/$defs/limits" },
+        "approval_policy": { "$ref": "#/$defs/approvalPolicy" },
+        "generation_decision_policy": { "$ref": "#/$defs/generationDecisionPolicy" },
+        "ownership_policy": { "$ref": "#/$defs/ownershipPolicy" },
+        "local_metrics_policy": { "$ref": "#/$defs/localMetricsPolicy" },
+        "stop_reasons": {
+          "type": "array",
+          "minItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["PASS", "MAX_ROUNDS", "TIMEOUT", "BUDGET_LIMIT", "HUMAN_APPROVAL_REQUIRED", "SECURITY_BLOCK", "ENVIRONMENT_BLOCK", "MISSING_EVIDENCE", "SCOPE_CHANGE"]
+          }
+        },
+        "orchestration_modes": {
+          "type": "array",
+          "minItems": 9,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/mode" }
+        },
+        "critical_gates": { "$ref": "#/$defs/nonEmptyStrings" },
+        "agents": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/agentRef" }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["can_write", "can_integrate", "can_evaluate", "must_be_independent_from_author"],
+      "properties": {
+        "can_write": { "type": "boolean", "description": "May mutate preassigned repository files; structured chat output is not a repository write." },
+        "can_integrate": { "type": "boolean", "description": "May consolidate assigned artifacts and evidence; never implies GitHub PR merge, deploy or production authority." },
+        "can_evaluate": { "type": "boolean" },
+        "must_be_independent_from_author": { "type": "boolean" }
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_version", "id", "name", "mission", "when_to_use", "when_not_to_use", "inputs", "structured_outputs", "skills", "authority_contract", "tool_policy_ref", "allowed_tools", "read_scope", "write_scope", "hard_forbidden_actions", "approval_gated_actions", "risk_level", "dependencies", "completion_criteria", "handoff_in", "handoff_out", "max_rounds", "accountable_integrator", "capabilities"],
+      "properties": {
+        "kind": { "const": "agent" },
+        "schema_version": { "const": "1.1.0" },
+        "id": { "$ref": "#/$defs/agentId" },
+        "name": { "type": "string", "minLength": 3 },
+        "mission": { "type": "string", "minLength": 10 },
+        "when_to_use": { "$ref": "#/$defs/nonEmptyStrings" },
+        "when_not_to_use": { "$ref": "#/$defs/nonEmptyStrings" },
+        "inputs": { "$ref": "#/$defs/nonEmptyStrings" },
+        "structured_outputs": { "$ref": "#/$defs/nonEmptyStrings" },
+        "skills": { "$ref": "#/$defs/nonEmptyStrings" },
+        "authority_contract": { "const": "RA-AUTH-BASELINE-1" },
+        "tool_policy_ref": { "const": "team.tool_policy" },
+        "allowed_tools": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/toolId" }
+        },
+        "read_scope": { "$ref": "#/$defs/nonEmptyStrings" },
+        "write_scope": { "$ref": "#/$defs/nonEmptyStrings" },
+        "hard_forbidden_actions": { "$ref": "#/$defs/nonEmptyStrings" },
+        "approval_gated_actions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/approvalAction" }
+        },
+        "risk_level": { "enum": ["low", "medium", "high", "critical"] },
+        "dependencies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/agentId" }
+        },
+        "completion_criteria": { "$ref": "#/$defs/nonEmptyStrings" },
+        "handoff_in": { "$ref": "#/$defs/nonEmptyStrings" },
+        "handoff_out": { "$ref": "#/$defs/nonEmptyStrings" },
+        "max_rounds": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "accountable_integrator": { "type": "boolean" },
+        "capabilities": { "$ref": "#/$defs/capabilities" },
+        "incident_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["default_mode", "modes", "approved_mode", "missing_record_stop_reason", "audit_only_repository_write", "audit_only_external_side_effects", "audit_only_write_claim_activation", "plan_repository_write", "execute_approved_requires_verified_decision"],
+          "properties": {
+            "default_mode": { "const": "AUDIT_ONLY" },
+            "modes": {
+              "type": "array",
+              "const": ["AUDIT_ONLY", "PLAN", "EXECUTE_APPROVED"]
+            },
+            "approved_mode": { "const": "EXECUTE_APPROVED" },
+            "missing_record_stop_reason": { "const": "HUMAN_APPROVAL_REQUIRED" },
+            "audit_only_repository_write": { "const": "DENY" },
+            "audit_only_external_side_effects": { "const": "DENY" },
+            "audit_only_write_claim_activation": { "const": "DENY" },
+            "plan_repository_write": { "const": "DENY" },
+            "execute_approved_requires_verified_decision": { "const": true }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["capabilities"],
+            "properties": {
+              "capabilities": {
+                "required": ["can_write"],
+                "properties": { "can_write": { "const": true } }
+              }
+            }
+          },
+          "then": {
+            "required": ["allowed_tools"],
+            "properties": {
+              "allowed_tools": {
+                "contains": { "const": "REPOSITORY_WRITE_CLAIMED" }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["allowed_tools"],
+            "properties": {
+              "allowed_tools": {
+                "contains": { "const": "REPOSITORY_WRITE_CLAIMED" }
+              }
+            }
+          },
+          "then": {
+            "required": ["capabilities"],
+            "properties": {
+              "capabilities": {
+                "required": ["can_write"],
+                "properties": { "can_write": { "const": true } }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "id": { "const": "observability-incident-engineer" } } },
+          "then": {
+            "required": ["incident_policy"],
+            "properties": {
+              "capabilities": {
+                "properties": { "can_write": { "const": false } }
+              },
+              "allowed_tools": {
+                "not": { "contains": { "const": "REPOSITORY_WRITE_CLAIMED" } }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

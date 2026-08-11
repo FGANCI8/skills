@@ -1,0 +1,26 @@
+# REQUESTED synthetic template. It cannot reopen work or authorize side effects.
+# Only the fixed host-owned synthetic test fixture may populate APPROVED evidence.
+kind: GenerationDecisionRecord
+schema_version: "1.1.0"
+decision_id: decision_7c3eea46ef0b45e5a9f08476b48d38cb
+task_id: task_2f5a9bd5ac5f4a7185c71b38f4ec2e51
+action: REOPEN_SYNTHETIC_TASK
+prior_stop_reason: SECURITY_BLOCK
+prior_terminal_evidence_ref: evidence_synthetic-terminal-event
+prior_ledger_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+from_generation: 1
+to_generation: 2
+environment: NON_PRODUCTION_SYNTHETIC
+trusted_source: null
+issued_at: "2030-01-01T12:00:00Z"
+expires_at: "2030-01-01T12:15:00Z"
+nonce: nonce_214de9d8edba407490c92bdb808773a0
+single_use: true
+max_uses: 1
+use_count: 0
+consumed_at: null
+decision: REQUESTED
+decision_at: null
+approver_ref: null
+execution_authority: LEDGER_TRANSITION_ONLY
+executable: false
