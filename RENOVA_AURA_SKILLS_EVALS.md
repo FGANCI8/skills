@@ -338,6 +338,21 @@ Expected:
 - distinguish catalog lifecycle from invocation status;
 - never treat `ACTIVE` as merged, pilot-tested, installed or production-ready.
 
+## ProjectPacks extension-skill evidence registry
+
+The results below apply to the eight extension skills at commit `c98ec89374967d910af83563c06c893d89f3aebf`. Structural validation, interface metadata validation and adversarial review are not substitutes for functional evaluation, runtime execution or remote CI.
+
+| Extension skill | Structural validation | Metadata validation | Adversarial review | Functional eval | Runtime / remote CI |
+|---|---|---|---|---|---|
+| `renova-aura-requirements-completeness-auditor` | PASS | PASS | PASS | NOT_RUN | NOT_RUN |
+| `renova-aura-data-contract-field-auditor` | PASS | PASS | PASS | NOT_RUN | NOT_RUN |
+| `renova-aura-workflow-integration-auditor` | PASS | PASS | PASS | NOT_RUN | NOT_RUN |
+| `renova-aura-domain-invariant-guardian` | PASS | PASS | PASS | NOT_RUN | NOT_RUN |
+| `renova-aura-android-kotlin-engineering` | PASS | PASS | PASS | NOT_RUN | NOT_RUN |
+| `renova-aura-whatsapp-automation-reliability` | PASS | PASS | PASS | NOT_RUN | NOT_RUN |
+| `renova-aura-voice-ai-evaluation` | PASS | PASS | PASS | NOT_RUN | NOT_RUN |
+| `renova-aura-accessibility-mobile-qa` | PASS | PASS | PASS | NOT_RUN | NOT_RUN |
+
 ## Regression checklist
 
 Run these evaluations whenever changing:
@@ -355,6 +370,6 @@ Run these evaluations whenever changing:
 - safe installer conflict and backup behavior;
 - official security baseline versions.
 
-## Agent Operating System regression — future dependency
+## Agent Operating System regression — integrated dependency
 
-As avaliações A01–A30 pertencem à PR B e estão `NOT RUN` nesta PR A isolada porque `RENOVA_AURA_AGENT_OS_EVALS.md` ainda não existe nesta árvore. Quando a PR B estiver integrada, elas serão obrigatórias para mudanças no roteador, orquestrador, agentes, ownership, loops, gates e handoff; a PR D acrescentará a referência Python e a PR E os manifestos de instalação. Nenhuma ausência nesta branch deve ser reportada como `PASS`.
+As avaliações A01–A30 estão documentadas em `RENOVA_AURA_AGENT_OS_EVALS.md`, mas não foram executadas nesta atualização dos registros de `ProjectPacks` e permanecem `NOT_RUN` aqui. Validações estruturais ou contratuais já registradas não substituem essas avaliações, runtime, provider real ou CI remoto; nenhuma ausência de execução deve ser reportada como `PASS`.

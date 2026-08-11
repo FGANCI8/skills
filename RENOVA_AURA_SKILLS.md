@@ -32,6 +32,7 @@ Cada repositório consumidor deve manter um adaptador local com suas fontes da v
 - `Python` acrescenta o método Python e somente os suportes exigidos pelo risco.
 - `AgentOs` reúne os seis métodos necessários para orquestração declarativa e revisão independente.
 - `Pdf` contém apenas a suíte de cinco skills de formulário preenchível.
+- `ProjectPacks` contém somente as oito extension skills especializadas dos project packs; não é default e não promove seus membros para `Core`.
 - `All` é a união dos perfis e nunca é o default nem uma seleção implícita.
 
 Um perfil define apenas o conjunto elegível para descoberta; ele não ativa todos os membros. O roteador seleciona um owner e somente os apoios exigidos pelo risco, podendo selecionar uma skill fora de `Core` quando a tarefa justificar. Instalar uma skill também não significa carregá-la ou ativá-la. Quanto mais skills participam, maior o custo de roteamento, contexto, ownership e revisão; por isso a equipe mínima é um requisito, não uma preferência. A fonte canônica e legível por máquina para memberships é `skills/renova-aura-skill-library-curator/references/profile-memberships.json`; o manifesto da PR E deve consumi-la sem reinterpretar esta tabela.
@@ -46,6 +47,8 @@ Um perfil define apenas o conjunto elegível para descoberta; ele não ativa tod
 Toda mudança de status deve indicar sucessora, data e impacto de migração. Nenhuma skill é removida silenciosamente.
 
 ## Catálogo
+
+A biblioteca combinada registra 25 skills basais e 8 extension skills de `ProjectPacks`, totalizando 33 IDs únicos. As extensões permanecem skills especializadas; não são agentes canônicos nem project adapters.
 
 | Skill | Perfis elegíveis | Versão | Status | Uso principal |
 |---|---|---:|---|---|
@@ -74,20 +77,25 @@ Toda mudança de status deve indicar sucessora, data e impacto de migração. Ne
 | `renova-aura-pdf-compatibility-auditor` | Pdf | 1.1.0 | ACTIVE | Verificar estrutura, salvamento, reabertura e impressão |
 | `renova-aura-pdf-viewer-validation-runbook` | Pdf | 1.1.0 | ACTIVE | Validar manualmente viewers/dispositivos sem envio externo |
 | `renova-aura-pdf-delivery-guardian` | Pdf | 1.1.0 | ACTIVE | Empacotar artefatos aprovados, manifesto e hashes |
+| `renova-aura-requirements-completeness-auditor` | ProjectPacks | 1.1.0 | ACTIVE | Auditar requisitos, lacunas, critérios de aceite e evidências |
+| `renova-aura-data-contract-field-auditor` | ProjectPacks | 1.1.0 | ACTIVE | Rastrear campos e contratos de dados entre todas as camadas |
+| `renova-aura-workflow-integration-auditor` | ProjectPacks | 1.1.0 | ACTIVE | Auditar fluxos ponta a ponta, contratos e modos de falha |
+| `renova-aura-domain-invariant-guardian` | ProjectPacks | 1.1.0 | ACTIVE | Identificar e proteger invariantes e transições de domínio |
+| `renova-aura-android-kotlin-engineering` | ProjectPacks | 1.1.0 | ACTIVE | Implementar ou revisar Android Kotlin com escopo e testes controlados |
+| `renova-aura-whatsapp-automation-reliability` | ProjectPacks | 1.1.0 | ACTIVE | Auditar confiabilidade de mensagens com mocks e falhas |
+| `renova-aura-voice-ai-evaluation` | ProjectPacks | 1.1.0 | ACTIVE | Avaliar voz e extração estruturada com métricas independentes |
+| `renova-aura-accessibility-mobile-qa` | ProjectPacks | 1.1.0 | ACTIVE | Validar acessibilidade e estados mobile com evidências de QA |
 
-## Agent Operating System V1 — dependência futura
+## Agent Operating System V1.1 — camada integrada
 
-O contrato abaixo pertence às PRs B e D da pilha e está `NOT RUN` nesta PR A isolada. Os arquivos citados ainda não fazem parte desta árvore; portanto, nenhum número ou comportamento abaixo é alegado como presente ou validado aqui. O alvo planejado é:
+O Agent OS 1.1 está presente na ancestralidade desta árvore e permanece separado do catálogo de skills. O estado central preservado nesta integração é:
 
-- 18 agentes declarativos;
-- 9 modos de orquestração;
-- 7 protocolos de loop com limites cumulativos;
-- 9 motivos terminais padronizados;
-- integrador final, avaliadores independentes e ownership ancestral;
-- templates persistentes e sanitizados;
-- referência Python mock com provider externo inexequível.
+- 18 agentes declarativos e exatamente um accountable integrator;
+- avaliadores independentes, ownership explícito e gates humanos;
+- project adapters fora do registry canônico;
+- provider real, produção, merge e deploy sem autorização implícita.
 
-Após a PR B, consultar `RENOVA_AURA_AGENT_OS.md`, `agents/README.md` e `RENOVA_AURA_AGENT_OS_EVALS.md`. Após a PR D, executar os testes da referência. Até a integração dessas branches, o status desses checks é `NOT RUN`.
+Consultar `RENOVA_AURA_AGENT_OS.md`, `agents/README.md` e `RENOVA_AURA_AGENT_OS_EVALS.md`. As avaliações A01–A30, runtime, provider real e CI remoto não foram executados nesta fase e permanecem `NOT_RUN` aqui.
 
 ## Suíte de PDFs preenchíveis
 

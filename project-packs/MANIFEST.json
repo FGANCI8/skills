@@ -1,7 +1,8 @@
 {
   "schema_version": "1.0.0",
   "library": "Renova Aura Project Prompt Packs",
-  "version": "1.0.0-draft",
+  "version": "1.1.0-draft",
+  "profile": "ProjectPacks",
   "status": "DRAFT_NOT_MERGED",
   "base_branch": "agent/ra-skills-base-v1",
   "branch": "agent/ra-project-prompt-packs-v1",
@@ -10,8 +11,11 @@
     "prompts": 23,
     "universal_prompts": 17,
     "technology_channel_prompts": 6,
-    "new_skills": 8,
-    "new_agents": 4,
+    "base_skills": 25,
+    "extension_skills": 8,
+    "combined_skills": 33,
+    "canonical_agents": 18,
+    "project_adapters": 4,
     "confirmed_project_repositories": 8,
     "project_local_files_per_repository": 2
   },
@@ -30,7 +34,7 @@
     "renova-aura-voice-ai-evaluation",
     "renova-aura-accessibility-mobile-qa"
   ],
-  "agents": [
+  "project_adapters": [
     "requirements-completeness-analyst",
     "data-contract-integration-reviewer",
     "android-kotlin-engineer",

@@ -29,6 +29,8 @@ Do not solve semantic duplication by keeping several active aliases with differe
 
 `Writer` means the final owner of changed files. A supporting skill may propose a patch or contract but cannot write a path already assigned to another owner. The accountable integrator validates the actual diff against exact claims.
 
+`ProjectPacks` entries below are extension skills with bounded specialized responsibilities. They inherit `RA-AUTH-BASELINE-1`, do not become canonical agents or project adapters, and do not override the accountable integrator or human approval gates.
+
 | Responsibility | Primary owner | Supporting skills | Writer | Reviewer / exclusions |
 |---|---|---|---|---|
 | natural-language task routing | `renova-aura-router` | risk-required owner only | none for routing | reviewer when routing changes; no domain implementation |
@@ -51,6 +53,14 @@ Do not solve semantic duplication by keeping several active aliases with differe
 | prompt/skill source design | `renova-aura-prompt-source-designer` | curator, security | prompt designer for exact content files | curator/reviewer; no publication or installation authority |
 | project handoff/status | `renova-aura-project-handoff` | current domain owner | handoff owner for canonical status files | independent evidence check; handoff never grants approval |
 | library inventory/install/publication | `renova-aura-skill-library-curator` | prompt designer, security, quality | curator for catalog/installer scope | independent reviewer; no private/project content publication |
+| requirements completeness audit | `renova-aura-requirements-completeness-auditor` | product spec, handoff, relevant engineering owner | assigned audit and traceability artifacts only | independent reviewer/integrator; no implementation or self-acceptance |
+| data-contract field audit | `renova-aura-data-contract-field-auditor` | database, backend, security | assigned field ledgers, contract reports and specifications only | data/security owner; no migration, production query or unrestricted persistence write |
+| workflow integration audit | `renova-aura-workflow-integration-auditor` | backend, data, observability, quality | assigned workflow maps, contract tables and synthetic test specifications only | accountable integrator; no provider or external integration execution |
+| domain invariant protection | `renova-aura-domain-invariant-guardian` | product, database, security, engineering | assigned invariant catalogs, transition models and test specifications only | human product owner and independent reviewer; no invented business decision |
+| Android Kotlin engineering | `renova-aura-android-kotlin-engineering` | engineering, UX/accessibility, quality, security | explicitly claimed files in the assigned Android module only | accountable integrator; no signing, Play Store, backend/schema takeover or release |
+| WhatsApp automation reliability | `renova-aura-whatsapp-automation-reliability` | backend, AI, security, observability | assigned messaging contracts, mocks and disconnected sandbox fixtures only | accountable integrator; no token, real message, broadcast or production webhook |
+| independent Voice AI evaluation | `renova-aura-voice-ai-evaluation` | AI, security, quality, product | evaluation plans, synthetic datasets, metrics and evidence only; no write claim over the evaluated artifact | distinct reviewer and human gate; no self-review or release authority |
+| accessibility and mobile QA | `renova-aura-accessibility-mobile-qa` | UX, Android, frontend, quality | assigned QA plans, evidence, findings and test artifacts only | independent reviewer/integrator; no UI takeover, merge or release authority |
 | PDF task routing | `renova-aura-pdf-forms-router` | minimum PDF specialist | none for routing | compatibility/security review; no universal claim |
 | fillable PDF creation/repair | `renova-aura-fillable-pdf-architect` | auditor, delivery | architect for approved working copy | compatibility auditor; never modify immutable source |
 | PDF structural compatibility audit | `renova-aura-pdf-compatibility-auditor` | architect only after proven defect | none during audit | delivery/reviewer; no repair without authority |

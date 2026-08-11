@@ -41,6 +41,16 @@
       "renova-aura-pdf-compatibility-auditor",
       "renova-aura-pdf-viewer-validation-runbook",
       "renova-aura-pdf-delivery-guardian"
+    ],
+    "ProjectPacks": [
+      "renova-aura-requirements-completeness-auditor",
+      "renova-aura-data-contract-field-auditor",
+      "renova-aura-workflow-integration-auditor",
+      "renova-aura-domain-invariant-guardian",
+      "renova-aura-android-kotlin-engineering",
+      "renova-aura-whatsapp-automation-reliability",
+      "renova-aura-voice-ai-evaluation",
+      "renova-aura-accessibility-mobile-qa"
     ]
   },
   "all_profile_rule": "EXPLICIT_UNION_ONLY_NEVER_DEFAULT",
