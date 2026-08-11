@@ -943,15 +943,23 @@ class StaticGovernanceTests(unittest.TestCase):
             can_write = agent["capabilities"]["can_write"]
             has_write_tool = write_tool in agent["allowed_tools"]
             write_scope = agent.get("write_scope")
+            if type(can_write) is not bool:
+                return False
             if agent_id not in expected_write_scopes:
                 return False
             if write_scope != expected_write_scopes[agent_id]:
                 return False
             if agent_id in expected_read_only_ids:
-                return not can_write and not has_write_tool
-            return can_write and has_write_tool
+                return can_write is False and not has_write_tool
+            return can_write is True and has_write_tool
 
         self.assertEqual({agent["id"] for agent in agents}, set(expected_write_scopes))
+        self.assertTrue(
+            all(
+                type(agent["capabilities"]["can_write"]) is bool
+                for agent in agents
+            )
+        )
 
         self.assertEqual(
             {agent["id"] for agent in agents if not agent["capabilities"]["can_write"]},
@@ -1010,6 +1018,24 @@ class StaticGovernanceTests(unittest.TestCase):
                 False,
             )
         )
+
+        invalid_can_write_cases = (
+            ("writer_can_write_string_false", writer, "false"),
+            ("writer_can_write_string_true", writer, "true"),
+            ("writer_can_write_integer_one", writer, 1),
+            ("reader_can_write_integer_zero", reader, 0),
+            ("reader_can_write_none", reader, None),
+            ("reader_can_write_empty_string", reader, ""),
+            ("reader_can_write_empty_list", reader, []),
+            ("reader_can_write_empty_dict", reader, {}),
+            ("writer_can_write_nonempty_list", writer, [False]),
+            ("writer_can_write_nonempty_dict", writer, {"value": False}),
+            ("writer_can_write_tuple", writer, (False,)),
+        )
+        for name, source, value in invalid_can_write_cases:
+            invalid_can_write = deepcopy(source)
+            invalid_can_write["capabilities"]["can_write"] = value
+            cases.append((name, invalid_can_write, False))
 
         cases.append(("valid_reader", reader, True))
         cases.append(("valid_writer", writer, True))
