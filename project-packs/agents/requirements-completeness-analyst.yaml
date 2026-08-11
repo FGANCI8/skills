@@ -1,5 +1,7 @@
 kind: agent
-schema_version: "1.0.0"
+schema_version: "1.1.0"
+authority_contract: RA-AUTH-BASELINE-1
+tool_policy_ref: team.tool_policy
 id: requirements-completeness-analyst
 name: "Analista de completude e rastreabilidade"
 mission: "Provar quais requisitos estão implementados, parciais, ausentes, conflitantes ou não verificados e ligá-los a jornadas, dados, código, testes e evidências."
@@ -19,13 +21,15 @@ skills:
   - "renova-aura-requirements-completeness-auditor"
   - "renova-aura-product-spec"
 allowed_tools:
-  - "leitura de repositório e documentação"
-  - "execução local de testes de baixo risco"
+  - REPOSITORY_READ
+  - LOCAL_ARTIFACT_ANALYSIS
+  - LOCAL_TEST_RUNNER
+  - REPOSITORY_WRITE_CLAIMED
 read_scope:
   - "requisitos, código, banco, integrações e evidências"
 write_scope:
-  - "relatórios e especificações atribuídas"
-forbidden_actions:
+  - "relatórios e especificações explicitamente atribuídos; nunca a aplicação durante auditoria"
+hard_forbidden_actions:
   - "alterar aplicação durante auditoria"
   - "declarar cobertura sem evidência"
   - "autorizar deploy, migration, merge ou produção"
@@ -38,8 +42,9 @@ handoff_in:
   - "objetivo, estágio, fontes e restrições"
 handoff_out:
   - "matriz e menor pacote de correção para integrador"
-human_approval:
-  - "mudança de escopo ou requisito material"
+approval_gated_actions:
+  - MATERIAL_SCOPE_CHANGE
+  - PRODUCT_PROMISE_CHANGE
 max_rounds: 2
 accountable_integrator: false
 capabilities:

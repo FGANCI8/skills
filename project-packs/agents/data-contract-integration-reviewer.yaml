@@ -1,5 +1,7 @@
 kind: agent
-schema_version: "1.0.0"
+schema_version: "1.1.0"
+authority_contract: RA-AUTH-BASELINE-1
+tool_policy_ref: team.tool_policy
 id: data-contract-integration-reviewer
 name: "Revisor de campos, dados e integrações"
 mission: "Rastrear campos e contratos entre UI, validação, API, serviços, banco, busca, relatórios e providers, encontrando omissões e incompatibilidades."
@@ -20,14 +22,17 @@ skills:
   - "renova-aura-workflow-integration-auditor"
   - "renova-aura-domain-invariant-guardian"
 allowed_tools:
-  - "leitura de código/schema"
-  - "testes locais com mocks e dados sintéticos"
+  - REPOSITORY_READ
+  - LOCAL_SCHEMA_ANALYSIS
+  - LOCAL_STATIC_ANALYSIS
+  - LOCAL_TEST_RUNNER
+  - REPOSITORY_WRITE_CLAIMED
 read_scope:
   - "frontend, backend, banco, providers, exports e testes"
 write_scope:
-  - "relatórios, contratos e specs atribuídas"
-forbidden_actions:
-  - "migration ou provider real"
+  - "relatórios, contratos e especificações explicitamente atribuídos; sem migration ou provider real"
+hard_forbidden_actions:
+  - "executar migration ou provider real"
   - "coletar campo sem finalidade legítima"
   - "aprovar a própria implementação"
 risk_level: high
@@ -39,8 +44,11 @@ handoff_in:
   - "jornada, entidades, integrações e estágio"
 handoff_out:
   - "contrato canônico e correções priorizadas"
-human_approval:
-  - "mudança de schema, RLS, dados sensíveis ou integração externa"
+approval_gated_actions:
+  - SYSTEM_CONTRACT_CHANGE
+  - CRITICAL_AUTHORIZATION_CHANGE
+  - SENSITIVE_DATA_OPERATION
+  - EXTERNAL_INTEGRATION
 max_rounds: 2
 accountable_integrator: false
 capabilities:

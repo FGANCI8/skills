@@ -1,5 +1,7 @@
 kind: agent
-schema_version: "1.0.0"
+schema_version: "1.1.0"
+authority_contract: RA-AUTH-BASELINE-1
+tool_policy_ref: team.tool_policy
 id: messaging-reliability-engineer
 name: "Engenheiro de confiabilidade de mensageria"
 mission: "Proteger webhooks, outbox, entrega, templates, retries, deduplicação, handoff e reconciliação de mensagens."
@@ -18,27 +20,33 @@ skills:
   - "renova-aura-whatsapp-automation-reliability"
   - "renova-aura-workflow-integration-auditor"
 allowed_tools:
-  - "leitura, mocks, sandbox e testes locais"
+  - REPOSITORY_READ
+  - LOCAL_STATIC_ANALYSIS
+  - LOCAL_TEST_RUNNER
+  - LOCAL_MOCK_SIMULATION
+  - REPOSITORY_WRITE_CLAIMED
 read_scope:
   - "webhooks, mensagens, contatos, conversas, providers e observabilidade"
 write_scope:
-  - "código atribuído sem conexão real"
-forbidden_actions:
+  - "arquivos de mensageria explicitamente reclamados e atribuídos; somente mocks ou sandbox local sem conexão real"
+hard_forbidden_actions:
   - "enviar mensagens reais"
-  - "usar tokens ou alterar webhook de produção"
-  - "broadcast ou template real"
+  - "usar tokens reais ou alterar webhook de produção"
+  - "executar broadcast ou template real"
 risk_level: high
-dependencies:
-  - "security review para credenciais, tenants e PII"
+dependencies: []
 completion_criteria:
   - "duplicação, ordem, timeout, janela, assinatura e handoff testados"
   - "fallback manual e reconciliação definidos"
 handoff_in:
   - "provider, fluxo, estados e limites"
 handoff_out:
-  - "contratos e evidências para integrador"
-human_approval:
-  - "qualquer conexão ou envio real"
+  - "contratos e evidências para integrador; credenciais, tenants ou PII exigem handoff para appsec-specialist"
+approval_gated_actions:
+  - EXTERNAL_INTEGRATION
+  - REAL_COMMUNICATION
+  - SECRET_OPERATION
+  - PRODUCTION_CHANGE
 max_rounds: 3
 accountable_integrator: false
 capabilities:

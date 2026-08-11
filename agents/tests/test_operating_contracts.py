@@ -17,6 +17,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 AGENTS_ROOT = REPO_ROOT / "agents"
+PROJECT_ADAPTERS_ROOT = REPO_ROOT / "project-packs" / "agents"
 sys.path.insert(0, str(AGENTS_ROOT))
 
 from contract_checks import (  # noqa: E402
@@ -818,6 +819,619 @@ class MetricsTests(unittest.TestCase):
         for enabled, sink in ((False, "PRIVATE_LOCAL_FILE"), (True, "DISABLED"), (True, "NETWORK")):
             with self.subTest(enabled=enabled, sink=sink), self.assertRaises(ContractError):
                 validate_metrics_configuration(enabled=enabled, sink=sink)
+
+
+class ProjectAdapterContractTests(unittest.TestCase):
+    ADAPTER_IDS = {
+        "android-kotlin-engineer",
+        "data-contract-integration-reviewer",
+        "messaging-reliability-engineer",
+        "requirements-completeness-analyst",
+    }
+    EXPECTED_CONTRACTS = {
+        "requirements-completeness-analyst": {
+            "read_scope": ("requisitos, código, banco, integrações e evidências",),
+            "write_scope": (
+                "relatórios e especificações explicitamente atribuídos; nunca a aplicação durante auditoria",
+            ),
+            "hard_forbidden_actions": (
+                "alterar aplicação durante auditoria",
+                "declarar cobertura sem evidência",
+                "autorizar deploy, migration, merge ou produção",
+            ),
+            "handoff_in": ("objetivo, estágio, fontes e restrições",),
+            "handoff_out": ("matriz e menor pacote de correção para integrador",),
+            "tools": frozenset(
+                {
+                    "REPOSITORY_READ",
+                    "LOCAL_ARTIFACT_ANALYSIS",
+                    "LOCAL_TEST_RUNNER",
+                    "REPOSITORY_WRITE_CLAIMED",
+                }
+            ),
+            "approvals": frozenset(
+                {"MATERIAL_SCOPE_CHANGE", "PRODUCT_PROMISE_CHANGE"}
+            ),
+            "capabilities": {
+                "can_write": True,
+                "can_integrate": False,
+                "can_evaluate": True,
+                "must_be_independent_from_author": True,
+            },
+        },
+        "data-contract-integration-reviewer": {
+            "read_scope": ("frontend, backend, banco, providers, exports e testes",),
+            "write_scope": (
+                "relatórios, contratos e especificações explicitamente atribuídos; sem migration ou provider real",
+            ),
+            "hard_forbidden_actions": (
+                "executar migration ou provider real",
+                "coletar campo sem finalidade legítima",
+                "aprovar a própria implementação",
+            ),
+            "handoff_in": ("jornada, entidades, integrações e estágio",),
+            "handoff_out": ("contrato canônico e correções priorizadas",),
+            "tools": frozenset(
+                {
+                    "REPOSITORY_READ",
+                    "LOCAL_SCHEMA_ANALYSIS",
+                    "LOCAL_STATIC_ANALYSIS",
+                    "LOCAL_TEST_RUNNER",
+                    "REPOSITORY_WRITE_CLAIMED",
+                }
+            ),
+            "approvals": frozenset(
+                {
+                    "SYSTEM_CONTRACT_CHANGE",
+                    "CRITICAL_AUTHORIZATION_CHANGE",
+                    "SENSITIVE_DATA_OPERATION",
+                    "EXTERNAL_INTEGRATION",
+                }
+            ),
+            "capabilities": {
+                "can_write": True,
+                "can_integrate": False,
+                "can_evaluate": True,
+                "must_be_independent_from_author": True,
+            },
+        },
+        "android-kotlin-engineer": {
+            "read_scope": ("aplicativo Android e contratos de backend necessários",),
+            "write_scope": (
+                "arquivos Android explicitamente reclamados e atribuídos",
+            ),
+            "hard_forbidden_actions": (
+                "acessar chaves de assinatura",
+                "publicação na Play Store",
+                "alterar backend remoto sem owner e gate verificável",
+            ),
+            "handoff_in": ("telas, estados, contratos, versão e escopo",),
+            "handoff_out": (
+                "implementação ou plano verificável para integrador; mudanças de backend ou schema são roteadas aos owners adequados",
+            ),
+            "tools": frozenset(
+                {
+                    "REPOSITORY_READ",
+                    "OFFICIAL_DOCUMENTATION_READ",
+                    "LOCAL_STATIC_ANALYSIS",
+                    "LOCAL_TEST_RUNNER",
+                    "LOCAL_ARTIFACT_ANALYSIS",
+                    "REPOSITORY_WRITE_CLAIMED",
+                }
+            ),
+            "approvals": frozenset(
+                {
+                    "SENSITIVE_DATA_OPERATION",
+                    "SECRET_OPERATION",
+                    "RELEASE_STATE_CHANGE",
+                    "SYSTEM_CONTRACT_CHANGE",
+                }
+            ),
+            "capabilities": {
+                "can_write": True,
+                "can_integrate": False,
+                "can_evaluate": False,
+                "must_be_independent_from_author": False,
+            },
+        },
+        "messaging-reliability-engineer": {
+            "read_scope": (
+                "webhooks, mensagens, contatos, conversas, providers e observabilidade",
+            ),
+            "write_scope": (
+                "arquivos de mensageria explicitamente reclamados e atribuídos; somente mocks ou sandbox local sem conexão real",
+            ),
+            "hard_forbidden_actions": (
+                "enviar mensagens reais",
+                "usar tokens reais ou alterar webhook de produção",
+                "executar broadcast ou template real",
+            ),
+            "handoff_in": ("provider, fluxo, estados e limites",),
+            "handoff_out": (
+                "contratos e evidências para integrador; credenciais, tenants ou PII exigem handoff para appsec-specialist",
+            ),
+            "tools": frozenset(
+                {
+                    "REPOSITORY_READ",
+                    "LOCAL_STATIC_ANALYSIS",
+                    "LOCAL_TEST_RUNNER",
+                    "LOCAL_MOCK_SIMULATION",
+                    "REPOSITORY_WRITE_CLAIMED",
+                }
+            ),
+            "approvals": frozenset(
+                {
+                    "EXTERNAL_INTEGRATION",
+                    "REAL_COMMUNICATION",
+                    "SECRET_OPERATION",
+                    "PRODUCTION_CHANGE",
+                }
+            ),
+            "capabilities": {
+                "can_write": True,
+                "can_integrate": False,
+                "can_evaluate": True,
+                "must_be_independent_from_author": True,
+            },
+        },
+    }
+
+    def setUp(self):
+        self.schema = load_json(AGENTS_ROOT / "agent-team.schema.json")
+        self.agent_schema = self.schema["$defs"]["agent"]
+        self.team = load_yaml(AGENTS_ROOT / "renova-aura-team.yaml")
+        self.canonical_agents = [
+            load_yaml(path)
+            for path in sorted((AGENTS_ROOT / "definitions").glob("*.yaml"))
+        ]
+        self.adapter_paths = sorted(PROJECT_ADAPTERS_ROOT.glob("*.yaml"))
+        self.adapters = [load_yaml(path) for path in self.adapter_paths]
+
+    def _conforms_to_agent_definition(self, agent: dict) -> bool:
+        if not isinstance(agent, dict):
+            return False
+        required = set(self.agent_schema["required"])
+        allowed_properties = set(self.agent_schema["properties"])
+        if not required.issubset(agent) or not set(agent).issubset(allowed_properties):
+            return False
+        if agent.get("kind") != "agent":
+            return False
+        if agent.get("schema_version") != "1.1.0":
+            return False
+        if agent.get("authority_contract") != "RA-AUTH-BASELINE-1":
+            return False
+        if agent.get("tool_policy_ref") != "team.tool_policy":
+            return False
+        if agent.get("accountable_integrator") is not False:
+            return False
+        max_rounds_schema = self.agent_schema["properties"]["max_rounds"]
+        if type(agent.get("max_rounds")) is not int or not (
+            max_rounds_schema["minimum"]
+            <= agent["max_rounds"]
+            <= max_rounds_schema["maximum"]
+        ):
+            return False
+        if agent.get("risk_level") not in set(
+            self.agent_schema["properties"]["risk_level"]["enum"]
+        ):
+            return False
+        agent_id_schema = self.schema["$defs"]["agentId"]
+        if not isinstance(agent.get("id"), str) or not re.fullmatch(
+            agent_id_schema["pattern"], agent["id"]
+        ):
+            return False
+
+        for field in ("name", "mission"):
+            field_schema = self.agent_schema["properties"][field]
+            value = agent.get(field)
+            if (
+                not isinstance(value, str)
+                or not value.strip()
+                or len(value) < field_schema["minLength"]
+            ):
+                return False
+        nonempty_list_fields = (
+            "when_to_use",
+            "when_not_to_use",
+            "inputs",
+            "structured_outputs",
+            "skills",
+            "allowed_tools",
+            "read_scope",
+            "write_scope",
+            "hard_forbidden_actions",
+            "approval_gated_actions",
+            "completion_criteria",
+            "handoff_in",
+            "handoff_out",
+        )
+        item_min_length = self.schema["$defs"]["nonEmptyStrings"]["items"][
+            "minLength"
+        ]
+        for field in nonempty_list_fields:
+            value = agent.get(field)
+            if (
+                not isinstance(value, list)
+                or not value
+                or any(
+                    not isinstance(item, str)
+                    or not item.strip()
+                    or len(item) < item_min_length
+                    for item in value
+                )
+                or len(value) != len(set(value))
+            ):
+                return False
+        dependencies = agent.get("dependencies")
+        if (
+            not isinstance(dependencies, list)
+            or any(
+                not isinstance(item, str)
+                or not re.fullmatch(agent_id_schema["pattern"], item)
+                for item in dependencies
+            )
+            or len(dependencies) != len(set(dependencies))
+        ):
+            return False
+
+        if "incident_policy" in agent:
+            incident = agent["incident_policy"]
+            incident_schema = self.agent_schema["properties"]["incident_policy"]
+            if (
+                not isinstance(incident, dict)
+                or set(incident) != set(incident_schema["required"])
+                or any(
+                    incident.get(field) != constraints["const"]
+                    for field, constraints in incident_schema["properties"].items()
+                )
+            ):
+                return False
+
+        tools = set(agent["allowed_tools"])
+        approvals = set(agent["approval_gated_actions"])
+        if not tools.issubset(set(self.schema["$defs"]["toolId"]["enum"])):
+            return False
+        if not approvals.issubset(
+            set(self.schema["$defs"]["approvalAction"]["enum"])
+        ):
+            return False
+        capabilities = agent.get("capabilities")
+        expected_capabilities = set(
+            self.schema["$defs"]["capabilities"]["required"]
+        )
+        if not isinstance(capabilities, dict) or set(capabilities) != expected_capabilities:
+            return False
+        if any(type(capabilities[field]) is not bool for field in expected_capabilities):
+            return False
+        has_write_tool = "REPOSITORY_WRITE_CLAIMED" in tools
+        if capabilities["can_write"] is not has_write_tool:
+            return False
+        if capabilities["can_integrate"] is not False:
+            return False
+        if capabilities["can_evaluate"] and not capabilities[
+            "must_be_independent_from_author"
+        ]:
+            return False
+        known_dependencies = {
+            canonical["id"] for canonical in self.canonical_agents
+        } | self.ADAPTER_IDS
+        if not set(dependencies).issubset(known_dependencies):
+            return False
+        if agent["id"] in dependencies:
+            return False
+        if not all(
+            (REPO_ROOT / "skills" / skill_id / "SKILL.md").is_file()
+            for skill_id in agent["skills"]
+        ):
+            return False
+
+        contract = self.EXPECTED_CONTRACTS.get(agent["id"])
+        if contract is None or "incident_policy" in agent:
+            return False
+        for field in (
+            "read_scope",
+            "write_scope",
+            "hard_forbidden_actions",
+            "handoff_in",
+            "handoff_out",
+        ):
+            if tuple(agent[field]) != contract[field]:
+                return False
+        return (
+            frozenset(agent["allowed_tools"]) == contract["tools"]
+            and frozenset(agent["approval_gated_actions"]) == contract["approvals"]
+            and agent["capabilities"] == contract["capabilities"]
+            and agent["dependencies"] == []
+        )
+
+    def test_project_adapters_conform_to_agent_os_v11(self):
+        self.assertEqual(len(self.adapters), 4)
+        self.assertEqual({adapter["id"] for adapter in self.adapters}, self.ADAPTER_IDS)
+        for path, adapter in zip(self.adapter_paths, self.adapters):
+            with self.subTest(adapter=adapter["id"]):
+                self.assertEqual(path.stem, adapter["id"])
+                self.assertTrue(self._conforms_to_agent_definition(adapter))
+
+    def test_project_adapters_remain_outside_canonical_registry(self):
+        canonical_ids = {agent["id"] for agent in self.canonical_agents}
+        registry_ids = {entry["id"] for entry in self.team["agents"]}
+
+        def registry_is_valid(candidate_ids: set[str]) -> bool:
+            return (
+                len(candidate_ids) == 18
+                and candidate_ids == canonical_ids
+                and candidate_ids.isdisjoint(self.ADAPTER_IDS)
+            )
+
+        self.assertEqual(len(self.canonical_agents), 18)
+        self.assertTrue(registry_is_valid(registry_ids))
+        self.assertEqual(
+            sum(bool(agent["accountable_integrator"]) for agent in self.canonical_agents),
+            1,
+        )
+        self.assertFalse(registry_is_valid(registry_ids | {next(iter(self.ADAPTER_IDS))}))
+
+    def test_project_adapters_have_exact_bounded_contracts(self):
+        self.assertEqual(set(self.EXPECTED_CONTRACTS), self.ADAPTER_IDS)
+        for adapter in self.adapters:
+            with self.subTest(adapter=adapter["id"]):
+                contract = self.EXPECTED_CONTRACTS[adapter["id"]]
+                for field in (
+                    "read_scope",
+                    "write_scope",
+                    "hard_forbidden_actions",
+                    "handoff_in",
+                    "handoff_out",
+                ):
+                    self.assertEqual(tuple(adapter[field]), contract[field])
+                self.assertEqual(
+                    frozenset(adapter["allowed_tools"]), contract["tools"]
+                )
+                self.assertEqual(
+                    frozenset(adapter["approval_gated_actions"]),
+                    contract["approvals"],
+                )
+                self.assertEqual(adapter["capabilities"], contract["capabilities"])
+                self.assertEqual(adapter["dependencies"], [])
+                self.assertEqual(adapter["authority_contract"], "RA-AUTH-BASELINE-1")
+                self.assertEqual(adapter["tool_policy_ref"], "team.tool_policy")
+                self.assertNotIn("incident_policy", adapter)
+                self.assertNotIn("forbidden_actions", adapter)
+                self.assertNotIn("human_approval", adapter)
+                self.assertNotIn("REAL_PROVIDER_EXECUTION", adapter["allowed_tools"])
+
+    def _invalid_contract_mutants(self):
+        adapters = {adapter["id"]: adapter for adapter in self.adapters}
+        cases = []
+
+        def mutation(name: str, adapter_id: str, mutate):
+            source = adapters[adapter_id]
+            candidate = deepcopy(source)
+            mutate(candidate)
+            cases.append((name, source, candidate))
+
+        requirements = "requirements-completeness-analyst"
+        data = "data-contract-integration-reviewer"
+        android = "android-kotlin-engineer"
+        messaging = "messaging-reliability-engineer"
+
+        mutation("old_schema", requirements, lambda item: item.__setitem__("schema_version", "1.0.0"))
+        mutation("legacy_forbidden", requirements, lambda item: item.__setitem__("forbidden_actions", []))
+        mutation("legacy_approval", requirements, lambda item: item.__setitem__("human_approval", []))
+        mutation("name_below_minimum", requirements, lambda item: item.__setitem__("name", "x"))
+        mutation("mission_below_minimum", requirements, lambda item: item.__setitem__("mission", "curta"))
+        mutation("wrong_name_type", requirements, lambda item: item.__setitem__("name", 7))
+        mutation("empty_read_scope", requirements, lambda item: item.__setitem__("read_scope", []))
+        mutation(
+            "invalid_incident_policy",
+            requirements,
+            lambda item: item.__setitem__("incident_policy", {"unexpected": True}),
+        )
+        mutation("text_tool", requirements, lambda item: item["allowed_tools"].append("leitura livre"))
+        mutation(
+            "writer_without_tool",
+            requirements,
+            lambda item: item["allowed_tools"].remove("REPOSITORY_WRITE_CLAIMED"),
+        )
+        mutation(
+            "reader_with_write_tool",
+            requirements,
+            lambda item: item["capabilities"].__setitem__("can_write", False),
+        )
+        for label, value in (
+            ("string_true", "true"),
+            ("string_false", "false"),
+            ("integer_one", 1),
+            ("integer_zero", 0),
+            ("empty_list", []),
+            ("empty_object", {}),
+            ("none", None),
+        ):
+            mutation(
+                f"non_boolean_can_write_{label}",
+                requirements,
+                lambda item, value=value: item["capabilities"].__setitem__(
+                    "can_write", value
+                ),
+            )
+        mutation("unknown_dependency", requirements, lambda item: item["dependencies"].append("legacy-agent"))
+        mutation("wrong_authority", requirements, lambda item: item.__setitem__("authority_contract", "INLINE"))
+        mutation("wrong_policy", requirements, lambda item: item.__setitem__("tool_policy_ref", "inline"))
+        mutation(
+            "unknown_approval",
+            requirements,
+            lambda item: item["approval_gated_actions"].append("SELF_APPROVE"),
+        )
+
+        mutation(
+            "broad_read_private_data",
+            requirements,
+            lambda item: item.__setitem__(
+                "read_scope", ["todos os dados privados, secrets e credenciais"]
+            ),
+        )
+        mutation(
+            "broad_write_entire_repository",
+            requirements,
+            lambda item: item.__setitem__(
+                "write_scope", ["qualquer arquivo do repositório"]
+            ),
+        )
+        mutation(
+            "broad_write_secrets_private_production",
+            requirements,
+            lambda item: item.__setitem__(
+                "write_scope",
+                ["secrets, credenciais, dados privados e configuração de produção"],
+            ),
+        )
+        mutation(
+            "irrelevant_hard_forbidden",
+            requirements,
+            lambda item: item.__setitem__(
+                "hard_forbidden_actions", ["não usar linguagem informal"]
+            ),
+        )
+        mutation(
+            "remove_merge_deploy_production_forbidden",
+            requirements,
+            lambda item: item["hard_forbidden_actions"].remove(
+                "autorizar deploy, migration, merge ou produção"
+            ),
+        )
+        mutation(
+            "remove_migration_provider_forbidden",
+            data,
+            lambda item: item["hard_forbidden_actions"].remove(
+                "executar migration ou provider real"
+            ),
+        )
+        mutation(
+            "remove_signing_forbidden",
+            android,
+            lambda item: item["hard_forbidden_actions"].remove(
+                "acessar chaves de assinatura"
+            ),
+        )
+        mutation(
+            "remove_play_store_forbidden",
+            android,
+            lambda item: item["hard_forbidden_actions"].remove(
+                "publicação na Play Store"
+            ),
+        )
+        mutation(
+            "remove_real_communication_forbidden",
+            messaging,
+            lambda item: item["hard_forbidden_actions"].remove(
+                "enviar mensagens reais"
+            ),
+        )
+        mutation(
+            "remove_token_webhook_forbidden",
+            messaging,
+            lambda item: item["hard_forbidden_actions"].remove(
+                "usar tokens reais ou alterar webhook de produção"
+            ),
+        )
+        mutation(
+            "remove_broadcast_forbidden",
+            messaging,
+            lambda item: item["hard_forbidden_actions"].remove(
+                "executar broadcast ou template real"
+            ),
+        )
+        mutation(
+            "hard_forbidden_reduced_to_approval_gate",
+            messaging,
+            lambda item: item["hard_forbidden_actions"].__setitem__(
+                1, "usar tokens reais ou alterar webhook de produção somente com approval"
+            ),
+        )
+        for adapter_id in (requirements, data, messaging):
+            mutation(
+                f"self_approval_handoff_{adapter_id}",
+                adapter_id,
+                lambda item: item.__setitem__(
+                    "handoff_out", ["decisão final aprovada pelo próprio adapter"]
+                ),
+            )
+        mutation(
+            "android_backend_schema_owner_handoff_removed",
+            android,
+            lambda item: item.__setitem__(
+                "handoff_out", ["implementação final decidida pelo próprio adapter"]
+            ),
+        )
+        mutation(
+            "messaging_appsec_handoff_removed",
+            messaging,
+            lambda item: item.__setitem__(
+                "handoff_out", ["credenciais, tenants e PII tratados pelo próprio adapter"]
+            ),
+        )
+        return cases
+
+    def test_project_adapter_invalid_contracts_fail_closed(self):
+        for name, source, candidate in self._invalid_contract_mutants():
+            with self.subTest(case=name):
+                self.assertTrue(self._conforms_to_agent_definition(source))
+                self.assertFalse(self._conforms_to_agent_definition(candidate))
+
+    def test_project_adapter_evaluator_independence_fails_closed(self):
+        adapters = {adapter["id"]: adapter for adapter in self.adapters}
+        evaluator_ids = (
+            "requirements-completeness-analyst",
+            "data-contract-integration-reviewer",
+            "messaging-reliability-engineer",
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "src").mkdir()
+            (root / "reviews").mkdir()
+            (root / "src" / "artifact.txt").write_text("artifact", encoding="utf-8")
+            (root / "reviews" / "report.txt").write_text("report", encoding="utf-8")
+            for evaluator_id in evaluator_ids:
+                with self.subTest(evaluator=evaluator_id):
+                    record = evaluation_record()
+                    record["evaluator_agent_id"] = evaluator_id
+                    claims = evaluation_claims()
+                    claims[1]["owner"] = evaluator_id
+                    registry = {evaluator_id: adapters[evaluator_id]["capabilities"]}
+                    validate_evaluation_independence(
+                        record,
+                        claims,
+                        agent_capabilities=registry,
+                        repository_root=root,
+                        now=NOW,
+                    )
+
+                    self_review = deepcopy(record)
+                    self_review["author_agent_id"] = evaluator_id
+                    with self.assertRaisesRegex(ContractError, "distinct"):
+                        validate_evaluation_independence(
+                            self_review,
+                            claims,
+                            agent_capabilities=registry,
+                            repository_root=root,
+                            now=NOW,
+                        )
+
+                    overlap = claim(
+                        "src",
+                        claim_id="claim_cccccccccccccccccccccccccccccccc",
+                        path_type="DIRECTORY",
+                        owner=evaluator_id,
+                        status="ACTIVE",
+                    )
+                    with self.assertRaisesRegex(ContractError, "WRITE claim"):
+                        validate_evaluation_independence(
+                            record,
+                            claims + [overlap],
+                            agent_capabilities=registry,
+                            repository_root=root,
+                            now=NOW,
+                        )
 
 
 class StaticGovernanceTests(unittest.TestCase):
