@@ -1,0 +1,35 @@
+# REQUESTED synthetic template. It is not a grant and cannot execute anything.
+# Replace opaque IDs and bindings; only an external trusted store may populate
+# an APPROVED decision and verification evidence.
+kind: ApprovalRecord
+schema_version: "1.1.0"
+approval_id: approval_2f5a9bd5ac5f4a7185c71b38f4ec2e51
+task_id: task_2f5a9bd5ac5f4a7185c71b38f4ec2e51
+request_id: request_094ac8be18274842a773141f8267a585
+action: EXTERNAL_DELIVERY
+scope:
+  - scope_synthetic-artifact-only
+targets:
+  - target_approved-placeholder-only
+environment: NON_PRODUCTION_SYNTHETIC
+actor_ref: null
+trusted_source: null
+issued_at: "2030-01-01T12:00:00Z"
+expires_at: "2030-01-01T12:15:00Z"
+nonce: nonce_6ae30a96ee874b04a8e51793989c8d67
+single_use: true
+max_uses: 1
+use_count: 0
+consumed_at: null
+justification:
+  code: BOUNDED_SYNTHETIC_REQUEST
+  evidence_refs:
+    - evidence_synthetic-request-record
+artifact_or_head:
+  kind: SHA256
+  value: "0000000000000000000000000000000000000000000000000000000000000000"
+decision: REQUESTED
+decision_at: null
+approver_ref: null
+execution_authority: NEVER_AUTOMATIC
+executable: false

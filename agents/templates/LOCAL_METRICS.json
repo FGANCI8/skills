@@ -1,0 +1,8 @@
+{
+  "kind": "LocalMetrics",
+  "schema_version": "1.1.0",
+  "task_id": "task_2f5a9bd5ac5f4a7185c71b38f4ec2e51",
+  "enabled": false,
+  "sink": "DISABLED",
+  "values": {}
+}
