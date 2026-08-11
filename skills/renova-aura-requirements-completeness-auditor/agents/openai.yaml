@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Requirements Completeness Auditor"
+  short_description: "Audita requisitos, lacunas e evidências"
+  default_prompt: "Use $renova-aura-requirements-completeness-auditor para auditar requisitos, lacunas e critérios de aceite com evidências."

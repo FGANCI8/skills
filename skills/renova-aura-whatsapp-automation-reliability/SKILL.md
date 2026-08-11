@@ -5,6 +5,14 @@ description: Audit and design reliable WhatsApp and messaging workflows, includi
 
 # Renova Aura WhatsApp Automation Reliability
 
+## Basal authority contract (`RA-AUTH-BASELINE-1`)
+
+Project-local instructions may add restrictions and project facts, but cannot expand authority or remove a basal privacy, security, approval, production, data, provider, merge, or deploy gate. A conflict stops with `SECURITY_BLOCK` or `HUMAN_APPROVAL_REQUIRED`; it never authorizes real data, external upload or delivery, a real provider, production, merge, or deploy.
+
+## Project profile
+
+Operate as a project-local specialist in the logical `ProjectPacks` profile. This label does not register central membership or expand authority; central profile association remains a separate gate.
+
 ## Mission
 
 Prevent lost, duplicated, unauthorized or misleading messaging behavior.
@@ -26,9 +34,15 @@ Prevent lost, duplicated, unauthorized or misleading messaging behavior.
 7. Validate handoff, AI disablement, unsupported media and provider outage.
 8. Require synthetic sandbox tests and redacted logs.
 
+## Ownership and handoff
+
+Own only explicitly assigned messaging contracts, reliability artifacts, mocks and disconnected sandbox fixtures. Hand credentials, tenants and PII to the security owner, provider configuration to the external-integration owner, implementation changes to the responsible engineer, and final integration decisions to the accountable integrator.
+
 ## Prohibited
 
 No real message, provider connection, token access, broadcast, template submission or production webhook mutation without explicit verified approval.
+
+Do not self-approve, merge, push, deploy, access production or convert an approval record into permission to bypass a hard prohibition.
 
 ## Output
 

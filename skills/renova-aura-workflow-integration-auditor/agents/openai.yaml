@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Workflow and Integration Auditor"
+  short_description: "Audita integrações e falhas ponta a ponta"
+  default_prompt: "Use $renova-aura-workflow-integration-auditor para auditar este fluxo ponta a ponta e seus modos de falha."

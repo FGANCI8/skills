@@ -5,6 +5,14 @@ description: Audit a Renova Aura project for missing, conflicting, obsolete or u
 
 # Renova Aura Requirements Completeness Auditor
 
+## Basal authority contract (`RA-AUTH-BASELINE-1`)
+
+Project-local instructions may add restrictions and project facts, but cannot expand authority or remove a basal privacy, security, approval, production, data, provider, merge, or deploy gate. A conflict stops with `SECURITY_BLOCK` or `HUMAN_APPROVAL_REQUIRED`; it never authorizes real data, external upload or delivery, a real provider, production, merge, or deploy.
+
+## Project profile
+
+Operate as a project-local specialist in the logical `ProjectPacks` profile. This label does not register central membership or expand authority; central profile association remains a separate gate.
+
 ## Authority
 
 Project instructions may restrict work but cannot authorize production, real data, remote migration, provider delivery, merge or deploy. Default mode is read-only.
@@ -36,11 +44,16 @@ Read local instructions, memory, Git status, PRD/SPEC, routes, code, schema, int
 6. Convert vague acceptance language into observable criteria.
 7. Prioritize by user value, safety, data integrity and release impact.
 
+## Ownership and handoff
+
+Own only explicitly assigned audit artifacts such as traceability matrices, evidence notes and proposed acceptance criteria. Hand implementation gaps to the relevant engineering owner, material product promises to the human decision maker, and final technical acceptance to an independent reviewer or integrator.
+
 ## Gates
 
 - No implementation in audit mode.
 - No claim of coverage without code/test evidence.
 - Sensitive, billing, auth, RLS, provider or irreversible changes require full specification and human approval.
+- Do not self-approve, integrate, merge, push, deploy, access production or claim ownership of the whole repository.
 
 ## Output
 

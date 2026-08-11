@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Data Contract and Field Auditor"
+  short_description: "Audita campos e contratos de dados"
+  default_prompt: "Use $renova-aura-data-contract-field-auditor para rastrear campos e contratos de dados entre todas as camadas."

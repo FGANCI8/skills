@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Accessibility and Mobile QA"
+  short_description: "Valida acessibilidade e QA mobile real"
+  default_prompt: "Use $renova-aura-accessibility-mobile-qa para validar acessibilidade e estados mobile desta jornada."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura WhatsApp Automation Reliability"
+  short_description: "Audita confiabilidade de automações WhatsApp"
+  default_prompt: "Use $renova-aura-whatsapp-automation-reliability para auditar esta automação de mensagens com mocks e falhas."
