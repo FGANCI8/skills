@@ -868,6 +868,178 @@ class StaticGovernanceTests(unittest.TestCase):
         for agent_id, relative in registry.items():
             self.assertEqual(relative, f"definitions/{agent_id}.yaml")
 
+    def test_repository_write_capability_tool_and_scope_are_consistent(self):
+        schema = load_json(AGENTS_ROOT / "agent-team.schema.json")
+        agents = [
+            load_yaml(path)
+            for path in sorted((AGENTS_ROOT / "definitions").glob("*.yaml"))
+        ]
+        self.assertEqual(len(agents), 18)
+        write_tool = "REPOSITORY_WRITE_CLAIMED"
+        expected_write_scopes = {
+            "ai-automation-specialist": [
+                "arquivos de automação ou agente explicitamente atribuídos"
+            ],
+            "appsec-specialist": [
+                "relatório de segurança; correções somente se atribuídas separadamente"
+            ],
+            "backend-api-engineer": ["arquivos backend explicitamente atribuídos"],
+            "database-data-engineer": [
+                "nova migration e testes explicitamente atribuídos"
+            ],
+            "documentation-handoff-specialist": [
+                "handoff, ledger, decisões e resumo atribuídos"
+            ],
+            "independent-technical-reviewer": [
+                "retorno estruturado somente; nenhuma escrita no repositório"
+            ],
+            "independent-visual-evaluator": [
+                "retorno estruturado somente; nenhuma escrita no repositório"
+            ],
+            "observability-incident-engineer": [
+                "nenhuma escrita no repositório; somente proposta estruturada no V1.1"
+            ],
+            "performance-engineer": [
+                "arquivos de otimização explicitamente atribuídos",
+                "relatório de medição",
+            ],
+            "platform-release-engineer": [
+                "arquivos de CI/release explicitamente atribuídos",
+                "commit e metadados de PR somente no escopo explícito da tarefa; ações gated exigem verificação externa separada",
+            ],
+            "premium-frontend-specialist": [
+                "arquivos de frontend explicitamente atribuídos"
+            ],
+            "product-requirements-analyst": [
+                "PRD, SPEC, backlog e decisões atribuídas"
+            ],
+            "python-engineer": [
+                "arquivos Python e testes explicitamente atribuídos"
+            ],
+            "quality-test-engineer": [
+                "testes e fixtures explicitamente atribuídos",
+                "relatório de validação",
+            ],
+            "saas-architect": ["ADR, mapa e plano arquitetural atribuídos"],
+            "skills-agents-prompts-curator": [
+                "repositório central atribuído; instalação global somente após gate verificado, backup e transação"
+            ],
+            "technical-director-orchestrator": [
+                "plano, ledger, mapa de propriedade e handoff",
+                "arquivos explicitamente atribuídos ao integrador",
+            ],
+            "ux-accessibility-specialist": [
+                "arquivos UX ou componentes explicitamente atribuídos"
+            ],
+        }
+        expected_read_only_ids = {
+            "independent-technical-reviewer",
+            "independent-visual-evaluator",
+            "observability-incident-engineer",
+        }
+
+        def is_consistent(agent: dict) -> bool:
+            agent_id = agent.get("id")
+            can_write = agent["capabilities"]["can_write"]
+            has_write_tool = write_tool in agent["allowed_tools"]
+            write_scope = agent.get("write_scope")
+            if agent_id not in expected_write_scopes:
+                return False
+            if write_scope != expected_write_scopes[agent_id]:
+                return False
+            if agent_id in expected_read_only_ids:
+                return not can_write and not has_write_tool
+            return can_write and has_write_tool
+
+        self.assertEqual({agent["id"] for agent in agents}, set(expected_write_scopes))
+
+        self.assertEqual(
+            {agent["id"] for agent in agents if not agent["capabilities"]["can_write"]},
+            expected_read_only_ids,
+        )
+        for agent in agents:
+            with self.subTest(agent=agent["id"]):
+                self.assertTrue(is_consistent(agent))
+
+        writer = next(agent for agent in agents if agent["id"] == "quality-test-engineer")
+        reader = next(
+            agent for agent in agents if agent["id"] == "independent-technical-reviewer"
+        )
+        cases = []
+
+        writer_without_tool = deepcopy(writer)
+        writer_without_tool["allowed_tools"].remove(write_tool)
+        cases.append(("writer_without_tool", writer_without_tool, False))
+
+        read_only_with_writable_scope = deepcopy(reader)
+        read_only_with_writable_scope["write_scope"] = ["testes explicitamente atribuídos"]
+        cases.append(("read_only_with_writable_scope", read_only_with_writable_scope, False))
+
+        read_only_with_mixed_scope = deepcopy(reader)
+        read_only_with_mixed_scope["write_scope"].append(
+            "testes explicitamente atribuídos"
+        )
+        cases.append(("read_only_with_mixed_scope", read_only_with_mixed_scope, False))
+
+        read_only_with_inline_exception = deepcopy(reader)
+        read_only_with_inline_exception["write_scope"] = [
+            "nenhuma escrita no repositório, exceto testes explicitamente atribuídos"
+        ]
+        cases.append(
+            ("read_only_with_inline_exception", read_only_with_inline_exception, False)
+        )
+
+        read_only_with_tool = deepcopy(reader)
+        read_only_with_tool["allowed_tools"].append(write_tool)
+        cases.append(("read_only_with_tool", read_only_with_tool, False))
+
+        writer_with_read_only_scope = deepcopy(writer)
+        writer_with_read_only_scope["write_scope"] = deepcopy(
+            expected_write_scopes[reader["id"]]
+        )
+        cases.append(("writer_with_read_only_scope", writer_with_read_only_scope, False))
+
+        writer_with_semantic_read_only_scope = deepcopy(writer)
+        writer_with_semantic_read_only_scope["write_scope"] = [
+            "structured output only; no repository write"
+        ]
+        cases.append(
+            (
+                "writer_with_semantic_read_only_scope",
+                writer_with_semantic_read_only_scope,
+                False,
+            )
+        )
+
+        cases.append(("valid_reader", reader, True))
+        cases.append(("valid_writer", writer, True))
+
+        for name, agent, expected in cases:
+            with self.subTest(case=name):
+                self.assertEqual(is_consistent(agent), expected)
+
+        rules = schema["$defs"]["agent"]["allOf"]
+        forward_rule = rules[0]
+        inverse_rule = rules[1]
+        self.assertTrue(
+            forward_rule["if"]["properties"]["capabilities"]["properties"][
+                "can_write"
+            ]["const"]
+        )
+        self.assertEqual(
+            forward_rule["then"]["properties"]["allowed_tools"]["contains"]["const"],
+            write_tool,
+        )
+        self.assertEqual(
+            inverse_rule["if"]["properties"]["allowed_tools"]["contains"]["const"],
+            write_tool,
+        )
+        self.assertTrue(
+            inverse_rule["then"]["properties"]["capabilities"]["properties"][
+                "can_write"
+            ]["const"]
+        )
+
     def test_dependencies_are_known_and_acyclic(self):
         agents = {
             data["id"]: data

@@ -363,6 +363,44 @@
       },
       "allOf": [
         {
+          "if": {
+            "required": ["capabilities"],
+            "properties": {
+              "capabilities": {
+                "required": ["can_write"],
+                "properties": { "can_write": { "const": true } }
+              }
+            }
+          },
+          "then": {
+            "required": ["allowed_tools"],
+            "properties": {
+              "allowed_tools": {
+                "contains": { "const": "REPOSITORY_WRITE_CLAIMED" }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["allowed_tools"],
+            "properties": {
+              "allowed_tools": {
+                "contains": { "const": "REPOSITORY_WRITE_CLAIMED" }
+              }
+            }
+          },
+          "then": {
+            "required": ["capabilities"],
+            "properties": {
+              "capabilities": {
+                "required": ["can_write"],
+                "properties": { "can_write": { "const": true } }
+              }
+            }
+          }
+        },
+        {
           "if": { "properties": { "id": { "const": "observability-incident-engineer" } } },
           "then": {
             "required": ["incident_policy"],
