@@ -1,5 +1,23 @@
 # Validação — Biblioteca de Pacotes por Projeto
 
+## Contrato do manifesto
+
+No `MANIFEST.json`, `version` identifica a versão do conteúdo do conjunto
+`ProjectPacks`. O valor atual, `1.1.0-draft`, indica que o pacote permanece em
+estado draft e não representa release ou publicação final.
+
+`schema_version` identifica a versão estrutural do formato do manifesto. O
+formato atual é `1.1.0`. Mudanças estruturais incompatíveis — como remover ou
+renomear uma propriedade, mudar seu significado contratual ou alterar seu tipo
+de maneira incompatível — exigem uma nova versão de `schema_version`. Mudanças
+puramente aditivas só podem manter a versão quando o contrato vigente permitir
+explicitamente a extensão.
+
+O formato 1.1 substituiu `agents` por `project_adapters`, substituiu as
+contagens `new_skills` e `new_agents`, separou explicitamente base skills,
+extension skills, canonical agents e project adapters, e declarou o profile
+`ProjectPacks`.
+
 ## Escopo validado nesta entrega
 
 - branch central criada a partir de `agent/ra-skills-base-v1`;
