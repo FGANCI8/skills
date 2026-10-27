@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Infrastructure Guardian"
+  short_description: "Decisões de infraestrutura com evidências e gates"
+  default_prompt: "Use $renova-aura-infrastructure-guardian para avaliar a infraestrutura do projeto com fontes verificadas, custos e autorização."
