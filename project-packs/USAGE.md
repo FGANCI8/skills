@@ -1,6 +1,6 @@
 # Como usar sem decorar nomes
 
-Fernando não precisa memorizar IDs, skills ou agentes. Basta pedir em português normal.
+O usuário não precisa memorizar IDs, skills ou agentes. Basta pedir em português normal.
 
 ## Formato mínimo
 
@@ -18,7 +18,20 @@ Exemplos:
 - “No Aura Shop, confira o que falta para sair de dados mockados e receber pedido real.”
 - “No PetShop Pro, faça uma revisão de dados do tutor, pet, agenda, consentimento e pagamento.”
 
-O agente deve localizar o pacote do projeto, ler o repositório e selecionar o menor conjunto de prompts e skills.
+O roteador/orquestrador do Agent OS 1.1 deve localizar o pacote do projeto, ler as instruções locais e selecionar o menor conjunto de agentes, skills, project adapters e prompts.
+
+## Fluxo dentro do Agent OS 1.1
+
+1. O pedido chega em linguagem natural.
+2. O roteador escolhe um owner e somente os apoios exigidos pela tarefa e pelo risco.
+3. O agente usa as skills adequadas; o profile `ProjectPacks` torna oito extension skills elegíveis, mas não ativa todas.
+4. Um dos quatro project adapters entra somente quando o contexto do projeto exigir. Adapters não fazem parte dos 18 agentes canônicos.
+5. Um dos 23 prompts (`P01`–`P17` ou `T01`–`T06`) pode fornecer instrução padronizada.
+6. Handoffs transmitem estado e evidência, sem conceder autoridade, reabrir gate ou autorizar merge, push ou deploy.
+7. Quando o contrato exigir, um avaliador independente revisa sem autoaprovar.
+8. O humano decide ações críticas.
+
+O accountable integrator canônico continua sendo `technical-director-orchestrator`. `ProjectPacks` não cria um segundo Agent OS nem autoridade paralela, e revisão de IA não substitui decisão humana.
 
 ## Adaptação pelo estágio
 
@@ -73,3 +86,7 @@ Nenhum prompt desta biblioteca autoriza automaticamente:
 - processamento de dados pessoais reais.
 
 O agente pode inspecionar, especificar, testar localmente e preparar mudanças reversíveis dentro do escopo autorizado.
+
+As permissões continuam subordinadas a `RA-AUTH-BASELINE-1` e à tool policy do Agent OS: default deny, escrita apenas com claim explícito, rede externa negada, provider real proibido no V1.1 e produção negada. Instruções locais podem restringir, mas não ampliar esses limites.
+
+Merge, deploy, produção, autenticação/autorização, RLS/tenant, dados sensíveis, provider real, pagamento e ações irreversíveis exigem os gates humanos canônicos. Esta documentação está em `LOCAL_DRAFT_PRE_PUBLICATION`; destino, licença e distribuição permanecem em `PENDING_PUBLICATION_GOVERNANCE_DECISION`.

@@ -1,17 +1,19 @@
-# Renova Aura — Biblioteca Operacional de Prompts, Skills e Agentes
+# Renova Aura — ProjectPacks
 
-Esta camada complementa a biblioteca-base da Renova Aura com o que faltava para transformar governança em resultado de produto:
+`ProjectPacks` é uma camada especializada do Renova Aura Agent OS 1.1. Ela complementa a biblioteca-base com:
 
 - auditoria de requisitos, campos e dados ausentes;
 - rastreabilidade entre jornada, tela, formulário, API, banco, integração e relatório;
 - detecção de contratos incompletos entre módulos;
 - seleção de prompts por estágio do projeto;
 - pacotes específicos por produto e tecnologia;
-- papéis especializados apenas quando há responsabilidade distinta.
+- quatro project adapters para contextos que exigem responsabilidade distinta.
+
+O conjunto contém cinco arquivos de prompts com 23 IDs (`P01`–`P17` e `T01`–`T06`), oito extension skills no profile `ProjectPacks` e quatro project adapters. A biblioteca combinada permanece em 25 skills basais + 8 extensions, sem sobreposição, totalizando 33 IDs únicos.
 
 ## Regra central
 
-Não executar todos os prompts em todos os projetos. O usuário informa o projeto, a dor e o estágio; o agente lê o repositório e seleciona o menor conjunto necessário.
+Não executar todos os prompts, skills, agentes ou adapters em todos os projetos. O roteador/orquestrador escolhe o menor conjunto necessário para a tarefa, o risco e o estágio comprovados.
 
 ## Estrutura
 
@@ -19,22 +21,22 @@ Não executar todos os prompts em todos os projetos. O usuário informa o projet
 - `USAGE.md`: como pedir em português normal.
 - `PROJECT_MATRIX.md`: mapa de projetos GitHub e iniciativas planejadas.
 - `prompts/`: prompts-fonte completos, agrupados por finalidade.
-- `agents/`: papéis adicionais que não duplicam os agentes já existentes.
+- `agents/`: quatro project adapters, fora do registry canônico de agentes.
 - `../skills/renova-aura-*/`: skills executáveis e verificáveis.
+- `MANIFEST.json`: inventário estrutural e versão do conjunto.
 
-## Relação com a biblioteca-base
+## Relação com Agent OS 1.1
 
-Esta branch parte de `agent/ra-skills-base-v1` e depende das 25 skills basais existentes. Ela não substitui:
+O Agent OS permanece a fonte central de autoridade, routing, ownership, revisão e gates. Seu registry contém 18 agentes canônicos e exatamente um accountable integrator (`technical-director-orchestrator`). Os quatro project adapters:
 
-- `renova-aura-router`;
-- `renova-aura-product-spec`;
-- `renova-aura-security-data-guardian`;
-- `renova-aura-database-reliability`;
-- `renova-aura-quality-release`;
-- `renova-aura-observability-incident`;
-- demais skills já catalogadas.
+- `requirements-completeness-analyst`;
+- `data-contract-integration-reviewer`;
+- `android-kotlin-engineer`;
+- `messaging-reliability-engineer`.
 
-As novas skills tratam lacunas específicas que não estavam cobertas como comportamento próprio.
+não fazem parte desses 18 agentes. As oito extension skills também não se tornam agentes. `ProjectPacks` não cria um segundo Agent OS, outro accountable integrator ou autoridade paralela.
+
+Todos permanecem subordinados a `RA-AUTH-BASELINE-1`. Instruções locais podem restringir a autoridade basal, nunca ampliá-la. Handoffs transmitem estado e evidência; não concedem autoridade, não reabrem gates e não autorizam merge, push ou deploy. Revisão por IA não substitui autorização humana.
 
 ## Modos de uso
 
@@ -51,7 +53,11 @@ As novas skills tratam lacunas específicas que não estavam cobertas como compo
 - Não acessar ou publicar secrets, PII ou dados reais.
 - Não executar deploy, migration remota, mensagem real, pagamento, merge ou alteração de produção sem aprovação explícita e verificável.
 - Manter tenant isolation, RLS/RBAC, LGPD, validação no servidor, idempotência, índices, logs, testes e rollback.
+- Respeitar a tool policy canônica: default deny, escrita somente com claim explícito, rede externa negada, provider real proibido no V1.1 e produção negada.
+- Submeter merge, deploy, produção, autenticação/autorização, RLS/tenant, dados sensíveis, providers reais, pagamento e ações irreversíveis aos gates humanos do Agent OS.
 
 ## Status
 
-Esta camada é documentação e contratos de execução em branch draft. Presença no GitHub não comprova instalação, descoberta, ativação ou compatibilidade com uma ferramenta específica. Cada projeto deve validar localmente seu adaptador e suas skills.
+`LOCAL_DRAFT_PRE_PUBLICATION`
+
+No manifesto, `version: 1.1.0-draft` identifica o conteúdo do conjunto e `schema_version: 1.1.0` identifica o formato estrutural. Draft não significa release, merge, publicação final, instalação, descoberta, runtime ou produção. Destino, licença e distribuição permanecem em `PENDING_PUBLICATION_GOVERNANCE_DECISION`.

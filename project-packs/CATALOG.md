@@ -1,5 +1,7 @@
 # Catálogo Mestre — Renova Aura
 
+Este catálogo descreve somente a camada `ProjectPacks`: 23 prompts, oito extension skills e quatro project adapters. Os 18 agentes canônicos e o accountable integrator permanecem definidos no Agent OS 1.1; não são duplicados aqui.
+
 ## Prompts universais
 
 | ID | Prompt | Use quando | Resultado |
@@ -33,7 +35,7 @@
 | T05 | Voz, transcrição e extração estruturada | FalaOrça e produtos de orçamento/lead por voz |
 | T06 | PDF, formulários e documentos | Negociação Blindada, clínica, propostas e matrizes preenchíveis |
 
-## Novas skills desta camada
+## Extension skills — 8
 
 | Skill | Responsabilidade exclusiva |
 |---|---|
@@ -46,14 +48,18 @@
 | `renova-aura-voice-ai-evaluation` | qualidade de áudio, STT, extração, confirmação e evals |
 | `renova-aura-accessibility-mobile-qa` | acessibilidade, teclado, leitor de tela, toque e viewports reais |
 
-## Novos papéis de agente
+As oito skills formam exatamente o profile `ProjectPacks`. Elas complementam as 25 skills basais sem sobreposição: `25 + 8 = 33` IDs únicos. Skills não são agentes nem project adapters.
 
-| Agente | Quando existe função distinta |
+## Project adapters — 4
+
+| ID do project adapter | Quando existe função distinta |
 |---|---|
-| Requirements Completeness Analyst | inventário e rastreabilidade de requisitos |
-| Data Contract Integration Reviewer | contratos de campos, APIs, banco e integrações |
-| Android Kotlin Engineer | aplicativo Android nativo |
-| Messaging Reliability Engineer | WhatsApp, webhooks, outbox e entrega |
+| `requirements-completeness-analyst` | inventário e rastreabilidade de requisitos |
+| `data-contract-integration-reviewer` | contratos de campos, APIs, banco e integrações |
+| `android-kotlin-engineer` | aplicativo Android nativo |
+| `messaging-reliability-engineer` | WhatsApp, webhooks, outbox e entrega |
+
+Esses adapters usam o contrato 1.1, permanecem fora do registry dos 18 agentes canônicos e não criam autoridade paralela. O Agent OS, `RA-AUTH-BASELINE-1`, o accountable integrator e os gates humanos continuam canônicos.
 
 ## Ordem recomendada por estágio
 
@@ -64,4 +70,4 @@
 - **Pré-release:** P02 → P10 → P13 → P14 → P15.
 - **Operação:** P15 → P16 → P12 → revisão periódica de P05.
 
-O roteador deve reduzir essa sequência ao conjunto mínimo necessário para a solicitação real.
+O roteador deve reduzir essa sequência ao conjunto mínimo necessário para a solicitação real. Agente, skill, adapter e prompt só entram quando a tarefa comprovar a necessidade; um handoff transmite evidência, nunca autoridade ou aprovação.
