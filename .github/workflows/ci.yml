@@ -1,0 +1,42 @@
+name: Renova Aura Canonical CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - 'consolidated/**'
+  push:
+    branches:
+      - 'consolidated/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Canonical Contract Verification (45 tests)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml pytest
+
+      - name: Run Agent OS Contract Tests (41 tests)
+        run: |
+          python -m pytest agents/tests -v
+
+      - name: Run ProjectPacks Contract Tests (4 tests)
+        run: |
+          python -m pytest project-packs/tests -v

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Agent Orchestrator"
+  short_description: "Coordena equipes, loops e handoffs com limites"
+  default_prompt: "Use $renova-aura-agent-orchestrator para coordenar esta tarefa com a menor equipe segura."

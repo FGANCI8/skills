@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Product and Spec"
+  short_description: "Transforma ideias em escopo e aceite claros"
+  default_prompt: "Use $renova-aura-product-spec para converter esta ideia em MVP, SPEC e critérios de aceite."

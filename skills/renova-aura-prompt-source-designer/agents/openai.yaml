@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Prompt Source Designer"
+  short_description: "Cria prompts e skills claros e avaliáveis"
+  default_prompt: "Use $renova-aura-prompt-source-designer para criar ou melhorar este prompt sem duplicar responsabilidades."

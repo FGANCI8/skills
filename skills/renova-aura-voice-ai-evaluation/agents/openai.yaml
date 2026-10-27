@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Voice AI Evaluation"
+  short_description: "Avalia voz e extração com métricas objetivas"
+  default_prompt: "Use $renova-aura-voice-ai-evaluation para avaliar voz e extração estruturada com métricas e evidências."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura PDF Forms Router"
+  short_description: "Roteia criação, reparo e validação de PDFs"
+  default_prompt: "Use $renova-aura-pdf-forms-router para escolher o fluxo seguro para este formulário PDF."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Project Bootstrap"
+  short_description: "Entende ou retoma projetos sem perder trabalho"
+  default_prompt: "Use $renova-aura-project-bootstrap para entender este repositório e retomar do estado atual."

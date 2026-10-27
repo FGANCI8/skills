@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Quality and Release"
+  short_description: "Valida mudanças, release, rollback e evidências"
+  default_prompt: "Use $renova-aura-quality-release para validar esta mudança e preparar uma revisão ou release reversível."

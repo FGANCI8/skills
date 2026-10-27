@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura PDF Delivery Guardian"
+  short_description: "Empacota PDFs com provas, manifestos e hashes"
+  default_prompt: "Use $renova-aura-pdf-delivery-guardian para preparar uma entrega PDF auditável e sem dados reais."

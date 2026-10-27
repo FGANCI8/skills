@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Project Handoff"
+  short_description: "Registra estado real e ponto exato de continuação"
+  default_prompt: "Use $renova-aura-project-handoff para registrar o estado real e criar um handoff confiável."

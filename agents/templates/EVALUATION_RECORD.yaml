@@ -1,0 +1,23 @@
+# Synthetic evidence-only example. It grants no approval, merge or release authority.
+kind: EvaluationRecord
+schema_version: "1.1.0"
+evaluation_id: evaluation_4ba97ad4386e4d61a308ac6bb17e0a6f
+task_id: task_2f5a9bd5ac5f4a7185c71b38f4ec2e51
+author_agent_id: python-engineer
+evaluator_agent_id: independent-technical-reviewer
+evaluator_capability: INDEPENDENT_EVALUATOR
+evaluated_paths:
+  - synthetic/artifact.txt
+report_path: synthetic/review.txt
+artifact_or_head:
+  kind: SHA256
+  value: "0000000000000000000000000000000000000000000000000000000000000000"
+decision: CHANGES_REQUIRED
+finding_refs:
+  - finding_synthetic-contract-gap
+evaluation_at: "2030-01-01T12:10:00Z"
+author_claim_refs:
+  - claim_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+evaluator_report_claim_ref: claim_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+execution_authority: EVIDENCE_ONLY
+executable: false

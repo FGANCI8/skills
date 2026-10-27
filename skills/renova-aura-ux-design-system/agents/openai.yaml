@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura UX and Design System"
+  short_description: "Melhora jornadas, estados e acessibilidade"
+  default_prompt: "Use $renova-aura-ux-design-system para revisar este fluxo e completar seus estados e acessibilidade."

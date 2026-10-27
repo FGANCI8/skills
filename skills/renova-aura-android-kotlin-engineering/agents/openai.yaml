@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Android Kotlin Engineering"
+  short_description: "Implementa Android Kotlin seguro e testável"
+  default_prompt: "Use $renova-aura-android-kotlin-engineering para implementar ou revisar este escopo Android Kotlin com testes."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura AI Integration Guardian"
+  short_description: "Projeta IA com limites, evals e fallback"
+  default_prompt: "Use $renova-aura-ai-integration-guardian para decidir e projetar esta integração de IA com segurança."

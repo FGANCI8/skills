@@ -1,0 +1,4 @@
+interface:
+  display_name: "Renova Aura Domain Invariant Guardian"
+  short_description: "Protege invariantes e estados de domínio"
+  default_prompt: "Use $renova-aura-domain-invariant-guardian para identificar e proteger invariantes e transições de domínio."

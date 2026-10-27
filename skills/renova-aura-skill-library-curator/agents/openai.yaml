@@ -1,0 +1,4 @@
+﻿interface:
+  display_name: "Renova Aura Skill Library Curator"
+  short_description: "Organiza, valida e instala skills com segurança"
+  default_prompt: "Use $renova-aura-skill-library-curator para inventariar e organizar esta biblioteca de skills sem expor conteúdo privado."

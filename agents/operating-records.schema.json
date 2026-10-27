@@ -1,0 +1,688 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:renova-aura:agent-os:operating-records:1.1.0",
+  "title": "Renova Aura Agent OS operating records",
+  "oneOf": [
+    { "$ref": "#/$defs/approvalRecord" },
+    { "$ref": "#/$defs/generationDecisionRecord" },
+    { "$ref": "#/$defs/fileOwnershipRecord" },
+    { "$ref": "#/$defs/taskLedger" },
+    { "$ref": "#/$defs/evaluationRecord" },
+    { "$ref": "#/$defs/localMetrics" }
+  ],
+  "$defs": {
+    "opaqueId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,31}_[a-f0-9]{32}$"
+    },
+    "safeRef": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,31}_[A-Za-z0-9._:-]{8,160}$"
+    },
+    "agentId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "safeCode": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+    },
+    "routingMode": {
+      "enum": [
+        "SINGLE_SPECIALIST",
+        "SPECIALIST_PLUS_REVIEWER",
+        "SEQUENTIAL_PIPELINE",
+        "ORCHESTRATOR_WORKERS",
+        "CONTROLLED_PARALLEL",
+        "EVALUATOR_OPTIMIZER_LOOP",
+        "LONG_RUNNING_INCREMENTAL",
+        "INCIDENT_MODE",
+        "RELEASE_MODE"
+      ]
+    },
+    "claimPath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$))(?!.*[*?\\[\\]{}:<>\"|])[^\\r\\n]+$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nullableTimestamp": {
+      "oneOf": [
+        { "$ref": "#/$defs/timestamp" },
+        { "type": "null" }
+      ]
+    },
+    "sanitizedRefs": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 64,
+      "items": { "$ref": "#/$defs/safeRef" }
+    },
+    "stopReason": {
+      "enum": [
+        "PASS",
+        "MAX_ROUNDS",
+        "TIMEOUT",
+        "BUDGET_LIMIT",
+        "HUMAN_APPROVAL_REQUIRED",
+        "SECURITY_BLOCK",
+        "ENVIRONMENT_BLOCK",
+        "MISSING_EVIDENCE",
+        "SCOPE_CHANGE"
+      ]
+    },
+    "artifactBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "value"],
+      "properties": {
+        "kind": { "type": "string" },
+        "value": { "type": "string" }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "kind": { "const": "HEAD" },
+            "value": {
+              "type": "string",
+              "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+            }
+          }
+        },
+        {
+          "properties": {
+            "kind": { "const": "SHA256" },
+            "value": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        }
+      ]
+    },
+    "trustedSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_ref", "issuer_ref", "verifier_ref", "verification_ref", "result"],
+      "properties": {
+        "source_ref": { "$ref": "#/$defs/safeRef" },
+        "issuer_ref": { "$ref": "#/$defs/safeRef" },
+        "verifier_ref": { "$ref": "#/$defs/safeRef" },
+        "verification_ref": { "$ref": "#/$defs/safeRef" },
+        "result": { "const": "VALID" }
+      }
+    },
+    "justification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "evidence_refs"],
+      "properties": {
+        "code": { "$ref": "#/$defs/safeCode" },
+        "evidence_refs": {
+          "allOf": [
+            { "$ref": "#/$defs/sanitizedRefs" },
+            { "minItems": 1 }
+          ]
+        }
+      }
+    },
+    "approvalRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "schema_version",
+        "approval_id",
+        "task_id",
+        "request_id",
+        "action",
+        "scope",
+        "targets",
+        "environment",
+        "actor_ref",
+        "trusted_source",
+        "issued_at",
+        "expires_at",
+        "nonce",
+        "single_use",
+        "max_uses",
+        "use_count",
+        "consumed_at",
+        "justification",
+        "artifact_or_head",
+        "decision",
+        "decision_at",
+        "approver_ref",
+        "execution_authority",
+        "executable"
+      ],
+      "properties": {
+        "kind": { "const": "ApprovalRecord" },
+        "schema_version": { "const": "1.1.0" },
+        "approval_id": { "$ref": "#/$defs/opaqueId" },
+        "task_id": { "$ref": "#/$defs/opaqueId" },
+        "request_id": { "$ref": "#/$defs/opaqueId" },
+        "action": { "$ref": "#/$defs/safeCode" },
+        "scope": {
+          "allOf": [
+            { "$ref": "#/$defs/sanitizedRefs" },
+            { "minItems": 1 }
+          ]
+        },
+        "targets": {
+          "allOf": [
+            { "$ref": "#/$defs/sanitizedRefs" },
+            { "minItems": 1 }
+          ]
+        },
+        "environment": { "$ref": "#/$defs/safeCode" },
+        "actor_ref": {
+          "oneOf": [
+            { "$ref": "#/$defs/safeRef" },
+            { "type": "null" }
+          ]
+        },
+        "trusted_source": {
+          "oneOf": [
+            { "$ref": "#/$defs/trustedSource" },
+            { "type": "null" }
+          ]
+        },
+        "issued_at": { "$ref": "#/$defs/timestamp" },
+        "expires_at": { "$ref": "#/$defs/timestamp" },
+        "nonce": { "$ref": "#/$defs/opaqueId" },
+        "single_use": { "const": true },
+        "max_uses": { "const": 1 },
+        "use_count": { "type": "integer", "minimum": 0, "maximum": 1 },
+        "consumed_at": { "$ref": "#/$defs/nullableTimestamp" },
+        "justification": { "$ref": "#/$defs/justification" },
+        "artifact_or_head": { "$ref": "#/$defs/artifactBinding" },
+        "decision": {
+          "enum": ["REQUESTED", "APPROVED", "DENIED", "REVOKED", "EXPIRED", "CONSUMED"]
+        },
+        "decision_at": { "$ref": "#/$defs/nullableTimestamp" },
+        "approver_ref": {
+          "oneOf": [
+            { "$ref": "#/$defs/safeRef" },
+            { "type": "null" }
+          ]
+        },
+        "execution_authority": { "const": "NEVER_AUTOMATIC" },
+        "executable": { "const": false }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "decision": { "const": "APPROVED" } } },
+          "then": {
+            "properties": {
+              "actor_ref": { "$ref": "#/$defs/safeRef" },
+              "trusted_source": { "$ref": "#/$defs/trustedSource" },
+              "decision_at": { "$ref": "#/$defs/timestamp" },
+              "approver_ref": { "$ref": "#/$defs/safeRef" },
+              "use_count": { "const": 0 },
+              "consumed_at": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "decision": { "const": "CONSUMED" } } },
+          "then": {
+            "properties": {
+              "use_count": { "const": 1 },
+              "consumed_at": { "$ref": "#/$defs/timestamp" }
+            }
+          }
+        }
+      ]
+    },
+    "generationDecisionRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "schema_version",
+        "decision_id",
+        "task_id",
+        "action",
+        "prior_stop_reason",
+        "prior_terminal_evidence_ref",
+        "prior_ledger_sha256",
+        "from_generation",
+        "to_generation",
+        "environment",
+        "trusted_source",
+        "issued_at",
+        "expires_at",
+        "nonce",
+        "single_use",
+        "max_uses",
+        "use_count",
+        "consumed_at",
+        "decision",
+        "decision_at",
+        "approver_ref",
+        "execution_authority",
+        "executable"
+      ],
+      "properties": {
+        "kind": { "const": "GenerationDecisionRecord" },
+        "schema_version": { "const": "1.1.0" },
+        "decision_id": { "$ref": "#/$defs/opaqueId" },
+        "task_id": { "$ref": "#/$defs/opaqueId" },
+        "action": { "const": "REOPEN_SYNTHETIC_TASK" },
+        "prior_stop_reason": { "$ref": "#/$defs/stopReason" },
+        "prior_terminal_evidence_ref": { "$ref": "#/$defs/safeRef" },
+        "prior_ledger_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "from_generation": { "type": "integer", "minimum": 1 },
+        "to_generation": { "type": "integer", "minimum": 2 },
+        "environment": { "const": "NON_PRODUCTION_SYNTHETIC" },
+        "trusted_source": {
+          "oneOf": [
+            { "$ref": "#/$defs/trustedSource" },
+            { "type": "null" }
+          ]
+        },
+        "issued_at": { "$ref": "#/$defs/timestamp" },
+        "expires_at": { "$ref": "#/$defs/timestamp" },
+        "nonce": { "$ref": "#/$defs/opaqueId" },
+        "single_use": { "const": true },
+        "max_uses": { "const": 1 },
+        "use_count": { "type": "integer", "minimum": 0, "maximum": 1 },
+        "consumed_at": { "$ref": "#/$defs/nullableTimestamp" },
+        "decision": {
+          "enum": ["REQUESTED", "APPROVED", "DENIED", "REVOKED", "EXPIRED", "CONSUMED"]
+        },
+        "decision_at": { "$ref": "#/$defs/nullableTimestamp" },
+        "approver_ref": {
+          "oneOf": [
+            { "$ref": "#/$defs/safeRef" },
+            { "type": "null" }
+          ]
+        },
+        "execution_authority": { "const": "LEDGER_TRANSITION_ONLY" },
+        "executable": { "const": false }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "decision": { "const": "APPROVED" } } },
+          "then": {
+            "properties": {
+              "trusted_source": { "$ref": "#/$defs/trustedSource" },
+              "decision_at": { "$ref": "#/$defs/timestamp" },
+              "approver_ref": { "$ref": "#/$defs/safeRef" },
+              "use_count": { "const": 0 },
+              "consumed_at": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "decision": { "const": "CONSUMED" } } },
+          "then": {
+            "properties": {
+              "use_count": { "const": 1 },
+              "consumed_at": { "$ref": "#/$defs/timestamp" }
+            }
+          }
+        }
+      ]
+    },
+    "ownershipClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "path",
+        "path_type",
+        "path_scope",
+        "owner",
+        "access",
+        "step",
+        "dependencies",
+        "status"
+      ],
+      "properties": {
+        "claim_id": { "$ref": "#/$defs/opaqueId" },
+        "path": { "$ref": "#/$defs/claimPath" },
+        "path_type": { "enum": ["FILE", "DIRECTORY"] },
+        "path_scope": { "const": "EXACT" },
+        "owner": { "$ref": "#/$defs/agentId" },
+        "access": { "enum": ["READ", "WRITE"] },
+        "step": { "$ref": "#/$defs/safeRef" },
+        "dependencies": { "$ref": "#/$defs/sanitizedRefs" },
+        "status": { "enum": ["PLANNED", "ACTIVE", "COMPLETE", "BLOCKED"] }
+      }
+    },
+    "fileOwnershipRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_version", "task_id", "comparison", "claims"],
+      "properties": {
+        "kind": { "const": "FileOwnershipRecord" },
+        "schema_version": { "const": "1.1.0" },
+        "task_id": { "$ref": "#/$defs/opaqueId" },
+        "comparison": { "const": "WINDOWS_CASE_INSENSITIVE_PATH_SEGMENTS" },
+        "claims": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": { "$ref": "#/$defs/ownershipClaim" }
+        }
+      }
+    },
+    "cumulativeLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_task_generations",
+        "max_loop_instances",
+        "max_total_rounds",
+        "max_total_provider_turns",
+        "max_total_tool_calls",
+        "max_total_budget_units",
+        "absolute_timeout_minutes",
+        "max_reopens"
+      ],
+      "properties": {
+        "max_task_generations": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "max_loop_instances": { "type": "integer", "minimum": 1, "maximum": 20 },
+        "max_total_rounds": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "max_total_provider_turns": { "type": "integer", "minimum": 1, "maximum": 1000 },
+        "max_total_tool_calls": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "max_total_budget_units": { "type": "integer", "minimum": 1, "maximum": 1000000 },
+        "absolute_timeout_minutes": { "type": "integer", "minimum": 1, "maximum": 10080 },
+        "max_reopens": { "type": "integer", "minimum": 0, "maximum": 4 }
+      }
+    },
+    "cumulativeUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_generation",
+        "loop_instances",
+        "total_rounds",
+        "total_provider_turns",
+        "total_tool_calls",
+        "total_budget_units",
+        "reopen_count"
+      ],
+      "properties": {
+        "task_generation": { "type": "integer", "minimum": 1 },
+        "loop_instances": { "type": "integer", "minimum": 0 },
+        "total_rounds": { "type": "integer", "minimum": 0 },
+        "total_provider_turns": { "type": "integer", "minimum": 0 },
+        "total_tool_calls": { "type": "integer", "minimum": 0 },
+        "total_budget_units": { "type": "integer", "minimum": 0 },
+        "reopen_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "blockDelta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "loop_instances",
+        "rounds",
+        "provider_turns",
+        "tool_calls",
+        "budget_units",
+        "elapsed_time_ms"
+      ],
+      "properties": {
+        "loop_instances": { "type": "integer", "minimum": 0 },
+        "rounds": { "type": "integer", "minimum": 0 },
+        "provider_turns": { "type": "integer", "minimum": 0 },
+        "tool_calls": { "type": "integer", "minimum": 0 },
+        "budget_units": { "type": "integer", "minimum": 0 },
+        "elapsed_time_ms": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "terminalEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generation", "reason", "at", "evidence_ref"],
+      "properties": {
+        "generation": { "type": "integer", "minimum": 1 },
+        "reason": { "$ref": "#/$defs/stopReason" },
+        "at": { "$ref": "#/$defs/timestamp" },
+        "evidence_ref": { "$ref": "#/$defs/safeRef" }
+      }
+    },
+    "taskLedger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "schema_version",
+        "task_id",
+        "objective_ref",
+        "objective_category",
+        "status",
+        "mode",
+        "accountable_owner",
+        "acceptance_criteria_refs",
+        "current_block",
+        "accounting_scope",
+        "cumulative_limits",
+        "cumulative_usage_at_block_start",
+        "block_delta",
+        "cumulative_usage",
+        "started_at",
+        "absolute_deadline",
+        "terminal_history",
+        "previous_checkpoint",
+        "approval_record_refs",
+        "generation_decision_refs",
+        "allowed_tool_refs",
+        "file_ownership_ref",
+        "completed_artifact_refs",
+        "pending_action_codes",
+        "blocked_reason_codes",
+        "stop_reason",
+        "next_action_code",
+        "local_metrics"
+      ],
+      "properties": {
+        "kind": { "const": "TaskLedger" },
+        "schema_version": { "const": "1.1.0" },
+        "task_id": { "$ref": "#/$defs/opaqueId" },
+        "objective_ref": { "$ref": "#/$defs/safeRef" },
+        "objective_category": { "$ref": "#/$defs/safeCode" },
+        "status": { "enum": ["DONE", "PARTIAL", "PLANNED", "BLOCKED", "NOT_RUN", "UNKNOWN"] },
+        "mode": { "$ref": "#/$defs/safeCode" },
+        "accountable_owner": { "$ref": "#/$defs/agentId" },
+        "acceptance_criteria_refs": { "$ref": "#/$defs/sanitizedRefs" },
+        "current_block": { "$ref": "#/$defs/safeRef" },
+        "accounting_scope": { "const": "CUMULATIVE_TASK_CHAIN" },
+        "cumulative_limits": { "$ref": "#/$defs/cumulativeLimits" },
+        "cumulative_usage_at_block_start": { "$ref": "#/$defs/cumulativeUsage" },
+        "block_delta": { "$ref": "#/$defs/blockDelta" },
+        "cumulative_usage": { "$ref": "#/$defs/cumulativeUsage" },
+        "started_at": { "$ref": "#/$defs/timestamp" },
+        "absolute_deadline": { "$ref": "#/$defs/timestamp" },
+        "terminal_history": {
+          "type": "array",
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/terminalEvent" }
+        },
+        "previous_checkpoint": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ref", "sha256"],
+          "properties": {
+            "ref": {
+              "oneOf": [
+                { "$ref": "#/$defs/safeRef" },
+                { "type": "null" }
+              ]
+            },
+            "sha256": {
+              "oneOf": [
+                { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                { "type": "null" }
+              ]
+            }
+          }
+        },
+        "approval_record_refs": { "$ref": "#/$defs/sanitizedRefs" },
+        "generation_decision_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/opaqueId" }
+        },
+        "allowed_tool_refs": { "$ref": "#/$defs/sanitizedRefs" },
+        "file_ownership_ref": {
+          "oneOf": [
+            { "$ref": "#/$defs/safeRef" },
+            { "type": "null" }
+          ]
+        },
+        "completed_artifact_refs": { "$ref": "#/$defs/sanitizedRefs" },
+        "pending_action_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/safeCode" }
+        },
+        "blocked_reason_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/safeCode" }
+        },
+        "stop_reason": {
+          "oneOf": [
+            { "$ref": "#/$defs/stopReason" },
+            { "type": "null" }
+          ]
+        },
+        "next_action_code": { "$ref": "#/$defs/safeCode" },
+        "local_metrics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["enabled", "sink"],
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "sink": { "enum": ["DISABLED", "MEMORY_ONLY", "PRIVATE_LOCAL_FILE"] }
+          },
+          "oneOf": [
+            {
+              "properties": {
+                "enabled": { "const": false },
+                "sink": { "const": "DISABLED" }
+              }
+            },
+            {
+              "properties": {
+                "enabled": { "const": true },
+                "sink": { "enum": ["MEMORY_ONLY", "PRIVATE_LOCAL_FILE"] }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "evaluationRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "schema_version",
+        "evaluation_id",
+        "task_id",
+        "author_agent_id",
+        "evaluator_agent_id",
+        "evaluator_capability",
+        "evaluated_paths",
+        "report_path",
+        "artifact_or_head",
+        "decision",
+        "finding_refs",
+        "evaluation_at",
+        "author_claim_refs",
+        "evaluator_report_claim_ref",
+        "execution_authority",
+        "executable"
+      ],
+      "properties": {
+        "kind": { "const": "EvaluationRecord" },
+        "schema_version": { "const": "1.1.0" },
+        "evaluation_id": { "$ref": "#/$defs/opaqueId" },
+        "task_id": { "$ref": "#/$defs/opaqueId" },
+        "author_agent_id": { "$ref": "#/$defs/agentId" },
+        "evaluator_agent_id": { "$ref": "#/$defs/agentId" },
+        "evaluator_capability": { "const": "INDEPENDENT_EVALUATOR" },
+        "evaluated_paths": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/claimPath" }
+        },
+        "report_path": { "$ref": "#/$defs/claimPath" },
+        "artifact_or_head": { "$ref": "#/$defs/artifactBinding" },
+        "decision": { "enum": ["PASS", "CHANGES_REQUIRED", "BLOCKED"] },
+        "finding_refs": { "$ref": "#/$defs/sanitizedRefs" },
+        "evaluation_at": { "$ref": "#/$defs/timestamp" },
+        "author_claim_refs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/opaqueId" }
+        },
+        "evaluator_report_claim_ref": { "$ref": "#/$defs/opaqueId" },
+        "execution_authority": { "const": "EVIDENCE_ONLY" },
+        "executable": { "const": false }
+      }
+    },
+    "localMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_version", "task_id", "enabled", "sink", "values"],
+      "properties": {
+        "kind": { "const": "LocalMetrics" },
+        "schema_version": { "const": "1.1.0" },
+        "task_id": { "$ref": "#/$defs/opaqueId" },
+        "enabled": { "type": "boolean", "default": false },
+        "sink": { "enum": ["DISABLED", "MEMORY_ONLY", "PRIVATE_LOCAL_FILE"] },
+        "values": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "routing_mode": { "$ref": "#/$defs/routingMode" },
+            "selected_agent_count": { "type": "integer", "minimum": 0 },
+            "selected_skill_count": { "type": "integer", "minimum": 0 },
+            "rounds": { "type": "integer", "minimum": 0 },
+            "reopen_count": { "type": "integer", "minimum": 0 },
+            "provider_calls": { "type": "integer", "minimum": 0 },
+            "tool_calls": { "type": "integer", "minimum": 0 },
+            "stop_reason": { "$ref": "#/$defs/stopReason" },
+            "reviewer_findings": { "type": "integer", "minimum": 0 },
+            "elapsed_time_ms": { "type": "integer", "minimum": 0 },
+            "budget_units": { "type": "integer", "minimum": 0 },
+            "approval_gate_hits": { "type": "integer", "minimum": 0 }
+          }
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "enabled": { "const": false },
+            "sink": { "const": "DISABLED" },
+            "values": { "maxProperties": 0 }
+          }
+        },
+        {
+          "properties": {
+            "enabled": { "const": true },
+            "sink": { "enum": ["MEMORY_ONLY", "PRIVATE_LOCAL_FILE"] }
+          }
+        }
+      ]
+    }
+  }
+}
