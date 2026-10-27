@@ -22,6 +22,7 @@
 | **P2 — Sanitização** | Presença de caminhos locais e nome de usuário no checkpoint e relatório Codex | Referências a caminhos de ambiente privado no checkpoint e relatório do Codex. | Preservado original localmente (`.local_original.md`). Versões sanitizadas com `%USERPROFILE%\` geradas para o pacote. Varredura regex de segredos: 0 segredos detectados. | **PASS** |
 | **P3 — Arquivos Temporários** | Presença de `__pycache__/*.pyc` no ZIP | Script de empacotamento anterior não filtrou diretórios de cache. | Filtro estrito de exclusão de `__pycache__`, `*.pyc`, `*.pyo`, `.git`. 0 arquivos compilados no pacote V2. | **PASS** |
 | **P3 — Contagem no Manifesto** | `project-packs/MANIFEST.json` indica `combined_skills: 33` vs 34 na biblioteca | O manifesto formaliza o contrato estático do ProjectPacks v1.1 (25 base + 8 extensões = 33). A 34ª skill (`infrastructure-guardian`) pertence ao catálogo geral consolidado da Suite v1.2. | Mantido o valor contratual 33 no manifesto para aprovação do teste `test_manifest_contract.py`. Semântica documentada formalmente. | **PASS (4/4 no ProjectPacks)** |
+| **P2 — Escopo do Manifesto SHA-256** | Divergência de hashes entre arquivos no ZIP Windows (CRLF) e no checkout Git (LF) | `MANIFEST-SHA256.txt` foi computado sobre os bytes do ZIP Windows (CRLF); o Git normaliza quebras de linha para LF no repositório. | Preservado o manifesto original do ZIP; documentado formalmente seu escopo exclusivo de atestado do pacote ZIP Windows V2 (166/166 arquivos coincidentes); implementado workflow de GitHub Actions (`.github/workflows/ci.yml`) para validação automatizada e contínua dos 45 testes contratuais no repositório Git. | **PASS** |
 
 ---
 
@@ -39,7 +40,7 @@
 | **T08** | Adaptador ChatGPT | Inspeção de `RENOVA_AURA_CHATGPT_CANONICAL_ADAPTER.md` | Desacoplado da `main`, testável em `8f22a69b`, 5 níveis operacionais documentados. | **PASS** |
 | **T09** | Ausência de caches no pacote | Varredura de entradas ZIP por `__pycache__` ou `*.pyc` | 0 ocorrências de cache no arquivo ZIP V2. | **PASS** |
 | **T10** | Sanitização e ausência de segredos | Varredura de identificadores pessoais, tokens `ghp_`, `sk-`, etc. | 0 identificadores pessoais em arquivos raiz; 0 credenciais privadas. | **PASS** |
-| **T11** | Integridade dos hashes | Comparação dos arquivos empacotados com `MANIFEST-SHA256.txt` | 100% dos hashes conferidos e coincidentes. | **PASS** |
+| **T11** | Integridade dos hashes (Escopo ZIP Windows) | Comparação dos arquivos empacotados com `MANIFEST-SHA256.txt` | 100% dos hashes conferidos e coincidentes no ZIP (166/166). Delimitação documental explicitada esclarecendo que o manifesto é específico do pacote Windows (CRLF) e não se aplica diretamente a checkouts Git (LF). | **PASS** |
 | **T12** | Integridade CRC | Validação CRC32 de cada entrada ZIP via `ZipFile.testzip()` | `testzip()` retornou `None` (zero erros de CRC). | **PASS** |
 | **T13** | Reprodução isolada dos testes | Extração em pasta temporária limpa fora do workspace e execução de testes | 45/45 testes PASS (41 Agent OS + 4 ProjectPacks) sem dependência do workspace. | **PASS** |
 | **T14** | Revisão de regressões da skill de segurança | Auditoria de `renova-aura-security-data-guardian/SKILL.md` (236 linhas) | Preservados 100% dos controles: PHP2Shell, Turnstile, 5 personas, mass-assignment e `RA-AUTH-BASELINE-1`. | **PASS** |
@@ -65,4 +66,6 @@ A skill `renova-aura-security-data-guardian` foi submetida a verificação minuc
 - **Pacote Final:** `RENOVA_AURA_CANONICAL_LIBRARY_READY_FOR_REVIEW_V2.zip`  
 - **Caminho Principal (Área de Trabalho Windows):** `%USERPROFILE%\Desktop\RENOVA_AURA_CANONICAL_LIBRARY_READY_FOR_REVIEW_V2.zip`  
 - **Caminho Sincronizado (OneDrive Desktop):** `%USERPROFILE%\OneDrive\Desktop\RENOVA_AURA_CANONICAL_LIBRARY_READY_FOR_REVIEW_V2.zip`  
-- **Cópia Local no Workspace:** `C:\RENOVA AURA SKILLS MASTER\RENOVA_AURA_CANONICAL_LIBRARY_READY_FOR_REVIEW_V2.zip`
+- **Cópia Local no Workspace:** `C:\RENOVA AURA SKILLS MASTER\RENOVA_AURA_CANONICAL_LIBRARY_READY_FOR_REVIEW_V2.zip`  
+- **Manifesto SHA-256 do Pacote:** `MANIFEST-SHA256.txt` (166 arquivos, escopo delimitado à integridade do pacote ZIP Windows V2).  
+- **Verificação Contínua em CI:** `.github/workflows/ci.yml` (Workflow mínimo com `contents: read`, sem segredos, executando os 45 testes contratuais via GitHub Actions a cada PR/push).
