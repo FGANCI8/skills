@@ -17,7 +17,7 @@ Default to a deterministic workflow or one specialist. Escalate to `renova-aura-
 
 ## Profile selection
 
-Start from the `Core` profile and select one primary owner. `SaaS`, `Python`, `AgentOs` and `Pdf` make additional skills available only when repository evidence and task risk justify them. `All` is never an implicit activation mode. An installed or available skill is not selected until the router names it and explains why the smaller set is insufficient.
+Start from the `Core` profile and select one primary owner. `SaaS`, `Python`, `AgentOs` and `Pdf` make additional skills available only when repository evidence and task risk justify them. Within `SaaS`, `renova-aura-infrastructure-guardian` is eligible for infrastructure/cost/capacity decisions, not for ordinary UI or isolated database changes. `All` is never an implicit activation mode. An installed or available skill is not selected until the router names it and explains why the smaller set is insufficient.
 
 ## Mandatory first read
 
@@ -47,6 +47,7 @@ Use:
 | "comece", "entenda", "retome de onde parou" | `renova-aura-project-bootstrap` | handoff, security, quality |
 | "vale a pena?", "defina MVP/PRD/SPEC" | `renova-aura-product-spec` | architecture, UX, security |
 | "desenhe/evolua a arquitetura", "torne SaaS" | `renova-aura-saas-architect` | product, security, engineering |
+| "compare infraestrutura/hospedagem/VPS, custos, capacidade, backups ou automação por código" | `renova-aura-infrastructure-guardian` | security for trust/privacy; database for schema/migrations; quality for material changes |
 | "implemente", "corrija", "refatore" | `renova-aura-engineering-guardian` | domain owner, security, quality |
 | "faça o backend/API/webhook/fila" | `renova-aura-backend-api-engineer` | engineering, security, database, quality |
 | "revise schema/migration/query/RLS" | `renova-aura-database-reliability` | security, engineering, quality |
@@ -70,6 +71,7 @@ Use:
 
 - Product decides **why and what**.
 - SaaS architecture decides **system boundaries and evolution**.
+- Infrastructure Guardian owns **hosting, infrastructure alternatives, total cost, capacity, recovery trade-offs and evolution triggers**; it does not own security policies or schema/migrations.
 - Engineering owns **the implementation diff**.
 - Security owns **trust, authorization, isolation, privacy, and release blockers**.
 - UX owns **journeys, states, comprehension, and accessibility**.
