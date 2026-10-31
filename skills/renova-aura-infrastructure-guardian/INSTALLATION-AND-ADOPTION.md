@@ -1,6 +1,6 @@
-# Instalação, persistência e adoção — candidata v0.3.0
+# Instalação, persistência e adoção — homologação proposta v0.3.0
 
-Evolução revisada do pacote v0.2; não é cópia byte a byte. Status: candidata, pendente de aprovação final. A preparação da branch/PR não a promove a canônica.
+Evolução revisada do pacote v0.2; não é cópia byte a byte. O status `approved` é proposto nesta branch para revisão humana. Somente um merge autorizado na fonte canônica conclui a promoção; nenhuma instalação global, adoção por consumidor ou operação de produção é autorizada por esse estado.
 
 ## Três níveis diferentes
 1. **Canônica**: versão aprovada, versionada em fonte GitHub autorizada; alterações passam por revisão.
@@ -11,7 +11,7 @@ Evolução revisada do pacote v0.2; não é cópia byte a byte. Status: candidat
 - Antes de escrever, Codex identifica diretório real de skills do usuário e convenções suportadas; não presumir `~/.agents/skills` nem `~/.codex/skills` sem verificar.
 - Inventariar skills existentes e procurar sobreposição com guardians de segurança, infra ou banco.
 - Preservar instalações existentes; criar salvaguarda se houver conflito de nome; nunca sobrescrever sem autorização.
-- Instalar candidata localmente apenas após validação estática; usar branch/PR no GitHub para revisão antes de publicar como canônica.
+- Instalar ou atualizar cópias locais somente após validação estática e autorização específica; usar branch/PR no GitHub para revisão antes de publicar como canônica.
 - Em projetos consumidores, adotar encaminhamento mínimo e idempotente em `AGENTS.md` ou mecanismo equivalente, sem copiar o conteúdo integral e sem alterar projetos não autorizados.
 - Se o repositório central for privado, validar acesso dos agentes; caso não haja, fornecer fallback seguro de leitura local, nunca expor segredos.
 
@@ -27,9 +27,9 @@ Para Claude, Gemini, Antigravity ou outra IDE, conferir o suporte local a skills
 
 Aplicar somente no projeto autorizado, após ler suas instruções e revisar o diff:
 
-> Para decisões de infraestrutura, banco, hospedagem, automações por código, capacidade, custos, backups ou VPS, após aprovação da candidata, usar `$renova-aura-infrastructure-guardian` quando disponível. Consultar as fontes canônicas indicadas nela; preservar regras e gates locais. Se skill ou fontes estiverem inacessíveis, registrar `BLOCKED` para conclusões dependentes. Instalação global não prova adoção nesta ferramenta. Não acionar em tarefas irrelevantes.
+> Para decisões de infraestrutura, hospedagem, automações por código, capacidade, custos, backups ou VPS, após publicação canônica e adoção autorizada pelo projeto, usar `$renova-aura-infrastructure-guardian` quando disponível. Consultar as fontes canônicas indicadas nela; preservar regras e gates locais. Se skill ou fontes estiverem inacessíveis, registrar `BLOCKED` para conclusões dependentes. Instalação global não prova adoção nesta ferramenta. Não acionar em tarefas irrelevantes.
 
-O router existente não é alterado por esta instalação. Sua futura integração deve acrescentar apenas uma rota de infraestrutura e preservar Security/Database Guardian como responsáveis nas respectivas áreas; testar antes de aplicar. Ausência de um adaptador por projeto continua sendo pendência, mesmo que o catálogo global encontre a skill.
+Esta proposta inclui uma rota limitada de infraestrutura no router, sujeita à validação antes do merge. Security Guardian e Database Reliability continuam responsáveis por segurança/dados e por schema/migrations, respectivamente. Adoção por projeto permanece separada e exige autorização mesmo após publicação canônica.
 
 ## Rollback local
 
@@ -38,10 +38,10 @@ Registrar hashes antes/depois e o manifesto dos arquivos instalados. Como a inst
 ## Testes de aceitação
 - `SKILL.md` com frontmatter válido, nome e descrição consistentes.
 - Referências relativas existentes, sem segredos nem URLs de acesso temporário.
-- Evals: 8 cenários com resultado esperado; executar com skill ativa e sem skill (controle), registrar evidências, resultados PASS/FAIL/NOT_RUN.
+- Evals: 12 cenários documentados com resultado esperado; executar com skill ativa e sem skill (controle), registrar evidências, resultados PASS/FAIL/NOT_RUN. Cenários de decisão não equivalem a teste de produção, restore ou concorrência real.
 - Disparos: tarefas de banco, VPS, custos, automações por código e recuperação devem carregar skill; tarefas alheias não devem acioná-la indiscriminadamente.
 - Nenhuma compra, deploy, alteração de produção ou edição em massa sem autorização específica.
 - Verificar instalação após reinício de sessão e leitura de uma skill em um projeto consumidor de teste.
 
 ## Aprovação final
-A candidata não deve ser chamada de canônica ativa antes de aprovação do proprietário, publicação versionada e testes reais. Registrar commit, branch, instalação, cobertura de projetos e lacunas.
+A marcação `approved` nesta branch não é aprovação de merge, deploy nem adoção transversal. Antes de declarar a skill canônica ativa, exigir revisão humana do diff, validação do novo roteamento, testes pertinentes e merge explicitamente autorizado. Registrar commit, branch, CI, instalação, cobertura de projetos e lacunas.
