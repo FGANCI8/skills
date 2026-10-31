@@ -3,7 +3,7 @@ name: renova-aura-infrastructure-guardian
 description: Avaliar escolhas de infraestrutura, hospedagem, VPS, custos, escalabilidade, bancos e automações por código nos projetos Renova Aura. Usar ao comparar serviços, planejar migração, analisar capacidade, recuperação ou reservas concorrentes. Não acionar para tradução, texto, aparência de UI ou bug local sem decisão de infraestrutura.
 metadata:
   version: "0.3.0"
-  status: "candidate"
+  status: "approved"
 ---
 
 # Renova Aura Infrastructure Guardian
@@ -54,7 +54,7 @@ Tomar decisões de infraestrutura com evidências do projeto real, menor custo t
 - **Decisão recomendada** e alternativas descartadas, com custos e riscos.
 - **Gatilho de mudança**, plano de testes/rollback e status `PASS`, `FAIL`, `PENDING`, `NOT_RUN` ou `BLOCKED`.
 - **Registro**: link/versão do documento se atualizado; nunca alegar atualização sem readback.
-- **Cobertura**: distinguir revisão estática, teste de comportamento, execução real, instalação, descoberta em nova sessão e adoção por projeto/IDE. Manter status candidata até aprovação final; instalação global não é ativação automática nem conformidade.
+- **Cobertura**: distinguir revisão estática, teste de comportamento, execução real, instalação, descoberta em nova sessão e adoção por projeto/IDE. O status `approved` nesta branch é uma proposta de homologação: a versão canônica vigente só muda após revisão humana e merge autorizados. Instalação global não é ativação automática nem conformidade.
 
 ## Referências
 - [Matriz de decisão](references/decision-matrix.md): ler ao comparar alternativas.
