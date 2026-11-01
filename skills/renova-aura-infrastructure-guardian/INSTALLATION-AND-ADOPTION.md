@@ -39,7 +39,7 @@ Registrar hashes antes/depois e o manifesto dos arquivos instalados. Como a inst
 - `SKILL.md` com frontmatter válido, nome e descrição consistentes.
 - Referências relativas existentes, sem segredos nem URLs de acesso temporário.
 - Evals: 12 cenários documentados com resultado esperado; executar com skill ativa e sem skill (controle), registrar evidências, resultados PASS/FAIL/NOT_RUN. Cenários de decisão não equivalem a teste de produção, restore ou concorrência real.
-- Disparos: tarefas de banco, VPS, custos, automações por código e recuperação devem carregar skill; tarefas alheias não devem acioná-la indiscriminadamente.
+- Disparos: decisões de infraestrutura envolvendo bancos (hospedagem, capacidade, custos, backups ou recuperação), VPS ou automações por código podem carregar esta skill quando pertinente; tarefas isoladas de schema, migrations e consultas pertencem a `renova-aura-database-reliability`, e tarefas alheias não devem acioná-la indiscriminadamente.
 - Nenhuma compra, deploy, alteração de produção ou edição em massa sem autorização específica.
 - Verificar instalação após reinício de sessão e leitura de uma skill em um projeto consumidor de teste.
 
