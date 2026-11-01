@@ -28,7 +28,7 @@ Cada repositório consumidor deve manter um adaptador local com suas fontes da v
 ## Perfis elegíveis
 
 - `Core` é o perfil elegível padrão. Ele cobre roteamento, produto, arquitetura, integração, segurança, UX, qualidade, observabilidade, prompts, handoff e curadoria.
-- `SaaS` acrescenta métodos de backend, banco, desempenho e IA quando a tarefa comprovar essa necessidade.
+- `SaaS` acrescenta métodos de backend, banco, desempenho, IA e avaliação de infraestrutura quando a tarefa comprovar essa necessidade.
 - `Python` acrescenta o método Python e somente os suportes exigidos pelo risco.
 - `AgentOs` reúne os seis métodos necessários para orquestração declarativa e revisão independente.
 - `Pdf` contém apenas a suíte de cinco skills de formulário preenchível.
@@ -48,7 +48,7 @@ Toda mudança de status deve indicar sucessora, data e impacto de migração. Ne
 
 ## Catálogo
 
-A biblioteca combinada registra 25 skills basais e 8 extension skills de `ProjectPacks`, totalizando 33 IDs únicos. As extensões permanecem skills especializadas; não são agentes canônicos nem project adapters.
+A biblioteca canônica v1.2 registra 25 skills basais e 8 extension skills de `ProjectPacks`, totalizando 33 IDs no contrato histórico v1.1, mais a `renova-aura-infrastructure-guardian` incorporada na v1.2: **34 skills distintas**. A marcação `approved` da Infrastructure Guardian nesta proposta só se torna vigente após revisão e merge autorizados. O manifesto histórico de ProjectPacks (`25 + 8 = 33`) permanece inalterado. As extensões não são agentes canônicos nem project adapters.
 
 | Skill | Perfis elegíveis | Versão | Status | Uso principal |
 |---|---|---:|---|---|
@@ -57,6 +57,7 @@ A biblioteca combinada registra 25 skills basais e 8 extension skills de `Projec
 | `renova-aura-project-bootstrap` | Core | 1.1.0 | ACTIVE | Iniciar ou recuperar projeto sem apagar trabalho existente |
 | `renova-aura-product-spec` | Core | 1.1.0 | ACTIVE | Converter ideia em problema, MVP, PRD, SPEC e aceite |
 | `renova-aura-saas-architect` | SaaS | 1.1.0 | ACTIVE | Decidir arquitetura, identidade e evolução do sistema |
+| `renova-aura-infrastructure-guardian` | SaaS | 0.3.0 | ACTIVE (proposto; sujeito a merge) | Avaliar infraestrutura, hospedagem, custos, capacidade e recuperação sem invadir segurança ou banco |
 | `renova-aura-engineering-guardian` | Core | 1.1.0 | ACTIVE | Integrar o menor diff correto com ownership exclusivo |
 | `renova-aura-backend-api-engineer` | SaaS / AgentOs | 1.1.0 | ACTIVE | Projetar APIs, webhooks, filas, validação e idempotência |
 | `renova-aura-database-reliability` | SaaS / AgentOs | 1.1.0 | ACTIVE | Proteger schema, migrations, RLS, consultas e rollback |
